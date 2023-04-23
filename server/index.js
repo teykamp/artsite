@@ -13,7 +13,7 @@ app.use(express.json());
 
 // import routes
 const postsRoute = require('./posts.js');
-app.use('/api/posts', postsRoute);
+app.use('/posts', postsRoute);
 
 app.get('/', (req, res) => {
   res.json({

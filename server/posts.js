@@ -9,13 +9,20 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  const { title, body, image } = req.body;
   const newPost = new Post({
-    title: req.body.title,
-    body: req.body.body,
-    image: req.body.image
+    title,
+    body,
+    image
   });
   newPost.save()
     .then(post => res.json(post))
+    .catch(err => res.status(404).json(err));
+});
+
+router.delete('/', async (req, res) => {
+  Post.deleteMany()
+    .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));
 });
 

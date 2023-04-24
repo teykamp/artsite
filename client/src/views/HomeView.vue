@@ -1,17 +1,9 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <h1>Home</h1>
-    <p>
-      This is the home page. It's a great place to start.
-    </p>
-    <p>
-      <router-link to="/about">About</router-link>
-    </p>
-
-
+    <h1 class="mt-4">Make A Post</h1>
     <v-form
       class="mb-10"
-      style="width: 50%"
+      style="width: 90%; max-width: 400px;"
       @submit.prevent="uploadPost"
     >
       <v-text-field
@@ -40,26 +32,38 @@
         alt="image"
       />
       <v-btn
+        :disabled="disablePostButton"
         color="primary" 
         type="submit"
       >add post</v-btn>
     </v-form>
     <div 
-      style="width: 100%;"
-      class="d-flex justify-center align-center flex-wrap"
+      style="width: 95%; height: 600px; overflow-y: scroll; border-top: 1px solid black;"
+      class="d-flex flex-wrap flex-start justify-center align-start"
     >
       <div
         v-for="post in posts"
         :key="post._id"
-        class="post flex-wrap"
+        class="post flex-wrap flex-column justify-center align-center"
       >
-        <img
-          :src="post.images[0]"
-          class="thumbnail"
-          alt="Cannot display image"
+        <PostDisplay
+          :post="post"
+          @delete="deletePost(post._id)"
         />
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.body }}</p>
+      </div>
+      <div v-if="loadingPosts">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+      </div>
+      <div 
+        v-else-if="posts.length === 0"
+        style="color: red;"
+      >
+        <h2>
+          No posts yet
+        </h2>
       </div>
     </div>
     <v-btn
@@ -74,15 +78,23 @@
 <script setup lang="ts">
 import axios from "axios";
 import Compress from "compress.js";
-import { ref, watch } from "vue";
+import PostDisplay from "../components/PostDisplay.vue";
+import { ref, watch, computed } from "vue";
 
 const posts = ref([]);
+const loadingPosts = ref(false);
 
 const addPost = ref({
   title: "",
   body: "",
   images: [] as Blob[],
   imageEncodings: [] as string[] | ArrayBuffer[],
+})
+
+const showBody = ref(false);
+
+const disablePostButton = computed(() => {
+  return !addPost.value.title
 })
 
 async function encodeImage() {
@@ -104,8 +116,10 @@ watch(() => addPost.value.images, (newVal) => {
 })
 
 async function fetchPosts() {
+  loadingPosts.value = true;
   const { data } = await axios.get("/api/posts");
-  posts.value = data;
+  loadingPosts.value = false;
+  posts.value = data.reverse();
 }
 
 async function uploadPost() {
@@ -114,6 +128,12 @@ async function uploadPost() {
     body: addPost.value.body,
     images: addPost.value.imageEncodings,
   };
+
+  const size = new TextEncoder().encode(JSON.stringify(newPost)).length
+  const kiloBytes = size / 1024;
+  const megaBytes = kiloBytes / 1024;
+  console.log(kiloBytes, "KB");
+
   await axios.post("/api/posts", newPost);
   posts.value.unshift(newPost);
   addPost.value = {
@@ -129,6 +149,11 @@ fetchPosts();
 async function deletePosts() {
   await axios.delete("/api/posts");
   posts.value = [];
+}
+
+async function deletePost(id: string) {
+  await axios.delete(`/api/posts/${id}`);
+  posts.value = posts.value.filter((post) => post._id !== id);
 }
 
 async function compressBase64Image(image) {
@@ -149,23 +174,18 @@ async function compressBase64Image(image) {
 
 <style scoped>
 .post {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   border: 1px solid black;
   margin: 10px;
-  padding: 5px;
+  padding: 10px;
   border-radius: 10px;
   background: rgba(0, 0, 0, 0.1);
-  width: 40%;
+  width: 30%;
 }
 
 img.thumbnail {
-  width: 95%; 
-  height: 300px;  
+  width: 100%; 
+  height: 175px;  
   object-fit: cover; 
-  margin: 10px; 
   border-radius: 10px;
 }
 </style>

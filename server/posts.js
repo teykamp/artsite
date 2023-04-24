@@ -16,8 +16,8 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  Post.findById(req.params.id)
-    .then(post => post.remove().then(() => res.json({ success: true })))
+  Post.deleteOne({ _id: req.params.id })
+    .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));
 });
 

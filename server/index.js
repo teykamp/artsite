@@ -2,10 +2,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config()
 
-const KEY = `mongodb+srv://thomas:123@artsite.qllzjcj.mongodb.net/?retryWrites=true&w=majority`
-
-mongoose.connect(KEY)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected...'))
   .catch(err => console.log(err));
 

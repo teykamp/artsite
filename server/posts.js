@@ -15,6 +15,12 @@ router.post('/', async (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
+router.delete('/:id', async (req, res) => {
+  Post.findById(req.params.id)
+    .then(post => post.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json(err));
+});
+
 router.delete('/', async (req, res) => {
   Post.deleteMany()
     .then(() => res.json({ success: true }))

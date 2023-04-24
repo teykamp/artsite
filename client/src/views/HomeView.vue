@@ -29,7 +29,9 @@
       />
       <!-- needs to be base64 encoded -->
       <v-file-input
+        multiple
         v-model="addPost.image"
+        @change="encodeImage"
         label="image"
         prepend-icon="mdi-camera"
         accept="image/*"
@@ -57,15 +59,28 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const posts = ref([]);
 
 const addPost = ref({
   title: "",
   body: "",
-  image: [],
+  image: [] as Blob[],
+  imageEncodings: [] as string[] | ArrayBuffer[],
 })
+
+function encodeImage() {
+  for (let i = 0; i < addPost.value.image.length; i++) {
+    const img = addPost.value.image[i];
+    if (!img || typeof img === 'string') continue;
+    const reader = new FileReader();
+    reader.readAsDataURL(img);
+    reader.onload = () => {
+      addPost.value.imageEncodings[i] = reader.result;
+    }
+  }
+}
 
 async function fetchPosts() {
   const { data } = await axios.get("/api/posts");

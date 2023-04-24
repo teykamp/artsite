@@ -9,12 +9,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { title, body, image } = req.body;
-  const newPost = new Post({
-    title,
-    body,
-    image
-  });
+  const newPost = new Post({ ...req.body });
   newPost.save()
     .then(post => res.json(post))
     .catch(err => res.status(404).json(err));

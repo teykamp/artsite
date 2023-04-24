@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex flex-column justify-center align-center">
     <h1>Home</h1>
     <p>
       This is the home page. It's a great place to start.
@@ -7,58 +7,73 @@
     <p>
       <router-link to="/about">About</router-link>
     </p>
-    <p>
-      <router-link to="/counter">Counter</router-link>
-    </p>
-    <p>
-      <router-link to="/fetch-data">Fetch data</router-link>
-    </p>
 
 
     <v-form
-      style="width: 30%"
+      class="mb-10"
+      style="width: 50%"
       @submit.prevent="uploadPost"
     >
       <v-text-field
         v-model="addPost.title"
+        prepend-icon="mdi-format-title"
         label="title"
       />
       <v-text-field
         v-model="addPost.body"
+        prepend-icon="mdi-text"
         label="body"
       />
-      <!-- needs to be base64 encoded -->
       <v-file-input
-        multiple
-        v-model="addPost.image"
+        v-model="addPost.images"
         @change="encodeImage"
+        multiple
         label="image"
         prepend-icon="mdi-camera"
         accept="image/*"
       ></v-file-input>
+      <img 
+        v-for="image in addPost.imageEncodings"
+        :key="image"
+        :src="image"
+        class="thumbnail"
+        alt="image"
+      />
       <v-btn
+        color="primary" 
         type="submit"
       >add post</v-btn>
     </v-form>
-
+    <div 
+      style="width: 100%;"
+      class="d-flex justify-center align-center flex-wrap"
+    >
+      <div
+        v-for="post in posts"
+        :key="post._id"
+        class="post flex-wrap"
+      >
+        <img
+          :src="post.images[0]"
+          class="thumbnail"
+          alt="Cannot display image"
+        />
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.body }}</p>
+      </div>
+    </div>
     <v-btn
+      v-if="posts.length"
       @click="deletePosts"
+      class="my-10"
       color="error"
-    >delete posts</v-btn>
-    <v-btn
-      @click="fetchPosts"
-    >fetch posts</v-btn>
-    <img
-      v-for="post in posts"
-      :key="post._id"
-      :src="post.image"
-      alt="Cannot display image"
-    />
+    >delete all posts</v-btn>
   </div>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
+import Compress from "compress.js";
 import { ref, watch } from "vue";
 
 const posts = ref([]);
@@ -66,21 +81,27 @@ const posts = ref([]);
 const addPost = ref({
   title: "",
   body: "",
-  image: [] as Blob[],
+  images: [] as Blob[],
   imageEncodings: [] as string[] | ArrayBuffer[],
 })
 
-function encodeImage() {
-  for (let i = 0; i < addPost.value.image.length; i++) {
-    const img = addPost.value.image[i];
-    if (!img || typeof img === 'string') continue;
-    const reader = new FileReader();
-    reader.readAsDataURL(img);
-    reader.onload = () => {
-      addPost.value.imageEncodings[i] = reader.result;
+async function encodeImage() {
+  for (let i = 0; i < addPost.value.images.length; i++) {
+    const img = addPost.value.images[i];
+    if (!img) {
+      addPost.value.imageEncodings[i] = "";
+      continue;
     }
+    if (typeof img === 'string') continue;
+    addPost.value.imageEncodings[i] = await compressBase64Image(img);
   }
 }
+
+watch(() => addPost.value.images, (newVal) => {
+  if (newVal.length === 0) {
+    addPost.value.imageEncodings = [];
+  }
+})
 
 async function fetchPosts() {
   const { data } = await axios.get("/api/posts");
@@ -88,13 +109,18 @@ async function fetchPosts() {
 }
 
 async function uploadPost() {
-  console.log(addPost.value)
-  const { data } = await axios.post("/api/posts", addPost.value);
-  posts.value.push(data);
+  const newPost = {
+    title: addPost.value.title,
+    body: addPost.value.body,
+    images: addPost.value.imageEncodings,
+  };
+  await axios.post("/api/posts", newPost);
+  posts.value.unshift(newPost);
   addPost.value = {
     title: "",
     body: "",
-    image: [],
+    images: [],
+    imageEncodings: [],
   }
 }
 
@@ -104,4 +130,42 @@ async function deletePosts() {
   await axios.delete("/api/posts");
   posts.value = [];
 }
+
+async function compressBase64Image(image) {
+  const compress = new Compress();
+  try {
+    const compressedImage = await compress.compress([image], {
+      size: .1, // the max size in MB, defaults to 2MB
+      quality: .1, // the quality of the image, max is 1,
+    })
+    return compressedImage.map((image) => {
+      return image.prefix + image.data;
+    })[0] as string;
+  } catch (error) {
+    console.warn(error)
+  }
+}
 </script>
+
+<style scoped>
+.post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  width: 40%;
+}
+
+img.thumbnail {
+  width: 95%; 
+  height: 300px;  
+  object-fit: cover; 
+  margin: 10px; 
+  border-radius: 10px;
+}
+</style>

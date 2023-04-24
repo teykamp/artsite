@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "pako": "^2.1.0"
+  }
+}

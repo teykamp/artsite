@@ -14,8 +14,8 @@ const postSchema = mongoose.Schema({
     default: Date.now(),
     required: true
   },
-  image: {
-    type: String,
+  images: {
+    type: Array,
     required: false
   }
 });

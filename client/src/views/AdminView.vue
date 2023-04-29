@@ -2,9 +2,9 @@
   <div class="d-flex flex-column justify-center align-center">
     <h1 class="mt-4">Make A Post</h1>
     <v-form
+      @submit.prevent="null"
       class="mb-10"
       style="width: 90%; max-width: 400px;"
-      @submit.prevent="uploadPost"
     >
       <v-text-field
         v-model="addPost.title"
@@ -98,7 +98,7 @@ import axios from "axios";
 import Compress from "compress.js";
 import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import { ref, watch, computed } from "vue";
-import tagDisplay from "../scripts/tagDisplay";
+import { parseTag } from "../composables/useTagParser";
 
 const posts = ref([]);
 const loadingPosts = ref(false);
@@ -108,7 +108,7 @@ const addPost = ref({
   body: "",
   images: [] as Blob[],
   imageEncodings: [] as string[] | ArrayBuffer[],
-  tagData: "",
+  tagData: ref(""),
 })
 
 // const showBody = ref(false);
@@ -204,7 +204,7 @@ const tags = computed(() => {
 })
 
 function newList() {
-  const newList = tagDisplay(addPost.value.tagData);
+  const newList = parseTag(addPost.value.tagData);
 
   previousList = newList;
   return newList;

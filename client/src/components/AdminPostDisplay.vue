@@ -37,8 +37,8 @@
       <p style="max-height: 100px; overflow: auto">
         {{ post.body }}
       </p>
-      <v-chip 
-        v-for="tag in tagsList"
+      <v-chip
+        v-for="tag in parseTag(post.tagData)"
         :key="tag">
         {{ tag }}
       </v-chip>
@@ -47,8 +47,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import tagDisplay from "../scripts/tagDisplay"
+import { ref, computed, toRefs } from "vue";
+import { parseTag } from "../composables/useTagParser"
 
 const props = defineProps<{
   post: {
@@ -72,8 +72,7 @@ const emits = defineEmits<{
 
 const showBody = ref(false);
 
-
-const tagsList = tagDisplay(props.post.tagData);
+const { tagData } = toRefs(props.post);
 </script>
 
 <style scoped>

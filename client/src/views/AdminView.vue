@@ -16,6 +16,16 @@
           prepend-icon="mdi-text"
           label="body"
         />
+        <v-text-field 
+          v-model="tagsData"
+          prepend-icon="mdi-tag"
+          @change="parseTags"
+        />
+        <v-chip
+          v-for="tag in addPost.tags"
+          :key="tag"
+          closable
+        > {{ tag }} </v-chip>
         <v-file-input
           v-model="addPost.images"
           @change="encodeImage"
@@ -84,11 +94,12 @@
   const posts = ref([]);
   const loadingPosts = ref(false);
   
-  const addPost = ref({
+  var addPost = ref({
     title: "",
     body: "",
     images: [] as Blob[],
     imageEncodings: [] as string[] | ArrayBuffer[],
+    tags: [],
   })
   
   const showBody = ref(false);
@@ -141,6 +152,7 @@
       body: "",
       images: [],
       imageEncodings: [],
+      tags: [],
     }
   }
   
@@ -170,6 +182,15 @@
       console.warn(error)
     }
   }
+
+  // tags
+  const tagsData = ref("")
+  // TODO: make tags closable!!!
+  function parseTags() {
+    const tmp = tagsData.value.split(','); // had to make addPosts var not const!!!!
+    addPost.value.tags = tmp;
+  }
+
   </script>
   
   <style scoped>

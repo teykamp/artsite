@@ -51,6 +51,7 @@ const props = defineProps<{
     body: string;
     date: string;
     images: string[];
+    tags: string[];
   };
 }>();
 

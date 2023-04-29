@@ -144,6 +144,7 @@ async function uploadPost() {
     title: addPost.value.title,
     body: addPost.value.body,
     images: addPost.value.imageEncodings,
+    tagData: addPost.value.tagData,
     date: new Date(),
   };
 
@@ -192,7 +193,8 @@ async function compressBase64Image(image) {
 
 let previousList = [];
 const tags = computed(() => {
-  if (!addPost.value.tagData || addPost.value.tagData[addPost.value.tagData.length - 1] === ',') {
+  const tagData = addPost.value.tagData;
+  if (!tagData || tagData[tagData.length - 1] === ',') {
     return newList();
   } else {
     return previousList;

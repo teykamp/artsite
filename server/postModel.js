@@ -7,7 +7,7 @@ const postSchema = mongoose.Schema({
   },
   body: {
     type: String,
-    required: false 
+    required: false
   },
   date: {
     type: Date,
@@ -18,8 +18,8 @@ const postSchema = mongoose.Schema({
     type: Array,
     required: false
   },
-  tags: {
-    type: Array,
+  tagData: {
+    type: String,
     required: false
   },
 });

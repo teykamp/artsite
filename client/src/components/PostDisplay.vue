@@ -20,14 +20,14 @@
       {{ dateDisplay }}
     </p>
     <div style="height: 20px;">
-      <i 
-        v-if="post.body"
+      <i
+        v-if="post.body || post.tagData"
         @click="showBody = !showBody"
       >
         {{ showBody ? 'Hide' : 'Show' }} post content...
       </i>
     </div>
-    <div 
+    <div
       :style="{
         height: showBody ? '100px' : '0px',
       }"
@@ -36,6 +36,7 @@
       <v-divider class="my-3"></v-divider>
       <p style="max-height: 100px; overflow: auto">
         {{ post.body }}
+        {{ post.tagData }}
       </p>
     </div>
   </div>
@@ -69,9 +70,9 @@ const showBody = ref(false);
 
 <style scoped>
 img.thumbnail {
-  width: 100%; 
-  height: 175px;  
-  object-fit: cover; 
+  width: 100%;
+  height: 175px;
+  object-fit: cover;
   border-radius: 10px;
 }
 

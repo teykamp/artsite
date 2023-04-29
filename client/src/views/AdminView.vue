@@ -17,13 +17,12 @@
         label="body"
       />
       <v-text-field
-        v-model="tagsData"
+        v-model="addPost.tagData"
         prepend-icon="mdi-tag"
-        @keyup.enter="tagsData += ','"
-        @change="parseTags"
+        @keyup.enter="addPost.tagData += ','"
       />
       <v-chip
-        v-for="tag in addPost.tags"
+        v-for="tag in tags"
         :key="tag"
         @click="removeChip(tag)"
       >
@@ -102,12 +101,12 @@ import { ref, watch, computed } from "vue";
 const posts = ref([]);
 const loadingPosts = ref(false);
 
-var addPost = ref({
+const addPost = ref({
   title: "",
   body: "",
   images: [] as Blob[],
   imageEncodings: [] as string[] | ArrayBuffer[],
-  tags: [],
+  tagData: "",
 })
 
 const showBody = ref(false);
@@ -160,7 +159,7 @@ async function uploadPost() {
     body: "",
     images: [],
     imageEncodings: [],
-    tags: [],
+    tagData: "",
   }
 }
 
@@ -191,25 +190,30 @@ async function compressBase64Image(image) {
   }
 }
 
-// tags
-const tagsData = ref("")
-// TODO: make tags closable!!!
-function parseTags() {
-  const tmp = tagsData.value.split(',').map((tag) => tag.trim()).filter((tag) => tag !== '');
-  addPost.value.tags = tmp;
-}
-
-function removeChip(tag) {
-  const indexOfTag = tagsData.value.indexOf(tag);
-  tagsData.value = tagsData.value.slice(0, indexOfTag) + tagsData.value.slice(indexOfTag + tag.length + 1);
-}
-
-watch(tagsData, (v) => {
-  if (v[v.length - 1] === ',' || !v) {
-    parseTags();
+let previousList = [];
+const tags = computed(() => {
+  if (!addPost.value.tagData || addPost.value.tagData[addPost.value.tagData.length - 1] === ',') {
+    return newList();
+  } else {
+    return previousList;
   }
 })
 
+function newList() {
+  const newList = addPost.value.tagData
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag !== '');
+
+  previousList = newList;
+  return newList;
+}
+
+
+function removeChip(tag) {
+  const indexOfTag = addPost.value.tagData.indexOf(tag);
+  addPost.value.tagData = addPost.value.tagData.slice(0, indexOfTag) + addPost.value.tagData.slice(indexOfTag + tag.length + 1);
+}
 </script>
 
 <style scoped>

@@ -3,13 +3,10 @@
     <div
       v-for="post in posts"
       :key="post._id"
-      class="post flex-wrap flex-column justify-center align-center"
     >
-    <img
-      :src="post.images[0]"
-      class="thumbnail"
-      alt="Cannot display image"
-    />
+      <MainPostDisplay 
+        :post="post"
+      />
     </div>
     <div v-if="loadingPosts">
       <v-progress-circular
@@ -31,6 +28,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref, watch, computed } from "vue";
+import MainPostDisplay from "../components/MainPostDisplay.vue";
 
 const posts = ref([]);
 const loadingPosts = ref(false);

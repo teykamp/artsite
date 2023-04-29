@@ -36,14 +36,19 @@
       <v-divider class="my-3"></v-divider>
       <p style="max-height: 100px; overflow: auto">
         {{ post.body }}
-        {{ post.tagData }}
       </p>
+      <v-chip 
+        v-for="tag in tagsList"
+        :key="tag">
+        {{ tag }}
+      </v-chip>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import tagDisplay from "../scripts/tagDisplay"
 
 const props = defineProps<{
   post: {
@@ -52,7 +57,7 @@ const props = defineProps<{
     body: string;
     date: string;
     images: string[];
-    tags: string[];
+    tagData: string;
   };
 }>();
 
@@ -66,6 +71,9 @@ const emits = defineEmits<{
 }>();
 
 const showBody = ref(false);
+
+
+const tagsList = tagDisplay(props.post.tagData);
 </script>
 
 <style scoped>

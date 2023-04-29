@@ -20,6 +20,7 @@
         v-model="addPost.tagData"
         prepend-icon="mdi-tag"
         @keyup.enter="addPost.tagData += ','"
+        label="tags"
       />
       <v-chip
         v-for="tag in tags"
@@ -63,7 +64,7 @@
         :key="post._id"
         class="post flex-wrap flex-column justify-center align-center"
       >
-        <PostDisplay
+        <AdminPostDisplay
           :post="post"
           @delete="deletePost(post._id)"
         />
@@ -95,8 +96,9 @@
 <script setup lang="ts">
 import axios from "axios";
 import Compress from "compress.js";
-import PostDisplay from "../components/PostDisplay.vue";
+import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import { ref, watch, computed } from "vue";
+import tagDisplay from "../scripts/tagDisplay";
 
 const posts = ref([]);
 const loadingPosts = ref(false);
@@ -109,7 +111,7 @@ const addPost = ref({
   tagData: "",
 })
 
-const showBody = ref(false);
+// const showBody = ref(false);
 
 const disablePostButton = computed(() => {
   return !addPost.value.title
@@ -150,7 +152,7 @@ async function uploadPost() {
 
   const size = new TextEncoder().encode(JSON.stringify(newPost)).length
   const kiloBytes = size / 1024;
-  const megaBytes = kiloBytes / 1024;
+  // const megaBytes = kiloBytes / 1024;
   console.log(kiloBytes, "KB");
 
   await axios.post("/api/posts", newPost);
@@ -176,7 +178,7 @@ async function deletePost(id: string) {
   posts.value = posts.value.filter((post) => post._id !== id);
 }
 
-async function compressBase64Image(image) {
+async function compressBase64Image(image: string[]) {
   const compress = new Compress();
   try {
     const compressedImage = await compress.compress([image], {
@@ -191,7 +193,7 @@ async function compressBase64Image(image) {
   }
 }
 
-let previousList = [];
+let previousList: string[] = [];
 const tags = computed(() => {
   const tagData = addPost.value.tagData;
   if (!tagData || tagData[tagData.length - 1] === ',') {
@@ -202,17 +204,14 @@ const tags = computed(() => {
 })
 
 function newList() {
-  const newList = addPost.value.tagData
-    .split(',')
-    .map((tag) => tag.trim())
-    .filter((tag) => tag !== '');
+  const newList = tagDisplay(addPost.value.tagData);
 
   previousList = newList;
   return newList;
 }
 
 
-function removeChip(tag) {
+function removeChip(tag: string) {
   const indexOfTag = addPost.value.tagData.indexOf(tag);
   addPost.value.tagData = addPost.value.tagData.slice(0, indexOfTag) + addPost.value.tagData.slice(indexOfTag + tag.length + 1);
 }

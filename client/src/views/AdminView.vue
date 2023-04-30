@@ -50,10 +50,10 @@
         alt="image"
       />
       <v-btn
+        @click="uploadPost"
         :disabled="disablePostButton"
         color="primary"
         type="submit"
-        @click="uploadPost"
       >add post</v-btn>
     </v-form>
     <div
@@ -99,7 +99,6 @@ import axios from "axios";
 import Compress from "compress.js";
 import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import { ref, watch, computed } from "vue";
-import { parseTag } from "../composables/useTagParser";
 
 const posts = ref([]);
 const loadingPosts = ref(false);
@@ -192,29 +191,6 @@ async function compressBase64Image(image: string[]) {
   } catch (error) {
     console.warn(error)
   }
-}
-
-let previousList: string[] = [];
-const tags = computed(() => {
-  const tagData = addPost.value.tagData;
-  if (!tagData || tagData[tagData.length - 1] === ',') {
-    return newList();
-  } else {
-    return previousList;
-  }
-})
-
-function newList() {
-  const newList = parseTag(addPost.value.tagData);
-
-  previousList = newList;
-  return newList;
-}
-
-
-function removeChip(tag: string) {
-  const indexOfTag = addPost.value.tagData.indexOf(tag);
-  addPost.value.tagData = addPost.value.tagData.slice(0, indexOfTag) + addPost.value.tagData.slice(indexOfTag + tag.length + 1);
 }
 </script>
 

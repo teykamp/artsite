@@ -3,6 +3,7 @@
     <v-card
       width="1000"
       class="mb-6"
+      elevation="0"
     >
       <v-card-title>
         {{ post.title }}

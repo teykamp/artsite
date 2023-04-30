@@ -1,13 +1,18 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
     <div
-      v-for="post in posts"
+      v-for="(post, index) in posts"
       :key="post._id"
     >
       <MainPostDisplay 
         :post="post"
       />
+      <v-divider 
+        v-if="index + 1 < posts.length" :key="`divider-${index}`"
+        class="mt-3 mb-3"
+      ></v-divider>
     </div>
+    
     <div v-if="loadingPosts">
       <v-progress-circular
         indeterminate

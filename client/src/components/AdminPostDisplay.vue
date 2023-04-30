@@ -72,7 +72,7 @@ const emits = defineEmits<{
 
 const showBody = ref(false);
 
-const { tagData } = toRefs(props.post);
+// const { tagData } = toRefs(props.post);
 </script>
 
 <style scoped>

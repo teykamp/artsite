@@ -53,6 +53,7 @@
         :disabled="disablePostButton"
         color="primary"
         type="submit"
+        @click="uploadPost"
       >add post</v-btn>
     </v-form>
     <div

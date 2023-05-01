@@ -27,17 +27,17 @@
       >
         {{ post.body }}
       </v-card-text>
-      <!-- <v-card-actions
+      <v-card-actions
         v-if="post.tagData"
       >
         <v-chip
-          v-for="tag in post.tagData.split(',')"
+          v-for="tag in post.tagData"
           :key="tag"
           label
           size="x-small"
           class="mr-1"
         >{{ tag }}</v-chip>
-      </v-card-actions> -->
+      </v-card-actions>
     </v-card>
   </div>
 </template>

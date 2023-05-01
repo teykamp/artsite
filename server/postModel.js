@@ -19,7 +19,7 @@ const postSchema = mongoose.Schema({
     required: false
   },
   tagData: {
-    type: String,
+    type: Array,
     required: false
   },
 });

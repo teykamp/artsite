@@ -21,24 +21,23 @@
         prepend-icon="mdi-text"
         label="body"
       />
-      <v-text-field
+      <v-combobox
         v-model="addPost.tagData"
+        :items="tags.map(tag => tag.name)"
         prepend-icon="mdi-tag"
-        @keyup.enter="addPost.tagData += ','"
         label="tags"
-      />
-      <v-chip
-        v-for="tag in tags"
-        :key="tag"
-        @click="removeChip(tag)"
+        multiple
+        chips
       >
-        <span class="mr-2">
-          {{ tag }}
-        </span>
-        <v-icon>
-          mdi-close-circle
-        </v-icon>
-      </v-chip>
+        <template #selection="{ tag }">
+          <v-chip
+            :color="tag.color"
+            class="ma-1"
+          >
+            {{ tag.name }}
+          </v-chip>
+        </template>
+      </v-combobox>
       <v-file-input
         v-model="addPost.images"
         @change="encodeImage"
@@ -115,10 +114,8 @@ const addPost = ref({
   body: "",
   images: [] as Blob[],
   imageEncodings: [] as string[] | ArrayBuffer[],
-  tagData: ref(""),
+  tagData: [],
 })
-
-// const showBody = ref(false);
 
 const disablePostButton = computed(() => {
   return !addPost.value.title
@@ -169,7 +166,7 @@ async function uploadPost() {
     body: "",
     images: [],
     imageEncodings: [],
-    tagData: "",
+    tagData: [],
   }
 }
 
@@ -199,6 +196,13 @@ async function compressBase64Image(image: string[]) {
     console.warn(error)
   }
 }
+
+const tags = ref([]);
+const fetchTags = async () => {
+  const { data } = await axios.get("/api/posts/tags");
+  tags.value = data;
+}
+fetchTags();
 </script>
 
 <style scoped>

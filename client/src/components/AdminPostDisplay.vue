@@ -37,11 +37,12 @@
       <p style="max-height: 100px; overflow: auto">
         {{ post.body }}
       </p>
-      <!-- <v-chip
-        v-for="tag in post.tagData.split(',')"
-        :key="tag">
+      <v-chip
+        v-for="tag in post.tagData"
+        :key="tag"
+      >
         {{ tag }}
-      </v-chip> -->
+      </v-chip>
     </div>
   </div>
 </template>

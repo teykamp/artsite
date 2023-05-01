@@ -1,6 +1,11 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <h1 class="mt-4">Make A Post</h1>
+    <div style="width: 50%">
+      <TagInterface />
+    </div>
+    <h1 class="mt-4">
+      Make A Post
+    </h1>
     <v-form
       @submit.prevent="null"
       class="mb-10"
@@ -56,6 +61,7 @@
         type="submit"
       >add post</v-btn>
     </v-form>
+
     <div
       style="width: 95%; height: 600px; overflow-y: scroll; border-top: 1px solid black;"
       class="d-flex flex-wrap flex-start justify-center align-start"
@@ -98,6 +104,7 @@
 import axios from "axios";
 import Compress from "compress.js";
 import AdminPostDisplay from "../components/AdminPostDisplay.vue";
+import TagInterface from "../components/TagInterface.vue";
 import { ref, watch, computed } from "vue";
 
 const posts = ref([]);

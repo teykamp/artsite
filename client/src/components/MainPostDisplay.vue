@@ -9,7 +9,7 @@
         {{ post.title }}
       </v-card-title>
       <v-card-subtitle
-        class="mb-2"  
+        class="mb-2"
       >
         Posted on {{ dateDisplay }}
       </v-card-subtitle>
@@ -27,24 +27,23 @@
       >
         {{ post.body }}
       </v-card-text>
-      <v-card-actions
+      <!-- <v-card-actions
         v-if="post.tagData"
       >
         <v-chip
-          v-for="tag in parseTag(post.tagData)"
+          v-for="tag in post.tagData.split(',')"
           :key="tag"
           label
           size="x-small"
           class="mr-1"
         >{{ tag }}</v-chip>
-      </v-card-actions>
+      </v-card-actions> -->
     </v-card>
   </div>
 </template>
 
 <script setup lang="ts">
   import { computed } from 'vue';
-  import { parseTag } from "../composables/useTagParser"
 
   const props = defineProps<{
     post: {

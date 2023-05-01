@@ -29,14 +29,20 @@ router.delete('/', async (req, res) => {
 });
 
 // Tags
-router.post('/tag', async (req, res) => {
+router.get('/tags', async (req, res) => {
+  Tag.find()
+    .then(tags => res.json(tags))
+    .catch(err => res.status(404).json(err));
+});
+
+router.post('/tags', async (req, res) => {
   const newTag = new Tag({ ...req.body });
   newTag.save()
     .then(tag => res.json(tag))
     .catch(err => res.status(404).json(err));
 });
 
-router.delete('/tag/:id', async (req, res) => {
+router.delete('/tags/:id', async (req, res) => {
   Tag.deleteOne({ _id: req.params.id })
     .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));

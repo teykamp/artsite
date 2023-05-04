@@ -1,22 +1,26 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <SearchBar 
+    <SearchBar
       v-model="search"
     />
     <div
       v-for="(post, index) in filteredPosts"
       :key="post._id"
     >
-      <MainPostDisplay 
+      <MainPostDisplay
         :post="post"
       />
-      <v-divider 
-        v-if="index + 1 < filteredPosts.length" :key="`divider-${index}`"
+      <v-divider
+        v-if="index + 1 < filteredPosts.length"
+        :key="`divider-${index}`"
         class="mt-3 mb-3"
       ></v-divider>
     </div>
-    
-    <div v-if="loadingPosts" class="d-flex flex-column justify-center align-center">
+
+    <div
+      v-if="loadingPosts"
+      class="d-flex flex-column justify-center align-center"
+    >
       <v-row class="pa-6">
         <v-progress-circular
           indeterminate
@@ -27,7 +31,7 @@
         <h3>Loading Posts...</h3>
       </v-row>
     </div>
-    <div 
+    <div
       v-else-if="filteredPosts.length === 0"
       style="color: red;"
     >
@@ -47,7 +51,6 @@
 
   const posts = ref([]);
   const loadingPosts = ref(false);
-
 
   const search = ref("");
   const { filteredPosts } = useQueryFilter(search, posts);
@@ -78,9 +81,9 @@
 }
 
 img.thumbnail {
-  width: 100%; 
-  height: 175px;  
-  object-fit: cover; 
+  width: 100%;
+  height: 175px;
+  object-fit: cover;
   border-radius: 10px;
 }
 </style>

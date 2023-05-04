@@ -1,26 +1,34 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
+    <SearchBar 
+      v-model="search"
+    />
     <div
-      v-for="(post, index) in posts"
+      v-for="(post, index) in filteredPosts"
       :key="post._id"
     >
       <MainPostDisplay 
         :post="post"
       />
       <v-divider 
-        v-if="index + 1 < posts.length" :key="`divider-${index}`"
+        v-if="index + 1 < filteredPosts.length" :key="`divider-${index}`"
         class="mt-3 mb-3"
       ></v-divider>
     </div>
     
-    <div v-if="loadingPosts">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
+    <div v-if="loadingPosts" class="d-flex flex-column justify-center align-center">
+      <v-row class="pa-6">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+      </v-row>
+      <v-row class="pa-6">
+        <h3>Loading Posts...</h3>
+      </v-row>
     </div>
     <div 
-      v-else-if="posts.length === 0"
+      v-else-if="filteredPosts.length === 0"
       style="color: red;"
     >
       <h2>
@@ -31,22 +39,31 @@
 </template>
 
 <script setup lang="ts">
-import axios from "axios";
-import { ref, watch, computed } from "vue";
-import MainPostDisplay from "../components/MainPostDisplay.vue";
+  import axios from "axios";
+  import { ref } from "vue";
+  import MainPostDisplay from "../components/MainPostDisplay.vue";
+  import SearchBar from "../components/SearchBar.vue";
+  import { useQueryFilter } from "../composables/useQueryFilter";
 
-const posts = ref([]);
-const loadingPosts = ref(false);
+  const posts = ref([]);
+  const loadingPosts = ref(false);
 
 
-async function fetchPosts() {
-  loadingPosts.value = true;
-  const { data } = await axios.get("/api/posts");
-  loadingPosts.value = false;
-  posts.value = data.reverse();
-}
+  const search = ref("");
+  const { filteredPosts } = useQueryFilter(search, posts);
 
-fetchPosts();
+  async function fetchPosts() {
+    loadingPosts.value = true;
+    const { data } = await axios.get("/api/posts");
+    loadingPosts.value = false;
+    posts.value = data.reverse();
+  }
+
+  fetchPosts();
+
+  function updateFilteredPosts(filteredPosts: []) {
+    posts.value = filteredPosts;
+  };
 
 </script>
 

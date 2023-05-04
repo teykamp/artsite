@@ -57,8 +57,8 @@
   }>();
 
   const dateDisplay = computed(() => {
-  const date = new Date(props.post.date);
-  return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`;
-});
+    const date = new Date(props.post.date);
+    return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`;
+  });
 
 </script>

@@ -1,15 +1,11 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <SearchBar
-      v-model="search"
-    />
+    <SearchBar v-model="search" />
     <div
       v-for="(post, index) in filteredPosts"
       :key="post._id"
     >
-      <MainPostDisplay
-        :post="post"
-      />
+      <MainPostDisplay :post="post" />
       <v-divider
         v-if="index + 1 < filteredPosts.length"
         :key="`divider-${index}`"
@@ -33,41 +29,38 @@
     </div>
     <div
       v-else-if="filteredPosts.length === 0"
-      style="color: red;"
+      style="color: red"
     >
-      <h2>
-        No posts yet
-      </h2>
+      <h2>No posts yet</h2>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import axios from "axios";
-  import { ref } from "vue";
-  import MainPostDisplay from "../components/MainPostDisplay.vue";
-  import SearchBar from "../components/SearchBar.vue";
-  import { useQueryFilter } from "../composables/useQueryFilter";
+import axios from "axios";
+import { ref } from "vue";
+import MainPostDisplay from "../components/MainPostDisplay.vue";
+import SearchBar from "../components/SearchBar.vue";
+import { useQueryFilter } from "../composables/useQueryFilter";
 
-  const posts = ref([]);
-  const loadingPosts = ref(false);
+const posts = ref([]);
+const loadingPosts = ref(false);
 
-  const search = ref("");
-  const { filteredPosts } = useQueryFilter(search, posts);
+const search = ref("");
+const { filteredPosts } = useQueryFilter(search, posts);
 
-  async function fetchPosts() {
-    loadingPosts.value = true;
-    const { data } = await axios.get("/api/posts");
-    loadingPosts.value = false;
-    posts.value = data.reverse();
-  }
+async function fetchPosts() {
+  loadingPosts.value = true;
+  const { data } = await axios.get("/api/posts");
+  loadingPosts.value = false;
+  posts.value = data.reverse();
+}
 
-  fetchPosts();
+fetchPosts();
 
-  function updateFilteredPosts(filteredPosts: []) {
-    posts.value = filteredPosts;
-  };
-
+function updateFilteredPosts(filteredPosts: []) {
+  posts.value = filteredPosts;
+}
 </script>
 
 <style scoped>

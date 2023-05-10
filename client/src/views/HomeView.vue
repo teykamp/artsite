@@ -24,14 +24,30 @@
         ></v-progress-circular>
       </v-row>
       <v-row class="pa-6">
-        <h3>Loading Posts...</h3>
+        <Alert 
+          type="info"
+          title="Loading Posts..."
+          msg=""
+        />
       </v-row>
     </div>
     <div
-      v-else-if="filteredPosts.length === 0"
-      style="color: red"
+      v-else-if="posts.length === 0"
     >
-      <h2>No posts yet</h2>
+      <Alert 
+        type="error"
+        title="No Posts Yet"
+        msg=""
+      />
+    </div>
+    <div
+      v-else-if="filteredPosts.length === 0"
+    >
+      <Alert 
+        type="warning"
+        title="No Posts Found"
+        :msg="'\'' + search + '\'' + ' returned no results.'"
+      />
     </div>
   </div>
 </template>
@@ -41,6 +57,7 @@ import axios from "axios";
 import { ref } from "vue";
 import MainPostDisplay from "../components/MainPostDisplay.vue";
 import SearchBar from "../components/SearchBar.vue";
+import Alert from "../components/Alert.vue"
 import { useQueryFilter } from "../composables/useQueryFilter";
 
 const posts = ref([]);

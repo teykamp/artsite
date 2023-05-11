@@ -2,7 +2,7 @@
   <div class="d-flex flex-column justify-center align-center">
     <div style="width: 50%">
       <TagInterface 
-        @add-tag="fetchTags"
+        @update-tag="fetchTags"
       />
     </div>
     <h1 class="mt-4">

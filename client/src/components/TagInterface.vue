@@ -57,7 +57,7 @@ type Tag = {
 const tags = ref<Tag[]>([]);
 
 const emit = defineEmits<{
-  (e: 'addTag'): void
+  (e: 'updateTag'): void
 }>()
 
 const colors = [
@@ -87,12 +87,13 @@ const addTag = async () => {
     color: '',
   };
   fetchTags();
-  emit('addTag');
+  emit('updateTag');
 };
 
 const deleteTag = async (id: string) => {
   await axios.delete(`${tagEndpoint}/${id}`);
   tags.value = tags.value.filter((tag) => tag._id !== id);
+  emit('updateTag');
 };
 
 const fetchTags = async () => {

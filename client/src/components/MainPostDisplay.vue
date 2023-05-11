@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-card
-      width="1000"
       class="mb-6"
       elevation="0"
+      :max-width="1000"
     >
       <v-card-title>
         {{ post.title }}
@@ -19,7 +19,9 @@
         <img
           v-if="post.images"
           :src="post.images[0]"
-          style="max-width: 1000px"
+          :max-width="1000"
+          :min-width="500"
+          style="width: 80vw; min-width: 300px"
         />
       </div>
       <v-card-text

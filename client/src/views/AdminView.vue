@@ -1,7 +1,9 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
     <div style="width: 50%">
-      <TagInterface />
+      <TagInterface 
+        @add-tag="fetchTags"
+      />
     </div>
     <h1 class="mt-4">
       Make A Post

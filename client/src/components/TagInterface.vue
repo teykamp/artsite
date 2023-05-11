@@ -56,6 +56,10 @@ type Tag = {
 
 const tags = ref<Tag[]>([]);
 
+const emit = defineEmits<{
+  (e: 'addTag'): void
+}>()
+
 const colors = [
   'grey',
   'red',
@@ -83,6 +87,7 @@ const addTag = async () => {
     color: '',
   };
   fetchTags();
+  emit('addTag');
 };
 
 const deleteTag = async (id: string) => {

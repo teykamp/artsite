@@ -4,6 +4,7 @@
         :type="type"
         :title="title"
         :text="msg"
+        style="max-width: 50vh; min-width: 400px;"
       ></v-alert>
     </div>
 </template>

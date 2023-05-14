@@ -1,6 +1,13 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <SearchBar v-model="search" />
+    
+    <div class="my-6"></div>
+    <SearchBar
+     v-if="!loadingPosts" 
+      v-model="search" 
+    />
+    <div class="my-6"></div>
+
     <div
       v-for="(post, index) in filteredPosts"
       :key="post._id"
@@ -9,7 +16,7 @@
       <v-divider
         v-if="index + 1 < filteredPosts.length"
         :key="`divider-${index}`"
-        class="mt-3 mb-3"
+        class="my-3"
       ></v-divider>
     </div>
 
@@ -75,25 +82,7 @@ async function fetchPosts() {
 
 fetchPosts();
 
-function updateFilteredPosts(filteredPosts: []) {
+function updateFilteredPosts(filteredPosts: []): void {
   posts.value = filteredPosts;
 }
 </script>
-
-<style scoped>
-.post {
-  border: 1px solid black;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.1);
-  width: 30%;
-}
-
-img.thumbnail {
-  width: 100%;
-  height: 175px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-</style>

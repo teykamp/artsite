@@ -1,46 +1,46 @@
 <template>
   <div>
-    <v-card
-      class="mb-6"
-      elevation="0"
-      :max-width="1000"
-    >
-      <v-card-title>
-        {{ post.title }}
-      </v-card-title>
-      <v-card-subtitle
+    <v-layout>
+      <v-card
         class="mb-2"
+        elevation="0"
+        style="width: 90vw; min-width: 400px; max-width: 1920px;"
       >
-        Posted on {{ dateDisplay }}
-      </v-card-subtitle>
-      <div
-        class="d-flex flex-row align-center justify-center"
-      >
-        <img
-          v-if="post.images"
-          :src="post.images[0]"
-          :max-width="1000"
-          :min-width="500"
-          style="width: 80vw; min-width: 300px"
-        />
-      </div>
-      <v-card-text
-        v-if="post.body"
-      >
-        {{ post.body }}
-      </v-card-text>
-      <v-card-actions
-        v-if="post.tagData"
-      >
-        <v-chip
-          v-for="tag in post.tagData"
-          :key="tag"
-          label
-          size="x-small"
-          class="mr-1"
-        >{{ tag }}</v-chip>
-      </v-card-actions>
-    </v-card>
+        <v-card-title>
+          {{ post.title }}
+        </v-card-title>
+        <v-card-subtitle
+          class="mb-2"
+        >
+          Posted on {{ dateDisplay }}
+        </v-card-subtitle>
+        <div
+          class="d-flex flex-row align-center justify-center"
+        >
+          <img
+            v-if="post.images"
+            :src="post.images[0]"
+            style="width: 85vw; min-width: 400px; max-width: 1920px;"
+          />
+        </div>
+        <v-card-text
+          v-if="post.body"
+        >
+          {{ post.body }}
+        </v-card-text>
+        <v-card-actions
+          v-if="post.tagData.length !== 0"
+        >
+          <v-chip
+            v-for="tag in post.tagData"
+            :key="tag"
+            label
+            size="x-small"
+            class="mr-1"
+          >{{ tag }}</v-chip>
+        </v-card-actions>
+      </v-card>
+    </v-layout>
   </div>
 </template>
 
@@ -62,5 +62,4 @@
     const date = new Date(props.post.date);
     return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`;
   });
-
 </script>

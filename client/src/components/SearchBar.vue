@@ -2,10 +2,14 @@
   <div>
     <v-text-field 
       v-model="userSearch" 
-      prepend-inner-icon="mdi-magnify" 
+      prepend-inner-icon="mdi-magnify"
+      append-inner-icon="mdi-close-circle" 
       placeholder="Search..." 
-      class="ma-3"
-      style="width: 400px"></v-text-field>
+      class="mt-3"
+      style="width:60vw; min-width:300px; max-width: 500px; margin-bottom: -20px"
+      @click:append-inner="clearSearch"
+    ></v-text-field>
+    <div class="mb-3"></div>  
   </div>
 </template>
 
@@ -26,4 +30,8 @@ const userSearch = computed({
     emit('update:modelValue', v);
   }
 });
+
+function clearSearch(): void {
+  userSearch.value = '';
+}
 </script>

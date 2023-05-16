@@ -23,9 +23,10 @@
         prepend-icon="mdi-text"
         label="body"
       />
+      <!-- tag map needs color -->
       <v-combobox
         v-model="addPost.tagData"
-        :items="tags.map(tag => tag.name)"
+        :items="tags.map(tag => tag.name)" 
         prepend-icon="mdi-tag"
         label="tags"
         multiple

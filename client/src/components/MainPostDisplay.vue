@@ -28,9 +28,20 @@
         >
           {{ post.body }}
         </v-card-text>
-        <v-card-actions
-          v-if="post.tagData.length !== 0"
-        >
+        <v-card-actions>
+          <v-btn
+            :icon="show ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
+            @click="show = !show"
+          ></v-btn>
+          <v-spacer></v-spacer>
+            <RatingDisplay>
+              <v-icon 
+                icon="mdi-thumbs-up-down" 
+                size="x-large" 
+              />
+            </RatingDisplay>
+          <v-spacer></v-spacer>
+
           <v-chip
             v-for="tag in post.tagData"
             :key="tag"
@@ -39,13 +50,25 @@
             class="mr-1"
           >{{ tag }}</v-chip>
         </v-card-actions>
+        <v-expand-transition>
+          <div v-show="show">
+            
+            <CommentBox />
+            
+          </div>
+        </v-expand-transition>
+        <!-- comments go here -->
       </v-card>
     </v-layout>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { computed } from 'vue';
+  import { ref, computed } from 'vue';
+  import CommentBox from './CommentBox.vue'
+  import RatingDisplay from './RatingDisplay.vue'
+
+  const show = ref(false);
 
   const props = defineProps<{
     post: {

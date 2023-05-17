@@ -29,26 +29,31 @@
           {{ post.body }}
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            :icon="show ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
-            @click="show = !show"
-          ></v-btn>
-          <v-spacer></v-spacer>
-            <RatingDisplay>
-              <v-icon 
-                icon="mdi-thumbs-up-down" 
-                size="x-large" 
-              />
-            </RatingDisplay>
-          <v-spacer></v-spacer>
-
-          <v-chip
-            v-for="tag in post.tagData"
-            :key="tag"
-            label
-            size="x-small"
-            class="mr-1"
-          >{{ tag }}</v-chip>
+            <v-row class="d-flex justify-space-around">
+              <!-- left -->
+              <v-col>
+                <v-btn
+                  :icon="show ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
+                  @click="show = !show"
+                ></v-btn> 
+              </v-col>
+              <!-- middle -->
+              <v-col cols="6">
+                  <RatingDisplay/>
+              </v-col>
+              <v-col>
+                <!-- right -->
+                <v-sheet class="float-right">
+                  <v-chip
+                    v-for="tag in post.tagData"
+                    :key="tag"
+                    label
+                    size="x-small"
+                    class="mr-1"
+                  >{{ tag }}</v-chip>
+                </v-sheet>
+              </v-col>
+            </v-row>
         </v-card-actions>
         <v-expand-transition>
           <div v-show="show">

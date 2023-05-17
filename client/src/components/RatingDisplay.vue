@@ -2,7 +2,7 @@
   <div>
     <v-row class=" d-flex flex-row">
       <v-col>
-        <v-btn icon="mdi-thumb-up"></v-btn>
+        <v-btn icon="mdi-thumb-down"></v-btn>
       </v-col>
       <v-col>
         <div v-if="ratingValue">  
@@ -28,7 +28,7 @@
         </v-sheet>
       </v-col>
       <v-col>
-        <v-btn icon="mdi-thumb-down"></v-btn>
+        <v-btn icon="mdi-thumb-up"></v-btn>
       </v-col>
     </v-row>
       <div class="text-overline d-flex align-center justify-center mb-6">
@@ -40,5 +40,5 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const ratingValue = ref(89);
+const ratingValue = ref(20);
 </script>

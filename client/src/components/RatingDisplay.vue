@@ -5,7 +5,7 @@
         <v-btn 
           :icon="'mdi-thumb-down'+ (userLikeValue === -1 ? '' : '-outline')" 
           class="float-right"
-          @click="userLikeValue = -1"
+          @click="userLikeValue = (userLikeValue === -1 ? 0 : -1)"
         ></v-btn>
       </v-col>
       <v-col>
@@ -35,7 +35,7 @@
       <v-col>
         <v-btn 
           :icon="'mdi-thumb-up'+ (userLikeValue === 1 ? '' : '-outline')"
-          @click="userLikeValue = 1"
+          @click="userLikeValue = (userLikeValue === 1 ? 0 : 1)"
         ></v-btn>
       </v-col>
     </v-row>
@@ -46,6 +46,6 @@
 import { ref } from "vue";
 
 const ratingValue = ref(56);
-var userLikeValue = 0;
+const userLikeValue = ref(0);
 
 </script>

@@ -3,7 +3,7 @@
     <v-text-field 
       v-model="userSearch" 
       prepend-inner-icon="mdi-magnify"
-      append-inner-icon="mdi-close-circle" 
+      :append-inner-icon="userSearch ? 'mdi-close-circle' : ''" 
       placeholder="Search..." 
       class="mt-9"
       @click:append-inner="clearSearch"

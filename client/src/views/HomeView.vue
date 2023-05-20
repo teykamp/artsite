@@ -2,8 +2,8 @@
   <div>
     <v-app-bar :elevation="2">
       <div>
-        <router-link to="/"><v-btn text>Home</v-btn></router-link>
-        <router-link to="/about"><v-btn text>About</v-btn></router-link>
+        <v-btn text @click="$router.push('/')">Home</v-btn>
+        <v-btn text @click="$router.push('/about')">About</v-btn>
         
       </div>
       <template v-slot:append>
@@ -13,13 +13,13 @@
         <v-btn icon="mdi-sort"></v-btn>
       </template>
       <v-spacer></v-spacer>
-      <v-expand-transition v-show="showSearchBar">
-          <v-col style="min-width: 140px">
+      <v-slide-x-reverse-transition v-show="showSearchBar">
+          <v-col style="min-width: 140px; max-width: 400px;">
             <SearchBar
               v-model="search"
             />
           </v-col>
-      </v-expand-transition>
+      </v-slide-x-reverse-transition>
     </v-app-bar>
 
     <div class="d-flex flex-column justify-center align-center mt-10">
@@ -86,6 +86,7 @@ import MainPostDisplay from "../components/MainPostDisplay.vue";
 import SearchBar from "../components/SearchBar.vue";
 import Alert from "../components/Alert.vue"
 import { useQueryFilter } from "../composables/useQueryFilter";
+import router from "../router";
 
 const posts = ref([]);
 const loadingPosts = ref(false);
@@ -106,4 +107,5 @@ fetchPosts();
 function updateFilteredPosts(filteredPosts: []): void {
   posts.value = filteredPosts;
 }
+
 </script>

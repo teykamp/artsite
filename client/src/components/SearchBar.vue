@@ -5,8 +5,7 @@
       prepend-inner-icon="mdi-magnify"
       append-inner-icon="mdi-close-circle" 
       placeholder="Search..." 
-      class="mt-3"
-      style="width:60vw; min-width:300px; max-width: 500px; margin-bottom: -20px"
+      class="mt-9"
       @click:append-inner="clearSearch"
     ></v-text-field>
     <div class="mb-3"></div>  
@@ -35,3 +34,5 @@ function clearSearch(): void {
   userSearch.value = '';
 }
 </script>
+
+<!-- style="width:60vw; min-width:300px; max-width: 500px; margin-bottom: -20px" -->

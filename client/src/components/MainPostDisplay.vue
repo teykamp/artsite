@@ -38,12 +38,15 @@
                 ></v-btn> 
               </v-col>
               <!-- middle -->
-              <v-col cols="6">
+              <v-col cols="8">
                   <RatingDisplay/>
               </v-col>
               <v-col>
                 <!-- right -->
-                <v-sheet class="float-right">
+                <v-sheet
+                  style="min-width: 130px;"
+                  class="sm-and-up-float-right xs-float-left"
+                >
                   <v-chip
                     v-for="tag in post.tagData"
                     :key="tag"

@@ -10,20 +10,19 @@
       </v-col>
       <v-col>
         <div v-if="ratingValue">  
-          <v-tooltip 
-            activator="child"  
-            :text="ratingValue + '% of people like this post.'"
-          >
-            <template v-slot:activator="on">
+        
               <v-progress-linear
                 :color="ratingValue >= 50 ? 'success' : 'error'" 
                 :model-value="ratingValue"
-                v-on="on"
                 class="mt-5"
               >
+              <v-tooltip 
+                activator="child"  
+                :text="ratingValue + '% of people like this post.'"
+                bottom
+              >
+             </v-tooltip>
               </v-progress-linear>
-            </template>
-          </v-tooltip>
         </div>
         <v-sheet 
           v-else

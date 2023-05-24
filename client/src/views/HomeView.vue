@@ -18,26 +18,32 @@
                 v-bind="props"
               ></v-btn>
             </template>
-            <v-list>
+            <v-list close-on-content-click="false">
               <v-list-item>
                 <v-list-item-title>Sort By:</v-list-item-title>
               </v-list-item>
-              <v-list-item>
-                <div class="d-inline-block">
-                  <v-icon :color="sortKey === SORTBY.likes ? 'black': 'white'">{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon>
-                  <v-btn variant="text" class="mr-2" @click="sortKey = SORTBY.likes">likes</v-btn>
+              <v-list-item @click.stop.prevent="sortKey === SORTBY.likes ? sortAscending = !sortAscending : sortKey = SORTBY.likes">
+                <div class="d-inline-block noselect text-overline">
+                  <v-icon 
+                    :color="sortKey === SORTBY.likes ? 'black': 'white'"
+                  >{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon>
+                  likes
                 </div>
               </v-list-item>
-              <v-list-item>
-                <div class="d-inline-block">
-                  <v-icon :color="sortKey === SORTBY.comments ? 'black': 'white'">{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon> 
-                  <v-btn variant="text" class="mr-2" @click="sortKey = SORTBY.comments">comments</v-btn>
+              <v-list-item @click.stop.prevent="sortKey === SORTBY.comments ? sortAscending = !sortAscending : sortKey = SORTBY.comments">
+                <div class="d-inline-block noselect text-overline">
+                  <v-icon 
+                    :color="sortKey === SORTBY.comments ? 'black': 'white'"
+                  >{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon> 
+                  comments
                 </div>
               </v-list-item>
-              <v-list-item>
-                <div class="d-inline-block">
-                  <v-icon :color="sortKey === SORTBY.date ? 'black': 'white'">{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon>
-                  <v-btn variant="text" class="mr-2" @click="sortKey = SORTBY.date">date</v-btn>
+              <v-list-item @click.stop.prevent="sortKey === SORTBY.date ? sortAscending = !sortAscending : sortKey = SORTBY.date">
+                <div class="d-inline-block noselect text-overline">
+                  <v-icon 
+                    :color="sortKey === SORTBY.date ? 'black': 'white'"
+                  >{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon>
+                  date
                 </div>
               </v-list-item>
             </v-list>
@@ -153,3 +159,14 @@ fetchPosts();
 // }
 
 </script>
+
+<style scoped>
+.noselect {
+  -webkit-touch-callout: none; 
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none; 
+}
+</style>

@@ -4,47 +4,30 @@
       <div>
         <v-btn text @click="$router.push('/')">Home</v-btn>
         <v-btn text @click="$router.push('/about')">About</v-btn>
-        
       </div>
       <template v-slot:append>
 
         <v-btn icon="mdi-magnify" @click="showSearchBar = !showSearchBar"></v-btn>
 
         <div class="text-center">
-          <v-menu open-on-hover>
+          <v-menu open-on-hover :close-on-content-click="false" width="100">
             <template v-slot:activator="{ props }">
               <v-btn
                 icon="mdi-sort"
                 v-bind="props"
               ></v-btn>
             </template>
-            <v-list close-on-content-click="false">
-              <v-list-item>
-                <v-list-item-title>Sort By:</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click.stop.prevent="sortKey === SORTBY.likes ? sortAscending = !sortAscending : sortKey = SORTBY.likes">
-                <div class="d-inline-block noselect text-overline">
-                  <v-icon 
-                    :color="sortKey === SORTBY.likes ? 'black': 'white'"
-                  >{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon>
-                  likes
-                </div>
-              </v-list-item>
-              <v-list-item @click.stop.prevent="sortKey === SORTBY.comments ? sortAscending = !sortAscending : sortKey = SORTBY.comments">
-                <div class="d-inline-block noselect text-overline">
-                  <v-icon 
-                    :color="sortKey === SORTBY.comments ? 'black': 'white'"
-                  >{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon> 
-                  comments
-                </div>
-              </v-list-item>
-              <v-list-item @click.stop.prevent="sortKey === SORTBY.date ? sortAscending = !sortAscending : sortKey = SORTBY.date">
-                <div class="d-inline-block noselect text-overline">
-                  <v-icon 
-                    :color="sortKey === SORTBY.date ? 'black': 'white'"
-                  >{{ sortAscending ? 'mdi-arrow-up' : 'mdi-arrow-down' }}</v-icon>
-                  date
-                </div>
+            <v-list>
+              <v-list-item 
+                v-for="_, key in sortOptions" 
+                :key="key" class="text-overline noselect" 
+                @click="setKey(key)"
+              >
+              <v-icon
+                :style="key === activeSortKey ? '' : 'opacity: 0;'"
+                :icon="ascending ? 'mdi-arrow-up': 'mdi-arrow-down'"
+              ></v-icon>
+                {{ key }}
               </v-list-item>
             </v-list>
           </v-menu>
@@ -127,23 +110,35 @@ import MainPostDisplay from "../components/MainPostDisplay.vue";
 import SearchBar from "../components/SearchBar.vue";
 import Alert from "../components/Alert.vue"
 import { useQueryFilter } from "../composables/useQueryFilter";
-import { sortPosts } from "../composables/sortPosts"
-
-const SORTBY = {
-  likes: 'likes',
-  comments: 'comments',
-  date: 'date'
-}
-const sortAscending = ref(true);
+import { sortItems } from "../composables/sortItems";
+import type { Post } from "../types";
 
 const posts = ref([]);
 const loadingPosts = ref(false);
 
 const search = ref("");
-const { filteredPosts: searchedPosts } = useQueryFilter(search, posts);
-const { sortedPosts: displayPosts, sortKey } = sortPosts(searchedPosts, sortAscending.value);
-const showSearchBar = ref(false);
+const { filteredPosts: displayPosts } = useQueryFilter(search, posts);
+const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts, {
+    date: (a, b) => {
+      const dateA = new Date(a.date);
+		  const dateB = new Date(b.date);
+		  return dateA.getTime() - dateB.getTime();
+		},
+    title: (a, b) => {
+      return a.title.localeCompare(b.title)
+    },
 
+    "First Tag": (a, b) => {
+      if (!a.tagData) return -1
+      if (!b.tagData) return 1
+      if (!a.tagData.length) return -1
+      if (!b.tagData.length) return -1
+
+      return a.tagData[0].localeCompare(b.tagData[0])
+    } 
+})
+
+const showSearchBar = ref(false);
 
 async function fetchPosts() {
   loadingPosts.value = true;
@@ -153,10 +148,6 @@ async function fetchPosts() {
 }
 
 fetchPosts();
-
-// function updateFilteredPosts(filteredPosts: []): void {
-//   posts.value = filteredPosts;
-// }
 
 </script>
 

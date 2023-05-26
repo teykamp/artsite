@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, toRefs } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps<{
   post: {

@@ -12,7 +12,7 @@
         <v-card-subtitle
           class="mb-2"
         >
-          Posted on {{ dateDisplay }}
+          Posted on {{ dateDisplay<Post>(post) }}
         </v-card-subtitle>
         <div
           class="d-flex flex-row align-center justify-center"
@@ -72,9 +72,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
+  import { ref } from 'vue';
   import CommentBox from './CommentBox.vue'
   import RatingDisplay from './RatingDisplay.vue'
+  import { dateDisplay } from '../composables/dateDisplay'
+  import type { Post } from "../types";
+
 
   const show = ref(false);
 
@@ -88,9 +91,4 @@
       tagData: string;
     };
   }>();
-
-  const dateDisplay = computed(() => {
-    const date = new Date(props.post.date);
-    return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`;
-  });
 </script>

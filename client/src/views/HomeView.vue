@@ -128,7 +128,7 @@ const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts,
       return a.title.localeCompare(b.title)
     },
 
-    "First Tag": (a, b) => {
+    "1st Tag": (a, b) => {
       if (!a.tagData) return -1
       if (!b.tagData) return 1
       if (!a.tagData.length) return -1

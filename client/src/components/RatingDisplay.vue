@@ -9,7 +9,7 @@
         ></v-btn>
       </v-col>
       <v-col>
-        <div v-if="ratingValue">  
+        <div v-if="props.interactions.likes || props.interactions.dislikes || userLikeValue">  
         
               <v-progress-linear
                 :color="ratingValue >= 50 ? 'success' : 'error'" 
@@ -57,9 +57,8 @@ const props = defineProps<{
 
 const userLikeValue = ref(0);
 const ratingValue = computed(() => {
-  return (props.interactions.likes - props.interactions.dislikes + userLikeValue.value) / 
-         (props.interactions.likes + props.interactions.dislikes + userLikeValue.value ? 1 : 0) * 100
-
+  return (props.interactions.likes + userLikeValue.value) / (props.interactions.likes + props.interactions.dislikes + (userLikeValue.value ? 1 : 0)) * 100
+  // / (props.interactions.likes + props.interactions.dislikes + userLikeValue.value ? 1 : 0) * 100
 });
 
 function handleLike() {

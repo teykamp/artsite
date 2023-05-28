@@ -53,13 +53,13 @@ const props = defineProps<{
   addDislike: () => void,
   removeLike: () => void,
   removeDislike: () => void,
-}>();
+}>()
 
 const userLikeValue = ref(0);
 const ratingValue = computed(() => {
   const v = props.interactions.likes + userLikeValue.value
   return (v < 0 ? 0 : v) / (props.interactions.likes + props.interactions.dislikes + (userLikeValue.value ? 1 : 0)) * 100
-});
+})
 
 function handleLike() {
   if (userLikeValue.value === 1) {
@@ -70,7 +70,7 @@ function handleLike() {
   else {
     if (userLikeValue.value === -1) props.removeDislike()
       
-    userLikeValue.value = 1;
+    userLikeValue.value = 1
     props.addLike()
   }
 }
@@ -84,7 +84,7 @@ function handleDislike() {
   else {
     if (userLikeValue.value === 1) props.removeLike()
 
-    userLikeValue.value = -1;
+    userLikeValue.value = -1
     props.addDislike()
   }
 }

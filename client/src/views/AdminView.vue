@@ -109,8 +109,8 @@ import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import TagInterface from "../components/TagInterface.vue";
 import { ref, watch, computed } from "vue";
 
-const posts = ref([]);
-const loadingPosts = ref(false);
+const posts = ref([])
+const loadingPosts = ref(false)
 
 const addPost = ref({
   title: "",
@@ -126,26 +126,26 @@ const disablePostButton = computed(() => {
 
 async function encodeImage() {
   for (let i = 0; i < addPost.value.images.length; i++) {
-    const img = addPost.value.images[i];
+    const img = addPost.value.images[i]
     if (!img) {
-      addPost.value.imageEncodings[i] = "";
-      continue;
+      addPost.value.imageEncodings[i] = ""
+      continue
     }
-    addPost.value.imageEncodings[i] = await compressBase64Image(img);
+    addPost.value.imageEncodings[i] = await compressBase64Image(img)
   }
 }
 
 watch(() => addPost.value.images, (newVal) => {
   if (newVal.length === 0) {
-    addPost.value.imageEncodings = [];
+    addPost.value.imageEncodings = []
   }
 })
 
 async function fetchPosts() {
-  loadingPosts.value = true;
-  const { data } = await axios.get("/api/posts");
-  loadingPosts.value = false;
-  posts.value = data.reverse();
+  loadingPosts.value = true
+  const { data } = await axios.get("/api/posts")
+  loadingPosts.value = false
+  posts.value = data.reverse()
 }
 
 async function uploadPost() {
@@ -158,12 +158,12 @@ async function uploadPost() {
   };
 
   const size = new TextEncoder().encode(JSON.stringify(newPost)).length
-  const kiloBytes = size / 1024;
+  const kiloBytes = size / 1024
   // const megaBytes = kiloBytes / 1024;
-  console.log(kiloBytes, "KB");
+  console.log(kiloBytes, "KB")
 
-  await axios.post("/api/posts", newPost);
-  posts.value.unshift(newPost);
+  await axios.post("/api/posts", newPost)
+  posts.value.unshift(newPost)
   addPost.value = {
     title: "",
     body: "",
@@ -176,13 +176,13 @@ async function uploadPost() {
 fetchPosts();
 
 async function deletePosts() {
-  await axios.delete("/api/posts");
-  posts.value = [];
+  await axios.delete("/api/posts")
+  posts.value = []
 }
 
 async function deletePost(id: string) {
-  await axios.delete(`/api/posts/${id}`);
-  posts.value = posts.value.filter((post) => post._id !== id);
+  await axios.delete(`/api/posts/${id}`)
+  posts.value = posts.value.filter((post) => post._id !== id)
 }
 
 async function compressBase64Image(image: string[]) {
@@ -193,19 +193,19 @@ async function compressBase64Image(image: string[]) {
       quality: .1, // the quality of the image, max is 1,
     })
     return compressedImage.map((image) => {
-      return image.prefix + image.data;
-    })[0] as string;
+      return image.prefix + image.data
+    })[0] as string
   } catch (error) {
     console.warn(error)
   }
 }
 
-const tags = ref([]);
+const tags = ref([])
 const fetchTags = async () => {
-  const { data } = await axios.get("/api/posts/tags");
-  tags.value = data;
+  const { data } = await axios.get("/api/posts/tags")
+  tags.value = data
 }
-fetchTags();
+fetchTags()
 </script>
 
 <style scoped>

@@ -15,6 +15,6 @@ const props = defineProps<{
   type: string,
   title: string,
   msg: string,
-}>();
+}>()
 
 </script>

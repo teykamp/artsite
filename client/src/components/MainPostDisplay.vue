@@ -82,10 +82,9 @@
   import CommentBox from './CommentBox.vue'
   import RatingDisplay from './RatingDisplay.vue'
   import { dateDisplay } from '../composables/dateDisplay'
-  import type { Post } from "../types";
 
 
-  const show = ref(false);
+  const show = ref(false)
 
   const props = defineProps<{
     post: {
@@ -99,8 +98,8 @@
         likes: number,
         dislikes: number,
       },
-    };
-  }>();
+    }
+  }>()
 
 async function addLike() {
   await fetch('/api/posts/likes/increment/' + props.post._id)

@@ -104,25 +104,25 @@
 </template>
 
 <script setup lang="ts">
-import axios from "axios";
-import { ref } from "vue";
-import MainPostDisplay from "../components/MainPostDisplay.vue";
-import SearchBar from "../components/SearchBar.vue";
+import axios from "axios"
+import { ref } from "vue"
+import MainPostDisplay from "../components/MainPostDisplay.vue"
+import SearchBar from "../components/SearchBar.vue"
 import Alert from "../components/Alert.vue"
-import { useQueryFilter } from "../composables/useQueryFilter";
-import { sortItems } from "../composables/sortItems";
-import type { Post } from "../types";
+import { useQueryFilter } from "../composables/useQueryFilter"
+import { sortItems } from "../composables/sortItems"
+import type { Post } from "../types"
 
-const posts = ref([]);
-const loadingPosts = ref(false);
+const posts = ref([])
+const loadingPosts = ref(false)
 
-const search = ref("");
-const { filteredPosts: displayPosts } = useQueryFilter(search, posts);
+const search = ref("")
+const { filteredPosts: displayPosts } = useQueryFilter(search, posts)
 const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts, {
     date: (a, b) => {
     // fix orientation
-      const dateA = new Date(a.date);
-		  const dateB = new Date(b.date);
+      const dateA = new Date(a.date)
+		  const dateB = new Date(b.date)
 		  return dateA.getTime() - dateB.getTime();
 		},
     title: (a, b) => {
@@ -139,16 +139,16 @@ const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts,
     } 
 })
 
-const showSearchBar = ref(false);
+const showSearchBar = ref(false)
 
 async function fetchPosts() {
-  loadingPosts.value = true;
-  const { data } = await axios.get("/api/posts");
-  loadingPosts.value = false;
-  posts.value = data.reverse();
+  loadingPosts.value = true
+  const { data } = await axios.get("/api/posts")
+  loadingPosts.value = false
+  posts.value = data.reverse()
 }
 
-fetchPosts();
+fetchPosts()
 
 </script>
 

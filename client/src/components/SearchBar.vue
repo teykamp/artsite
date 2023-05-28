@@ -17,21 +17,21 @@ import { computed } from "vue";
 
 const props = defineProps<{
   modelValue: string,
-}>();
+}>()
 
 const emit = defineEmits([
   'update:modelValue',
-]);
+])
 
 const userSearch = computed({
   get: () => props.modelValue,
   set: (v) => {
-    emit('update:modelValue', v);
+    emit('update:modelValue', v)
   }
-});
+})
 
 function clearSearch(): void {
-  userSearch.value = '';
+  userSearch.value = ''
 }
 </script>
 

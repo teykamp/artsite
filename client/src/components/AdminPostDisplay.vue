@@ -58,19 +58,19 @@ const props = defineProps<{
     date: string;
     images: string[];
     tagData: string;
-  };
-}>();
+  }
+}>()
 
 const dateDisplay = computed(() => {
-  const date = new Date(props.post.date);
-  return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`;
-});
+  const date = new Date(props.post.date)
+  return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`
+})
 
 const emits = defineEmits<{
-  delete: () => void;
-}>();
+  delete: () => void
+}>()
 
-const showBody = ref(false);
+const showBody = ref(false)
 </script>
 
 <style scoped>

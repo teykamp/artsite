@@ -57,8 +57,8 @@ const props = defineProps<{
 
 const userLikeValue = ref(0);
 const ratingValue = computed(() => {
-  return (props.interactions.likes + userLikeValue.value) / (props.interactions.likes + props.interactions.dislikes + (userLikeValue.value ? 1 : 0)) * 100
-  // / (props.interactions.likes + props.interactions.dislikes + userLikeValue.value ? 1 : 0) * 100
+  const v = props.interactions.likes + userLikeValue.value
+  return (v < 0 ? 0 : v) / (props.interactions.likes + props.interactions.dislikes + (userLikeValue.value ? 1 : 0)) * 100
 });
 
 function handleLike() {

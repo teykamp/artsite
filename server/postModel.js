@@ -22,6 +22,20 @@ const postSchema = mongoose.Schema({
     type: Array,
     required: false
   },
+  interactions: {
+    type: {
+      likes: {
+        type: Number,
+      },
+      dislikes: {
+        type: Number,
+      },
+    },
+    default: {
+      likes: 0,
+      dislikes: 0,
+    }
+  },
 });
 
 module.exports = mongoose.model('Post', postSchema);

@@ -5,7 +5,7 @@
         <v-btn 
           :icon="'mdi-thumb-down'+ (userLikeValue === -1 ? '' : '-outline')" 
           class="float-right"
-          @click="userLikeValue = (userLikeValue === -1 ? 0 : -1)"
+          @click="addDislike"
         ></v-btn>
       </v-col>
       <v-col>
@@ -34,7 +34,7 @@
       <v-col>
         <v-btn 
           :icon="'mdi-thumb-up'+ (userLikeValue === 1 ? '' : '-outline')"
-          @click="userLikeValue = (userLikeValue === 1 ? 0 : 1)"
+          @click="addLike"
         ></v-btn>
       </v-col>
     </v-row>
@@ -42,9 +42,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-const ratingValue = ref(56);
+const props = defineProps<{
+  interactions: {
+    likes: number,
+    dislikes: number,
+  },
+  addLike: () => void,
+  addDislike: () => void,
+}>();
+
 const userLikeValue = ref(0);
+const ratingValue = computed(() => {
+  return (props.interactions.likes - props.interactions.dislikes + userLikeValue.value) / 
+         (props.interactions.likes + props.interactions.dislikes + userLikeValue.value) * 100
+
+});
+
+// userLikeValue.value = (userLikeValue.value === 1 ? 0 : 1)
+// userLikeValue = (userLikeValue === -1 ? 0 : -1)
 
 </script>

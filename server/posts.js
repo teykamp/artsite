@@ -10,10 +10,14 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  console.log('posting')
   const newPost = new Post({ ...req.body });
   newPost.save()
     .then(post => res.json(post))
-    .catch(err => res.status(404).json(err));
+    .catch(err => {
+      console.log(err)
+      res.status(404).json(err)
+    });
 });
 
 router.delete('/:id', async (req, res) => {
@@ -47,5 +51,27 @@ router.delete('/tags/:id', async (req, res) => {
     .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));
 });
+
+// Interactions
+router.get('/likes/increment/:id', async (req, res) => {
+  await Post.findByIdAndUpdate(req.params.id, { $inc: {'interactions.likes': 1 }})
+  res.json('likes incremented on post' + req.params.id)
+})
+
+router.get('/likes/decrement/:id', async (req, res) => {
+  await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.likes': -1 } })
+  res.json('likes decremented on post' + req.params.id)
+})
+
+router.get('/dislikes/increment/:id', async (req, res) => {
+  await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.dislikes': 1 } })
+  res.json('dislikes incremented on post' + req.params.id)
+})
+
+router.get('/dislikes/decrement/:id', async (req, res) => {
+  await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.dislikes': -1 } })
+  res.json('dislikes decremented on post' + req.params.id)
+})
+
 
 module.exports = router;

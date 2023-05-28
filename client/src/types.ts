@@ -5,4 +5,8 @@ export type Post = {
     date: Date,
     images?: string[],
     tagData?: string[]
+    interactions: {
+        likes: number,
+        dislikes: number
+    }
 }

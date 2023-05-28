@@ -39,7 +39,11 @@
               </v-col>
               <!-- middle -->
               <v-col cols="8">
-                  <RatingDisplay/>
+                  <RatingDisplay 
+                    :interactions="post.interactions"
+                    :addLike="addLike"
+                    :addDislike="addDislike"
+                  />
               </v-col>
               <v-col>
                 <!-- right -->
@@ -89,6 +93,32 @@
       date: string;
       images: string[];
       tagData: string;
+      interactions: {
+        likes: number,
+        dislikes: number,
+      },
     };
   }>();
+
+async function addLike() {
+  await fetch('/api/posts/likes/increment/' + props.post._id)
+    .then(async res => {
+      const data = await res.json()
+      console.log(data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+async function addDislike() {
+  await fetch('/api/posts/dislikes/increment/' + props.post._id)
+    .then(async res => {
+      const data = await res.json()
+      console.log(data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
 </script>

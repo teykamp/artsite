@@ -12,7 +12,7 @@
         <v-card-subtitle
           class="mb-2"
         >
-          Posted on {{ dateDisplay<Post>(post) }}
+          Posted on {{ dateDisplay(post.date) }}
         </v-card-subtitle>
         <div
           class="d-flex flex-row align-center justify-center"
@@ -43,6 +43,8 @@
                     :interactions="post.interactions"
                     :addLike="addLike"
                     :addDislike="addDislike"
+                    :removeLike="removeLike"
+                    :removeDislike="removeDislike"
                   />
               </v-col>
               <v-col>
@@ -113,6 +115,28 @@ async function addLike() {
 
 async function addDislike() {
   await fetch('/api/posts/dislikes/increment/' + props.post._id)
+    .then(async res => {
+      const data = await res.json()
+      console.log(data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+async function removeLike() {
+  await fetch('/api/posts/likes/decrement/' + props.post._id)
+    .then(async res => {
+      const data = await res.json()
+      console.log(data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+async function removeDislike() {
+  await fetch('/api/posts/dislikes/decrement/' + props.post._id)
     .then(async res => {
       const data = await res.json()
       console.log(data)

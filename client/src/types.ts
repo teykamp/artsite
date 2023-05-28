@@ -2,7 +2,7 @@
 export type Post = {
     title: string,
     body: string,
-    date: Date,
+    date: string,
     images?: string[],
     tagData?: string[]
     interactions: {

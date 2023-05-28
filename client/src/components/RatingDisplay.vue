@@ -3,9 +3,9 @@
     <v-row>
       <v-col>
         <v-btn 
-          :icon="'mdi-thumb-down'+ (userLikeValue === -1 ? '' : '-outline')" 
+          :icon="'mdi-thumb-up'+ (userLikeValue === 1 ? '' : '-outline')" 
           class="float-right"
-          @click="addDislike"
+          @click="handleLike"
         ></v-btn>
       </v-col>
       <v-col>
@@ -33,8 +33,8 @@
       </v-col>
       <v-col>
         <v-btn 
-          :icon="'mdi-thumb-up'+ (userLikeValue === 1 ? '' : '-outline')"
-          @click="addLike"
+          :icon="'mdi-thumb-down'+ (userLikeValue === -1 ? '' : '-outline')"
+          @click="handleDislike"
         ></v-btn>
       </v-col>
     </v-row>
@@ -51,16 +51,42 @@ const props = defineProps<{
   },
   addLike: () => void,
   addDislike: () => void,
+  removeLike: () => void,
+  removeDislike: () => void,
 }>();
 
 const userLikeValue = ref(0);
 const ratingValue = computed(() => {
   return (props.interactions.likes - props.interactions.dislikes + userLikeValue.value) / 
-         (props.interactions.likes + props.interactions.dislikes + userLikeValue.value) * 100
+         (props.interactions.likes + props.interactions.dislikes + userLikeValue.value ? 1 : 0) * 100
 
 });
 
-// userLikeValue.value = (userLikeValue.value === 1 ? 0 : 1)
-// userLikeValue = (userLikeValue === -1 ? 0 : -1)
+function handleLike() {
+  if (userLikeValue.value === 1) {
+    userLikeValue.value = 0
+    props.removeLike()
+  }
 
+  else {
+    if (userLikeValue.value === -1) props.removeDislike()
+      
+    userLikeValue.value = 1;
+    props.addLike()
+  }
+}
+
+function handleDislike() {
+  if (userLikeValue.value === -1) {
+    userLikeValue.value = 0
+    props.removeDislike()
+  }
+
+  else {
+    if (userLikeValue.value === 1) props.removeLike()
+
+    userLikeValue.value = -1;
+    props.addDislike()
+  }
+}
 </script>

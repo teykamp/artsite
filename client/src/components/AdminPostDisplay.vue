@@ -17,7 +17,7 @@
       </v-icon>
     </div>
     <p>
-      {{ dateDisplay }}
+      {{ dateDisplay(post.date) }}
     </p>
     <div style="height: 20px;">
       <i
@@ -48,7 +48,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref } from "vue";
+import { dateDisplay } from "../composables/dateDisplay";
 
 const props = defineProps<{
   post: {
@@ -60,11 +61,6 @@ const props = defineProps<{
     tagData: string;
   }
 }>()
-
-const dateDisplay = computed(() => {
-  const date = new Date(props.post.date)
-  return `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}`
-})
 
 const emits = defineEmits<{
   delete: () => void

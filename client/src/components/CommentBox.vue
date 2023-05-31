@@ -12,15 +12,49 @@
       <v-btn
         v-if="commentArea"
         color="primary"
+        @click="handleCommentPost"
       >Post</v-btn>
     </div>
+
+
+    <!-- <Snackbar 
+      v-model="showSnackbar"
+      :timeout="4000"
+    >Comment added successfully!</Snackbar> -->
+
+    <!-- NOT SURE WHY ABOVE DOESNT WORK -->
+    
+        
+    
+      <v-snackbar
+        v-model="showSnackbar"
+        :timeout="4000"
+        color="success"
+      >
+      <div class="text-center">
+        Comment posted successfully
+      </div>
+      </v-snackbar>
+
+
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
+// import Snackbar from './Snackbar.vue'
 
-const commentArea = ref("");
+const props = defineProps<{
+  addComment: (comment: string) => void,
+}>()
+
+const commentArea = ref("")
 const maxCommentLength = ref([v => v.length <= 256 || 'Character Limit Reached'])
+const showSnackbar = ref(false)
 
+function handleCommentPost() {
+  props.addComment(commentArea.value)
+  commentArea.value = ""
+  showSnackbar.value = true
+}
 </script>

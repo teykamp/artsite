@@ -74,7 +74,7 @@ router.get('/dislikes/decrement/:id', async (req, res) => {
 })
 
 router.post('/comments/:id', async (req, res) => {
-  await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': req.body }})
+  await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': { $each: [req.body], $position: 0 } } }) 
   res.json('added comment to post' + req.params.id)
 })
 

@@ -67,39 +67,47 @@
         <v-expand-transition>
           <div v-show="show">
             
-            <CommentBox />
+            <CommentBox 
+              :addComment="addComment" 
+            />
             
           </div>
         </v-expand-transition>
         <!-- comments go here -->
+        <div v-for="comment in post.interactions.comments" :key="comment">
+          {{ comment }}
+        </div>
       </v-card>
     </v-layout>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import CommentBox from './CommentBox.vue'
-  import RatingDisplay from './RatingDisplay.vue'
-  import { dateDisplay } from '../composables/dateDisplay'
+import { ref } from 'vue';
+import CommentBox from './CommentBox.vue'
+import RatingDisplay from './RatingDisplay.vue'
+import { dateDisplay } from '../composables/dateDisplay'
+import axios from "axios";
 
 
-  const show = ref(false)
 
-  const props = defineProps<{
-    post: {
-      _id: string;
-      title: string;
-      body: string;
-      date: string;
-      images: string[];
-      tagData: string;
-      interactions: {
-        likes: number,
-        dislikes: number,
-      },
-    }
-  }>()
+const show = ref(false)
+
+const props = defineProps<{
+  post: {
+    _id: string;
+    title: string;
+    body: string;
+    date: string;
+    images: string[];
+    tagData: string;
+    interactions: {
+      likes: number,
+      dislikes: number,
+      comments: string[],
+    },
+  }
+}>()
 
 async function addLike() {
   await fetch('/api/posts/likes/increment/' + props.post._id)
@@ -143,5 +151,13 @@ async function removeDislike() {
     .catch(err => {
       console.log(err)
     })
+}
+
+async function addComment(comment: string) {
+  await axios.post('/api/posts/comments/' + props.post._id, comment)
+  .catch(err => {
+    console.log(err)
+  })
+  show.value = false
 }
 </script>

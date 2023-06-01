@@ -30,10 +30,12 @@ const postSchema = mongoose.Schema({
       dislikes: {
         type: Number,
       },
+      comments: Array,
     },
     default: {
       likes: 0,
       dislikes: 0,
+      comments: [],
     }
   },
 });

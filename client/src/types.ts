@@ -7,6 +7,7 @@ export type Post = {
     tagData?: string[]
     interactions: {
         likes: number,
-        dislikes: number
+        dislikes: number,
+        comments?: string[],
     }
 }

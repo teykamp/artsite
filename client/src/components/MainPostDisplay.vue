@@ -68,7 +68,7 @@
           <div v-show="show">
             
             <CommentBox 
-              :addComment="addComment" 
+              :addComment="addComment"
             />
             
           </div>
@@ -159,5 +159,6 @@ async function addComment(comment: string) {
     console.log(err)
   })
   show.value = false
+  props.post.interactions.comments.unshift(comment)
 }
 </script>

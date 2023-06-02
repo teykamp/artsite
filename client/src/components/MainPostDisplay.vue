@@ -110,19 +110,19 @@ const props = defineProps<{
   }
 }>()
 
-async function addLike() {
+function addLike() {
   handleRating('/api/posts/likes/increment/' + props.post._id)
 }
 
-async function addDislike() {
+function addDislike() {
   handleRating('/api/posts/dislikes/increment/' + props.post._id)
 }
 
-async function removeLike() {
+function removeLike() {
   handleRating('/api/posts/likes/decrement/' + props.post._id)
 }
 
-async function removeDislike() {
+function removeDislike() {
   handleRating('/api/posts/dislikes/decrement/' + props.post._id)
 }
 

@@ -33,8 +33,8 @@
               <!-- left -->
               <v-col>
                 <v-btn
-                  :icon="show ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
-                  @click="show = !show"
+                  :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
+                  @click="showCommentBox = !showCommentBox"
                 ></v-btn> 
               </v-col>
               <!-- middle -->
@@ -65,7 +65,7 @@
             </v-row>
         </v-card-actions>
         <v-expand-transition>
-          <div v-show="show">
+          <div v-show="showCommentBox">
             
             <CommentBox 
               :addComment="addComment"
@@ -74,11 +74,22 @@
           </div>
         </v-expand-transition>
         <!-- comments go here -->
-        <div v-for="comment in post.interactions.comments" :key="comment">
-          {{ comment }}
+        <div v-for="comment in post.interactions.comments" :key="comment.date">
+          {{ comment.body }}
         </div>
       </v-card>
     </v-layout>
+
+    <v-snackbar
+        v-model="showSnackbar"
+        :timeout="4000"
+        color="success"
+      >
+      <div class="text-center">
+        Comment posted successfully
+      </div>
+      </v-snackbar>
+
   </div>
 </template>
 
@@ -89,23 +100,26 @@ import RatingDisplay from './RatingDisplay.vue'
 import { dateDisplay } from '../composables/dateDisplay'
 import axios from "axios";
 import { handleRating } from '../composables/handleRating'
+import { Comment } from '../types'
 
 
 
-const show = ref(false)
+const showCommentBox = ref(false)
+const showSnackbar = ref(false)
+
 
 const props = defineProps<{
   post: {
-    _id: string;
-    title: string;
-    body: string;
-    date: string;
-    images: string[];
-    tagData: string;
+    _id: string,
+    title: string,
+    body: string,
+    date: string,
+    images: string[],
+    tagData: string,
     interactions: {
       likes: number,
       dislikes: number,
-      comments: string[],
+      comments: Comment[],
     },
   }
 }>()
@@ -126,12 +140,13 @@ function removeDislike() {
   handleRating('/api/posts/dislikes/decrement/' + props.post._id)
 }
 
-async function addComment(comment: string) {
+async function addComment(comment: Comment) {
   await axios.post('/api/posts/comments/' + props.post._id, comment)
   .catch(err => {
     console.log(err)
   })
-  show.value = false
+  showCommentBox.value = false
+  showSnackbar.value = true
   props.post.interactions.comments.unshift(comment)
 }
 </script>

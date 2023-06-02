@@ -11,3 +11,8 @@ export type Post = {
         comments?: string[],
     }
 }
+
+export type Comment = {
+    body: string,
+    date: string,
+}

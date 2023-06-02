@@ -88,6 +88,7 @@ import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import { dateDisplay } from '../composables/dateDisplay'
 import axios from "axios";
+import { handleRating } from '../composables/handleRating'
 
 
 
@@ -110,47 +111,19 @@ const props = defineProps<{
 }>()
 
 async function addLike() {
-  await fetch('/api/posts/likes/increment/' + props.post._id)
-    .then(async res => {
-      const data = await res.json()
-      console.log(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  handleRating('/api/posts/likes/increment/' + props.post._id)
 }
 
 async function addDislike() {
-  await fetch('/api/posts/dislikes/increment/' + props.post._id)
-    .then(async res => {
-      const data = await res.json()
-      console.log(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  handleRating('/api/posts/dislikes/increment/' + props.post._id)
 }
 
 async function removeLike() {
-  await fetch('/api/posts/likes/decrement/' + props.post._id)
-    .then(async res => {
-      const data = await res.json()
-      console.log(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  handleRating('/api/posts/likes/decrement/' + props.post._id)
 }
 
 async function removeDislike() {
-  await fetch('/api/posts/dislikes/decrement/' + props.post._id)
-    .then(async res => {
-      const data = await res.json()
-      console.log(data)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  handleRating('/api/posts/dislikes/decrement/' + props.post._id)
 }
 
 async function addComment(comment: string) {

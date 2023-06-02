@@ -15,17 +15,6 @@
         @click="handleCommentPost"
       >Post</v-btn>
     </div>
-
-
-    <!-- <Snackbar 
-      v-model="showSnackbar"
-      :timeout="4000"
-    >Comment added successfully!</Snackbar> -->
-
-    <!-- NOT SURE WHY ABOVE DOESNT WORK -->
-
-
-
   </div>
 </template>
 

@@ -2,6 +2,7 @@
   <div>
     <v-layout>
       <v-card
+      variant="outlined"
         class="mb-2"
         elevation="0"
         style="width: 90vw; min-width: 400px; max-width: 1920px;"
@@ -73,10 +74,20 @@
             
           </div>
         </v-expand-transition>
-        <!-- comments go here -->
-        <div v-for="comment in post.interactions.comments" :key="comment.date">
-          {{ comment.body }}
-        </div>
+        <v-sheet class="d-flex justify-center">
+          <v-col xl="7" lg="8" md="10" sm="12">
+            <div v-for="( comment, index) in post.interactions.comments" :key="comment.date">
+              <CommentDisplay 
+                :body="comment.body"
+                :date="comment.date"
+              />
+              <v-divider
+                v-if="index + 1 < post.interactions.comments.length"
+                :key="`divider-${index}`"
+              ></v-divider>
+            </div>
+          </v-col>
+        </v-sheet>
       </v-card>
     </v-layout>
 
@@ -94,12 +105,13 @@
 </template>
 
 <script setup lang="ts">
+import axios from "axios";
 import { ref } from 'vue';
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
+import CommentDisplay from './CommentDisplay.vue';
 import { dateDisplay } from '../composables/dateDisplay'
-import axios from "axios";
-import { handleRating } from '../composables/handleRating'
+import { handleRating } from '../functions/handleRating'
 import { Comment } from '../types'
 
 

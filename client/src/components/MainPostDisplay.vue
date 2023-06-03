@@ -84,6 +84,28 @@
         
         <v-expand-transition>
           <div v-show="showComments">
+            <v-card elevation="0">
+              <!-- make v-if statement work if no comments to display -->
+              <v-card-subtitle>
+                Sort Comments by
+                <v-button 
+                  v-for="_, key in sortOptions" 
+                  :key="key" 
+                  class="noselect text-decoration-underline"
+                  style="cursor: pointer;"
+                  @click="setKey(key)"
+                >
+                  {{ key }}
+                  <v-icon
+                    :style="key === activeSortKey ? '' : 'opacity: 0;'"
+                    :icon="ascending ? 'mdi-arrow-up': 'mdi-arrow-down'"
+                  ></v-icon>  
+                </v-button>
+              </v-card-subtitle>
+              <!-- <v-card-subtitle v-else>
+                No Comments Yet!
+              </v-card-subtitle> -->
+            </v-card>
             <v-sheet class="d-flex justify-center">
               <v-col xl="7" lg="8" md="10" sm="12">
                 <div v-for="( comment, index) in post.interactions.comments" :key="comment.date">
@@ -124,7 +146,8 @@ import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue';
 import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'
-import { Comment } from '../types'
+import { sortItems } from "../composables/sortItems"
+import type { Comment } from '../types'
 
 
 
@@ -148,6 +171,8 @@ const props = defineProps<{
     },
   }
 }>()
+
+const comments = ref(props.post.interactions.comments)
 
 function addLike() {
   handleRating('/api/posts/likes/increment/' + props.post._id)
@@ -175,4 +200,23 @@ async function addComment(comment: Comment) {
   showSnackbar.value = true
   showComments.value = true
 }
+
+const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Comment>(comments, {
+  date: (a, b) => {
+    const dateA = new Date(a.date)
+    const dateB = new Date(b.date)
+    return dateB.getTime() - dateA.getTime();
+  },
+})
 </script>
+
+<style scoped>
+.noselect {
+  -webkit-touch-callout: none; 
+  -webkit-user-select: none; 
+  -khtml-user-select: none; 
+  -moz-user-select: none; 
+  -ms-user-select: none; 
+  user-select: none; 
+}
+</style>

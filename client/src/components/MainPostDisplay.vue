@@ -37,6 +37,7 @@
                   <v-btn
                     :icon="'mdi-comment-multiple-outline'"
                     @click="showComments = !showComments"
+                    :disabled="comments.length === 0 ? true : false"
                   ></v-btn> 
                   <v-btn
                     :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
@@ -85,10 +86,9 @@
         <v-expand-transition>
           <div v-show="showComments">
             <v-card elevation="0">
-              <!-- make v-if statement work if no comments to display -->
               <v-card-subtitle>
                 Sort Comments by
-                <v-button 
+                <button 
                   v-for="_, key in sortOptions" 
                   :key="key" 
                   class="noselect text-decoration-underline"
@@ -100,11 +100,8 @@
                     :style="key === activeSortKey ? '' : 'opacity: 0;'"
                     :icon="ascending ? 'mdi-arrow-up': 'mdi-arrow-down'"
                   ></v-icon>  
-                </v-button>
+                </button>
               </v-card-subtitle>
-              <!-- <v-card-subtitle v-else>
-                No Comments Yet!
-              </v-card-subtitle> -->
             </v-card>
             <v-sheet class="d-flex justify-center">
               <v-col xl="7" lg="8" md="10" sm="12">
@@ -173,6 +170,7 @@ const props = defineProps<{
 }>()
 
 const comments = ref(props.post.interactions.comments)
+console.log("comments ref:" + comments.value, "actual array from props:" + props.post.interactions.comments)
 
 function addLike() {
   handleRating('/api/posts/likes/increment/' + props.post._id)

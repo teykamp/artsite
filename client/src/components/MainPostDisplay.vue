@@ -211,6 +211,7 @@ const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Comment>(com
 </script>
 
 <style scoped>
+/* todo: move this so not repeated as in homeview */
 .noselect {
   -webkit-touch-callout: none; 
   -webkit-user-select: none; 

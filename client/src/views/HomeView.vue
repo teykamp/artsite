@@ -120,10 +120,9 @@ const search = ref("")
 const { filteredPosts: displayPosts } = useQueryFilter(search, posts)
 const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts, {
     date: (a, b) => {
-    // fix orientation
       const dateA = new Date(a.date)
 		  const dateB = new Date(b.date)
-		  return dateA.getTime() - dateB.getTime();
+		  return dateB.getTime() - dateA.getTime();
 		},
     title: (a, b) => {
       return a.title.localeCompare(b.title)

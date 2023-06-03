@@ -34,10 +34,15 @@
               <!-- left -->
               <v-col>
                 <v-btn
+                  :icon="'mdi-comment-multiple-outline'"
+                  @click="showComments = !showComments"
+                ></v-btn> 
+                <v-btn
                   :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
                   @click="showCommentBox = !showCommentBox"
                 ></v-btn> 
               </v-col>
+              
               <!-- middle -->
               <v-col cols="8">
                   <RatingDisplay 
@@ -66,28 +71,33 @@
             </v-row>
         </v-card-actions>
         <v-expand-transition>
-          <div v-show="showCommentBox">
+          <v-container v-show="showCommentBox">
             
             <CommentBox 
               :addComment="addComment"
             />
             
+          </v-container>
+        </v-expand-transition>
+        
+        <v-expand-transition>
+          <div v-show="showComments">
+            <v-sheet class="d-flex justify-center">
+              <v-col xl="7" lg="8" md="10" sm="12">
+                <div v-for="( comment, index) in post.interactions.comments" :key="comment.date">
+                  <CommentDisplay 
+                    :body="comment.body"
+                    :date="comment.date"
+                  />
+                  <v-divider
+                    v-if="index + 1 < post.interactions.comments.length"
+                    :key="`divider-${index}`"
+                  ></v-divider>
+                </div>
+              </v-col>
+            </v-sheet>
           </div>
         </v-expand-transition>
-        <v-sheet class="d-flex justify-center">
-          <v-col xl="7" lg="8" md="10" sm="12">
-            <div v-for="( comment, index) in post.interactions.comments" :key="comment.date">
-              <CommentDisplay 
-                :body="comment.body"
-                :date="comment.date"
-              />
-              <v-divider
-                v-if="index + 1 < post.interactions.comments.length"
-                :key="`divider-${index}`"
-              ></v-divider>
-            </div>
-          </v-col>
-        </v-sheet>
       </v-card>
     </v-layout>
 
@@ -118,6 +128,7 @@ import { Comment } from '../types'
 
 const showCommentBox = ref(false)
 const showSnackbar = ref(false)
+const showComments = ref(false)
 
 
 const props = defineProps<{
@@ -158,7 +169,8 @@ async function addComment(comment: Comment) {
     console.log(err)
   })
   showCommentBox.value = false
-  showSnackbar.value = true
   props.post.interactions.comments.unshift(comment)
+  showSnackbar.value = true
+  showComments.value = true
 }
 </script>

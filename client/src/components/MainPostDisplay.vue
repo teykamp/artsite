@@ -170,7 +170,6 @@ const props = defineProps<{
 }>()
 
 const comments = ref(props.post.interactions.comments)
-console.log("comments ref:" + comments.value, "actual array from props:" + props.post.interactions.comments)
 
 function addLike() {
   handleRating('/api/posts/likes/increment/' + props.post._id)

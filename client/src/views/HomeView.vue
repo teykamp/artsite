@@ -1,47 +1,13 @@
 <template>
   <div>
-    <v-app-bar :elevation="2">
-      <div>
-        <v-btn text @click="$router.push('/')">Home</v-btn>
-        <v-btn text @click="$router.push('/about')">About</v-btn>
-      </div>
-      <template v-slot:append>
-
-        <v-btn icon="mdi-magnify" @click="showSearchBar = !showSearchBar"></v-btn>
-
-        <div class="text-center">
-          <v-menu open-on-hover :close-on-content-click="false" width="100">
-            <template v-slot:activator="{ props }">
-              <v-btn
-                icon="mdi-sort"
-                v-bind="props"
-              ></v-btn>
-            </template>
-            <v-list>
-              <v-list-item 
-                v-for="_, key in sortOptions" 
-                :key="key" class="text-overline noselect" 
-                @click="setKey(key)"
-              >
-              <v-icon
-                :style="key === activeSortKey ? '' : 'opacity: 0;'"
-                :icon="ascending ? 'mdi-arrow-up': 'mdi-arrow-down'"
-              ></v-icon>
-                {{ key }}
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-      </template>
-      <v-spacer></v-spacer>
-      <v-slide-x-reverse-transition v-show="showSearchBar">
-          <v-col style="min-width: 140px; max-width: 400px;">
-            <SearchBar
-              v-model="search"
-            />
-          </v-col>
-      </v-slide-x-reverse-transition>
-    </v-app-bar>
+    
+    <NavBar 
+      v-model:search="search"
+      v-model:setKey="setKey"
+      v-model:activeSortKey="activeSortKey"
+      v-model:sortOptions="sortOptions"
+      v-model:ascending="ascending"
+    />
 
     <!-- Posts -->
 
@@ -107,8 +73,8 @@
 import axios from "axios"
 import { ref } from "vue"
 import MainPostDisplay from "../components/MainPostDisplay.vue"
-import SearchBar from "../components/SearchBar.vue"
 import Alert from "../components/Alert.vue"
+import NavBar from "../components/NavBar.vue"
 import { useQueryFilter } from "../composables/useQueryFilter"
 import { sortItems } from "../composables/sortItems"
 import type { Post } from "../types"
@@ -127,18 +93,15 @@ const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts,
     title: (a, b) => {
       return a.title.localeCompare(b.title)
     },
+    // "1st Tag": (a, b) => {
+    //   if (!a.tagData) return -1
+    //   if (!b.tagData) return 1
+    //   if (!a.tagData.length) return -1
+    //   if (!b.tagData.length) return -1
 
-    "1st Tag": (a, b) => {
-      if (!a.tagData) return -1
-      if (!b.tagData) return 1
-      if (!a.tagData.length) return -1
-      if (!b.tagData.length) return -1
-
-      return a.tagData[0].localeCompare(b.tagData[0])
-    } 
+    //   return a.tagData[0].localeCompare(b.tagData[0])
+    // } 
 })
-
-const showSearchBar = ref(false)
 
 async function fetchPosts() {
   loadingPosts.value = true

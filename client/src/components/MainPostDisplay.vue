@@ -32,16 +32,18 @@
         <v-card-actions>
             <v-row class="d-flex justify-space-around">
               <!-- left -->
-              <v-col>
-                <v-btn
-                  :icon="'mdi-comment-multiple-outline'"
-                  @click="showComments = !showComments"
-                ></v-btn> 
-                <v-btn
-                  :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
-                  @click="showCommentBox = !showCommentBox"
-                ></v-btn> 
-              </v-col>
+              <div class="display-inline">
+                <v-col>
+                  <v-btn
+                    :icon="'mdi-comment-multiple-outline'"
+                    @click="showComments = !showComments"
+                  ></v-btn> 
+                  <v-btn
+                    :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
+                    @click="showCommentBox = !showCommentBox"
+                  ></v-btn>
+                </v-col>
+              </div> 
               
               <!-- middle -->
               <v-col cols="8">

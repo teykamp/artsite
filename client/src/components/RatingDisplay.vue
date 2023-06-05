@@ -53,9 +53,10 @@ const props = defineProps<{
   addDislike: () => void,
   removeLike: () => void,
   removeDislike: () => void,
+  storedLikeValue: number,
 }>()
 
-const userLikeValue = ref(0);
+const userLikeValue = ref(props.storedLikeValue);
 const ratingValue = computed(() => {
   var totalLikes = props.interactions.likes;
   var totalDislikes = props.interactions.dislikes;

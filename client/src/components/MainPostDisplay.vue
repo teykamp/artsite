@@ -54,6 +54,7 @@
                     :addDislike="addDislike"
                     :removeLike="removeLike"
                     :removeDislike="removeDislike"
+                    :storedLikeValue="storedLikeValue"
                   />
               </v-col>
               <v-col>
@@ -171,20 +172,30 @@ const props = defineProps<{
 
 const comments = ref(props.post.interactions.comments)
 
+let storedLikeValue = 0
+const storedLikeById = localStorage.getItem(props.post._id)
+if (storedLikeById !== null) {
+  storedLikeValue = Number(storedLikeById)
+}
+
 function addLike() {
   handleRating('/api/posts/likes/increment/' + props.post._id)
+  localStorage.setItem(props.post._id, "1")
 }
 
 function addDislike() {
   handleRating('/api/posts/dislikes/increment/' + props.post._id)
+  localStorage.setItem(props.post._id, "-1")
 }
 
 function removeLike() {
   handleRating('/api/posts/likes/decrement/' + props.post._id)
+  localStorage.setItem(props.post._id, "0")
 }
 
 function removeDislike() {
   handleRating('/api/posts/dislikes/decrement/' + props.post._id)
+  localStorage.setItem(props.post._id, "0")
 }
 
 async function addComment(comment: Comment) {

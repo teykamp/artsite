@@ -6,7 +6,7 @@
       auto-grow
       :rules="maxCommentLength"
       counter="256"
-      class="mb-2"
+      class="mb-2 mx-8"
     ></v-textarea>
     <div class="d-flex flex-column justify-center align-center">
       <v-btn
@@ -32,7 +32,7 @@ const maxCommentLength = ref([v => v.length <= 256 || 'Character Limit Reached']
 function handleCommentPost() {
   props.addComment({
     body: commentArea.value, 
-    date: new Date() ,
+    date: new Date(),
   })
   commentArea.value = ""
 }

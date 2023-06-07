@@ -1,6 +1,6 @@
 import { ref, Ref } from 'vue'
 
-type SortOptions<T> = {
+export type SortOptions<T> = {
   [key: string]: (a:T, b:T) => number
 }
 

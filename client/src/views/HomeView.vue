@@ -1,16 +1,32 @@
 <template>
   <div>
-    
+    <!-- Nav -->
     <NavBar 
       v-model:search="search"
       v-model:setKey="setKey"
       v-model:activeSortKey="activeSortKey"
       v-model:sortOptions="sortOptions"
       v-model:ascending="ascending"
+      v-model:handleDrawer="handleDrawer"
     />
 
-    <!-- Posts -->
+    <v-navigation-drawer
+      v-model="drawer"
+      temporary
+    >
+      <v-list density="compact" nav>
+        <v-list-item
+          v-for="(value, key) in navLinks"
+          :key="key"
+          :title="key" 
+          class="d-flex justify-center"
+          :prepend-icon="value.icon"
+          @click="$router.push(value.link)"
+        ></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 
+    <!-- Posts -->
     <div class="d-flex flex-column justify-center align-center mt-10">
 
       <div class="my-6"></div>
@@ -28,7 +44,6 @@
       </div>
   
       <!-- No Posts Display -->
-
       <div
         v-if="loadingPosts"
         class="d-flex flex-column justify-center align-center"
@@ -81,6 +96,22 @@ import type { Post } from "../types"
 
 const posts = ref([])
 const loadingPosts = ref(false)
+
+const drawer = ref(false)
+
+function handleDrawer() {
+  drawer.value = !drawer.value
+}
+const navLinks = {
+  "Home": {
+    link: '/',
+    icon: 'mdi-home'
+  },
+  "About": {
+    link: '/about',
+    icon: 'mdi-information-outline'
+  },
+}
 
 const search = ref("")
 const { filteredPosts: displayPosts } = useQueryFilter(search, posts)

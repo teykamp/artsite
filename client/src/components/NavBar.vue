@@ -8,10 +8,17 @@
       <v-btn 
         v-for="(value, key) in navLinks"
         :key="key"
-        text
+        :text="value.buttonType === 'text'"
+        :icon="value.buttonType === 'icon'"
         :prepend-icon="value.icon"
         @click="$router.push(value.link)"
-      >{{key}}</v-btn>
+      >
+      {{value.buttonType === 'text' ? key : ''}}
+        <v-icon 
+          v-if="value.buttonType === 'icon'" 
+          :icon="value.icon"
+        ></v-icon>
+      </v-btn>
     </div>
     <template v-slot:append>
 

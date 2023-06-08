@@ -93,6 +93,7 @@ import NavBar from "../components/NavBar.vue"
 import { useQueryFilter } from "../composables/useQueryFilter"
 import { sortItems } from "../composables/sortItems"
 import type { Post } from "../types"
+import { navLinks } from "../router/navLinks"
 
 const posts = ref([])
 const loadingPosts = ref(false)
@@ -101,16 +102,6 @@ const drawer = ref(false)
 
 function handleDrawer() {
   drawer.value = !drawer.value
-}
-const navLinks = {
-  "Home": {
-    link: '/',
-    icon: 'mdi-home'
-  },
-  "About": {
-    link: '/about',
-    icon: 'mdi-information-outline'
-  },
 }
 
 const search = ref("")

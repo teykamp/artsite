@@ -59,6 +59,7 @@ import { ref, computed } from 'vue'
 import SearchBar from "./SearchBar.vue"
 import type { SortOptions } from "../composables/sortItems"
 import type { Post } from "../types"
+import { navLinks } from "../router/navLinks"
 
 const props = defineProps<{
   search: string,
@@ -82,16 +83,4 @@ const search = computed({
 })
 
 const showSearchBar = ref(false)
-
-const navLinks = {
-  "Home": {
-    link: '/',
-    icon: 'mdi-home'
-  },
-  "About": {
-    link: '/about',
-    icon: 'mdi-information-outline'
-  },
-}
-
 </script>

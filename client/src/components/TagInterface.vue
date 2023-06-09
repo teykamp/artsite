@@ -47,12 +47,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
-
-type Tag = {
-  name: string;
-  color: string;
-  _id?: string;
-};
+import type { Tag } from "../types"
 
 const tags = ref<Tag[]>([]);
 

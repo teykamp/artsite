@@ -16,3 +16,9 @@ export type Comment = {
     body: string,
     date: string,
 }
+
+export type Tag = {
+  name: string;
+  color: string;
+  _id?: string;
+};

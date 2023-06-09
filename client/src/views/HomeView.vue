@@ -51,7 +51,7 @@
         <v-row class="pa-6">
           <v-progress-circular
             indeterminate
-            color="primary"
+            color="info"
           ></v-progress-circular>
         </v-row>
         <v-row class="pa-6">

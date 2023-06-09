@@ -6,7 +6,7 @@ const commentSchema = mongoose.Schema({
     required: true
   },
   comments: { // array created when new post created. array pushed when comment posted
-    type: Array,
+    type: Array, // each comment has a date and a body
     required: false,
     default: []
   }

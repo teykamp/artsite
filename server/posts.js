@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('./postModel.js');
 const Tag = require('./tagModel.js');
+const Comment = require('./commentModel.js');
 
 router.get('/', async (req, res) => {
   Post.find()
@@ -77,5 +78,31 @@ router.post('/comments/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': { $each: [req.body], $position: 0 } } }) 
   res.json('added comment to post' + req.params.id)
 })
+
+
+/*
+
+// Comments
+router.get('/comments/:id', async (req, res) => {
+  Comment.findOne(req.params.id)
+    .then(comments => res.json(comments))
+    .catch(err => res.status(404).json(err));
+});
+
+// called when post created
+router.post('/comments', async (req, res) => {
+  const newComment = new Comment({ ...req.body });
+  newComment.save()
+    .then(comment => res.json(comment))
+    .catch(err => res.status(404).json(err));
+});
+
+// called when comment posted
+router.post('/comments/:id', async (req, res) => {
+  await Post.findByIdAndUpdate(req.params.id, { $push: { 'comments': { $each: [req.body], $position: 0 } } })
+  res.json('added comment to post' + req.params.id)
+})
+
+*/
 
 module.exports = router;

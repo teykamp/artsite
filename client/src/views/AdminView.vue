@@ -171,6 +171,9 @@ async function uploadPost() {
     imageEncodings: [],
     tagData: [],
   }
+
+  // create empty comment section for posts
+  // await axios.post("/api/posts/comments", {id: posts.value[0]._id, comments: []})
 }
 
 fetchPosts();

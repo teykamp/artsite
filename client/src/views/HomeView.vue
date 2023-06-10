@@ -108,13 +108,13 @@ function handleDrawer() {
   drawer.value = !drawer.value
 }
 
-const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts, {
-    date: (a, b) => {
+const sortOptions = {
+    date: (a: Post, b: Post) => {
       const dateA = new Date(a.date)
 		  const dateB = new Date(b.date)
 		  return dateB.getTime() - dateA.getTime();
 		},
-    title: (a, b) => {
+    title: (a: Post, b: Post) => {
       return a.title.localeCompare(b.title)
     },
     // "1st Tag": (a, b) => {
@@ -125,7 +125,8 @@ const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts,
 
     //   return a.tagData[0].localeCompare(b.tagData[0])
     // } 
-})
+}
+const { setKey, activeSortKey, ascending } = sortItems<Post>(posts, sortOptions)
 
 const filterOptions = {
   "Has: Images": (post: Post) => post.images.length !== 0,

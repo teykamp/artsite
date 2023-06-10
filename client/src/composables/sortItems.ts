@@ -28,7 +28,6 @@ export function sortItems<T>(items: Ref<T[]>, sortOptions: SortOptions<T>) {
 	return {
     setKey,
     activeSortKey,
-		sortOptions,
     ascending,
 	}
 }

@@ -8,6 +8,7 @@
       v-model:sortOptions="sortOptions"
       v-model:ascending="ascending"
       v-model:handleDrawer="handleDrawer"
+      v-model:filterOptions="filterOptions"
     />
 
     <v-navigation-drawer
@@ -86,12 +87,13 @@
 
 <script setup lang="ts">
 import axios from "axios"
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import MainPostDisplay from "../components/MainPostDisplay.vue"
 import Alert from "../components/Alert.vue"
 import NavBar from "../components/NavBar.vue"
 import { useQueryFilter } from "../composables/useQueryFilter"
 import { sortItems } from "../composables/sortItems"
+import { filterItems } from "../composables/filterItems"
 import type { Post } from "../types"
 import { navLinks } from "../router/navLinks"
 
@@ -105,7 +107,7 @@ function handleDrawer() {
 }
 
 const search = ref("")
-const { filteredPosts: displayPosts } = useQueryFilter(search, posts)
+const { searchedItems: displayPosts } = useQueryFilter(search, posts)
 const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts, {
     date: (a, b) => {
       const dateA = new Date(a.date)
@@ -125,6 +127,19 @@ const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts,
     // } 
 })
 
+// const { filterOptions } = filterItems<Post>(posts, {
+//   "Has: Images": {
+//     prop: "images.length",
+//     val: 0
+//   }
+// })
+
+const filterOptions = {
+  "Has: Images": () => {
+    displayPosts.value.filter((post) => { return post.images.length !== 0 })
+  }
+}
+
 async function fetchPosts() {
   loadingPosts.value = true
   const { data } = await axios.get("/api/posts")
@@ -135,14 +150,3 @@ async function fetchPosts() {
 fetchPosts()
 
 </script>
-
-<style scoped>
-.noselect {
-  -webkit-touch-callout: none; 
-  -webkit-user-select: none; 
-  -khtml-user-select: none; 
-  -moz-user-select: none; 
-  -ms-user-select: none; 
-  user-select: none; 
-}
-</style>

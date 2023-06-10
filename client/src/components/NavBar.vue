@@ -35,7 +35,8 @@
           <v-list>
             <v-list-item 
               v-for="_, key in sortOptions" 
-              :key="key" class="text-overline noselect" 
+              :key="key" 
+              class="text-overline noselect" 
               @click="setKey(key)"
             >
             <v-icon
@@ -46,6 +47,25 @@
             </v-list-item>
           </v-list>
         </v-menu>
+        <v-menu open-on-hover :close-on-content-click="false" width="160">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                icon="mdi-filter"
+                v-bind="props"
+              ></v-btn>
+            </template>
+            <v-list>
+              <v-list-item 
+                v-for="_, key in filterOptions" 
+                :key="key" 
+                class="text-overline noselect" 
+                @click="filterOptions[key]"
+              >
+              
+                {{ key }}
+              </v-list-item>
+            </v-list>
+          </v-menu>
       </div>
     </template>
     <v-spacer></v-spacer>
@@ -65,6 +85,7 @@
 import { ref, computed } from 'vue'
 import SearchBar from "./SearchBar.vue"
 import type { SortOptions } from "../composables/sortItems"
+import type { FilterOptions } from '../composables/filterItems'
 import type { Post } from "../types"
 import { navLinks } from "../router/navLinks"
 
@@ -75,6 +96,8 @@ const props = defineProps<{
   sortOptions: SortOptions<Post>,
   ascending: boolean,
   handleDrawer: () => void,
+  filterOptions: any,
+  // filterOptions: FilterOptions,
 }>()
 
 const emit = defineEmits([
@@ -91,3 +114,14 @@ const search = computed({
 
 const showSearchBar = ref(false)
 </script>
+
+<style scoped>
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+</style>

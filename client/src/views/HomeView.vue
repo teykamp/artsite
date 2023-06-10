@@ -8,7 +8,9 @@
       v-model:sortOptions="sortOptions"
       v-model:ascending="ascending"
       v-model:handleDrawer="handleDrawer"
+      v-model:activeFilterKeys="activeFilterKeys"
       v-model:filterOptions="filterOptions"
+      @update-filter-key="updateFilter($event)"
     />
 
     <v-navigation-drawer
@@ -87,7 +89,7 @@
 
 <script setup lang="ts">
 import axios from "axios"
-import { ref, computed } from "vue"
+import { ref } from "vue"
 import MainPostDisplay from "../components/MainPostDisplay.vue"
 import Alert from "../components/Alert.vue"
 import NavBar from "../components/NavBar.vue"
@@ -106,8 +108,6 @@ function handleDrawer() {
   drawer.value = !drawer.value
 }
 
-const search = ref("")
-const { searchedItems: displayPosts } = useQueryFilter(search, posts)
 const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts, {
     date: (a, b) => {
       const dateA = new Date(a.date)
@@ -127,18 +127,22 @@ const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Post>(posts,
     // } 
 })
 
-// const { filterOptions } = filterItems<Post>(posts, {
-//   "Has: Images": {
-//     prop: "images.length",
-//     val: 0
-//   }
-// })
-
 const filterOptions = {
-  "Has: Images": () => {
-    displayPosts.value.filter((post) => { return post.images.length !== 0 })
-  }
+  "Has: Images": (post: Post) => post.images.length !== 0,
+  "i dont like D": (post: Post) => !post.title.toLowerCase().includes('d')
 }
+const { filteredPosts, activeFilterKeys } = filterItems<Post>(posts, filterOptions)
+
+function updateFilter(newFilterKey: keyof typeof filterOptions) {
+  const newFilterKeyIndex = activeFilterKeys.value.indexOf(newFilterKey)
+  if (newFilterKeyIndex !== -1) {
+    return activeFilterKeys.value.splice(newFilterKeyIndex, 1)
+  }
+  activeFilterKeys.value.push(newFilterKey)
+}
+
+const search = ref("")
+const { searchedItems: displayPosts } = useQueryFilter(search, filteredPosts)
 
 async function fetchPosts() {
   loadingPosts.value = true

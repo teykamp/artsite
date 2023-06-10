@@ -3,7 +3,7 @@ export type Post = {
     title: string,
     body: string,
     date: string,
-    images?: string[],
+    images: string[],
     tagData?: string[]
     interactions: {
         likes: number,

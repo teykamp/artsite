@@ -59,9 +59,12 @@
                 v-for="_, key in filterOptions" 
                 :key="key" 
                 class="text-overline noselect" 
-                @click="filterOptions[key]"
+                @click="$emit('update-filter-key', key)"
               >
-              
+              <v-icon
+                :style="activeFilterKeys.includes(key)  ? '' : 'opacity: 0;'"
+                icon="mdi-check"
+              ></v-icon>
                 {{ key }}
               </v-list-item>
             </v-list>
@@ -85,7 +88,7 @@
 import { ref, computed } from 'vue'
 import SearchBar from "./SearchBar.vue"
 import type { SortOptions } from "../composables/sortItems"
-import type { FilterOptions } from '../composables/filterItems'
+import type { FilterOption } from '../composables/filterItems'
 import type { Post } from "../types"
 import { navLinks } from "../router/navLinks"
 
@@ -96,8 +99,8 @@ const props = defineProps<{
   sortOptions: SortOptions<Post>,
   ascending: boolean,
   handleDrawer: () => void,
-  filterOptions: any,
-  // filterOptions: FilterOptions,
+  activeFilterKeys: string[], // : FilterKey
+  filterOptions: FilterOption<Post>,
 }>()
 
 const emit = defineEmits([

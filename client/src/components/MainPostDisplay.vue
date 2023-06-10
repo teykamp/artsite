@@ -209,13 +209,15 @@ async function addComment(comment: Comment) {
   showComments.value = true
 }
 
-const { setKey, activeSortKey, sortOptions, ascending } = sortItems<Comment>(comments, {
-  date: (a, b) => {
+const sortOptions = {
+  date: (a: Comment, b: Comment) => {
     const dateA = new Date(a.date)
     const dateB = new Date(b.date)
     return dateB.getTime() - dateA.getTime();
   },
-})
+}
+
+const { setKey, activeSortKey, ascending } = sortItems<Comment>(comments, sortOptions)
 </script>
 
 <style scoped>

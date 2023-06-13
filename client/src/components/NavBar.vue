@@ -88,7 +88,6 @@
 import axios from 'axios'
 import { ref, watch } from 'vue'
 import SearchBar from "./SearchBar.vue"
-import type { SortOptions } from "../composables/sortItems"
 import type { FilterOptions } from '../composables/filterItems'
 import type { Post } from "../types"
 import { navLinks } from "../router/navLinks"

@@ -2,15 +2,9 @@
   <div>
     <!-- Nav -->
     <NavBar 
-      v-model:search="search"
-      v-model:setKey="setKey"
-      v-model:activeSortKey="activeSortKey"
-      v-model:sortOptions="sortOptions"
-      v-model:ascending="ascending"
       v-model:handleDrawer="handleDrawer"
-      v-model:activeFilterKeys="activeFilterKeys"
-      v-model:filterOptions="filterOptions"
-      @update-filter-key="updateFilter($event)"
+      @update:posts="handleLoadingPosts($event)"
+      @update:search="searchValue = $event"
     />
 
     <v-navigation-drawer
@@ -65,22 +59,22 @@
           />
         </v-row>
       </div>
-      <div
-        v-else-if="posts.length === 0"
+      <!-- <div
+        v-else-if="displayPosts.length === 0"
       >
         <Alert 
           type="error"
           title="No Posts Yet"
           msg=""
         />
-      </div>
+      </div> -->
       <div
         v-else-if="displayPosts.length === 0"
       >
         <Alert 
           type="warning"
           title="No Posts Found"
-          :msg="'\'' + search + '\'' + ' returned no results.'"
+          :msg="'\'' + searchValue + '\'' + ' returned no results.'"
         />
       </div>
     </div>
@@ -88,19 +82,16 @@
 </template>
 
 <script setup lang="ts">
-import axios from "axios"
 import { ref } from "vue"
 import MainPostDisplay from "../components/MainPostDisplay.vue"
 import Alert from "../components/Alert.vue"
 import NavBar from "../components/NavBar.vue"
-import { useQueryFilter } from "../composables/useQueryFilter"
-import { sortItems } from "../composables/sortItems"
-import { filterItems } from "../composables/filterItems"
 import type { Post } from "../types"
 import { navLinks } from "../router/navLinks"
 
-const posts = ref([])
-const loadingPosts = ref(false)
+const displayPosts = ref<Post[]>([])
+const loadingPosts = ref(true)
+const searchValue = ref("")
 
 const drawer = ref(false)
 
@@ -108,50 +99,10 @@ function handleDrawer() {
   drawer.value = !drawer.value
 }
 
-const sortOptions = {
-    date: (a: Post, b: Post) => {
-      const dateA = new Date(a.date)
-		  const dateB = new Date(b.date)
-		  return dateB.getTime() - dateA.getTime();
-		},
-    title: (a: Post, b: Post) => {
-      return a.title.localeCompare(b.title)
-    },
-    // "1st Tag": (a, b) => {
-    //   if (!a.tagData) return -1
-    //   if (!b.tagData) return 1
-    //   if (!a.tagData.length) return -1
-    //   if (!b.tagData.length) return -1
-
-    //   return a.tagData[0].localeCompare(b.tagData[0])
-    // } 
-}
-const { setKey, activeSortKey, ascending } = sortItems<Post>(posts, sortOptions)
-
-const filterOptions = {
-  "Has: Images": (post: Post) => post.images.length !== 0,
-  "i dont like D": (post: Post) => !post.title.toLowerCase().includes('d')
-}
-const { filteredPosts, activeFilterKeys } = filterItems<Post>(posts, filterOptions)
-
-function updateFilter(newFilterKey: keyof typeof filterOptions) {
-  const newFilterKeyIndex = activeFilterKeys.value.indexOf(newFilterKey)
-  if (newFilterKeyIndex !== -1) {
-    return activeFilterKeys.value.splice(newFilterKeyIndex, 1)
-  }
-  activeFilterKeys.value.push(newFilterKey)
-}
-
-const search = ref("")
-const { searchedItems: displayPosts } = useQueryFilter(search, filteredPosts)
-
-async function fetchPosts() {
-  loadingPosts.value = true
-  const { data } = await axios.get("/api/posts")
+async function handleLoadingPosts(posts: Post[]) {
+  displayPosts.value = await posts
   loadingPosts.value = false
-  posts.value = data.reverse()
 }
 
-fetchPosts()
 
 </script>

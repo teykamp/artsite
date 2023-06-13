@@ -37,7 +37,7 @@
               v-for="_, key in sortOptions" 
               :key="key" 
               class="text-overline noselect" 
-              @click="setKey(key)"
+              @click="setKey(key); loggy()"
             >
             <v-icon
               :style="key === activeSortKey ? '' : 'opacity: 0;'"
@@ -59,7 +59,7 @@
                 v-for="_, key in filterOptions" 
                 :key="key" 
                 class="text-overline noselect" 
-                @click="$emit('update-filter-key', key)"
+                @click="updateFilter(key)"
               >
               <v-icon
                 :style="activeFilterKeys.includes(key)  ? '' : 'opacity: 0;'"
@@ -85,37 +85,98 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import axios from 'axios'
+import { ref, watch } from 'vue'
 import SearchBar from "./SearchBar.vue"
 import type { SortOptions } from "../composables/sortItems"
-import type { FilterOption } from '../composables/filterItems'
+import type { FilterOptions } from '../composables/filterItems'
 import type { Post } from "../types"
 import { navLinks } from "../router/navLinks"
+import { useQueryFilter } from "../composables/useQueryFilter"
+import { sortItems } from "../composables/sortItems"
+import { filterItems } from "../composables/filterItems"
 
 const props = defineProps<{
-  search: string,
-  setKey: (key: any) => void,
-  activeSortKey: string | null,
-  sortOptions: SortOptions<Post>,
-  ascending: boolean,
   handleDrawer: () => void,
-  activeFilterKeys: string[], // : FilterKey
-  filterOptions: FilterOption<Post>,
 }>()
 
-const emit = defineEmits([
-  'update:search',
-  'update:drawer'
-])
+// const search = computed({
+//   get: () => props.search,
+//   set: (v) => {
+//     emit('update:search', v)
+//   }
+// })
 
-const search = computed({
-  get: () => props.search,
-  set: (v) => {
-    emit('update:search', v)
-  }
-})
+function loggy() {
+  console.log(filteredPosts.value)
+}
+
+const posts = ref<Post[]>([])
 
 const showSearchBar = ref(false)
+
+const filterOptions = {
+  "Has: Images": (post: Post) => post.images.length !== 0,
+  "i dont like D": (post: Post) => !post.title.toLowerCase().includes('d')
+}
+
+
+const search = ref("")
+const { searchedItems: searchedPosts } = useQueryFilter(search, posts)
+
+const { filteredPosts, activeFilterKeys } = filterItems<Post>(searchedPosts, filterOptions)
+
+function updateFilter(newFilterKey: keyof typeof FilterOptions) {
+  const newFilterKeyIndex = activeFilterKeys.value.indexOf(newFilterKey)
+  if (newFilterKeyIndex !== -1) {
+    return activeFilterKeys.value.splice(newFilterKeyIndex, 1)
+  }
+  activeFilterKeys.value.push(newFilterKey)
+}
+
+const sortOptions = {
+  date: (a: Post, b: Post) => {
+    const dateA = new Date(a.date)
+    const dateB = new Date(b.date)
+    return dateB.getTime() - dateA.getTime();
+  },
+  title: (a: Post, b: Post) => {
+    return a.title.localeCompare(b.title)
+  },
+  // "1st Tag": (a, b) => {
+  //   if (!a.tagData) return -1
+  //   if (!b.tagData) return 1
+  //   if (!a.tagData.length) return -1
+  //   if (!b.tagData.length) return -1
+
+  //   return a.tagData[0].localeCompare(b.tagData[0])
+  // } 
+}
+
+const { setKey, activeSortKey, ascending } = sortItems<Post>(posts, sortOptions)
+
+const loadingPosts = ref(true)
+
+async function fetchPosts() {
+  loadingPosts.value = true
+  const { data } = await axios.get("/api/posts")
+  loadingPosts.value = false
+  posts.value = data.reverse()
+}
+
+fetchPosts()
+
+const emit = defineEmits(["update:posts",
+                          "update:search",
+                        ])
+
+watch(filteredPosts, (newPosts) => {
+  emit("update:posts", newPosts)
+})
+watch(search, (newSearch) => {
+  emit("update:search", newSearch)
+})
+
 </script>
 
 <style scoped>

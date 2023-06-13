@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref } from "vue";
 
-const textArea = ref("This is the about page. It's a great place to start.")
+const textArea = ref("This is the about page. It's a great place to start.");
 </script>

@@ -37,7 +37,7 @@
               v-for="_, key in sortOptions" 
               :key="key" 
               class="text-overline noselect" 
-              @click="setKey(key); loggy()"
+              @click="setKey(key)"
             >
             <v-icon
               :style="key === activeSortKey ? '' : 'opacity: 0;'"
@@ -106,10 +106,6 @@ const props = defineProps<{
 //     emit('update:search', v)
 //   }
 // })
-
-function loggy() {
-  console.log(filteredPosts.value)
-}
 
 const posts = ref<Post[]>([])
 

@@ -30,7 +30,7 @@
           {{ post.body }}
         </v-card-text>
         <v-card-actions>
-            <v-row class="d-flex justify-space-around">
+            <v-row class="d-flex justify-space-between">
               <!-- left -->
               <div class="display-inline">
                 <v-col>
@@ -48,14 +48,14 @@
               
               <!-- middle -->
               <v-col cols="8">
-                  <RatingDisplay 
-                    :interactions="post.interactions"
-                    :addLike="addLike"
-                    :addDislike="addDislike"
-                    :removeLike="removeLike"
-                    :removeDislike="removeDislike"
-                    :storedLikeValue="storedLikeValue"
-                  />
+                <RatingDisplay 
+                  :interactions="post.interactions"
+                  :addLike="addLike"
+                  :addDislike="addDislike"
+                  :removeLike="removeLike"
+                  :removeDislike="removeDislike"
+                  :storedLikeValue="storedLikeValue"
+                />
               </v-col>
               <v-col>
                 <!-- right -->

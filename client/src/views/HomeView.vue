@@ -59,15 +59,15 @@
           />
         </v-row>
       </div>
-      <!-- <div
-        v-else-if="displayPosts.length === 0"
+      <div
+        v-else-if="displayPosts.length === 0 && searchValue==''"
       >
         <Alert 
           type="error"
           title="No Posts Yet"
           msg=""
         />
-      </div> -->
+      </div>
       <div
         v-else-if="displayPosts.length === 0"
       >

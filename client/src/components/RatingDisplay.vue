@@ -9,10 +9,11 @@
         ></v-btn>
       </v-col>
       <v-col>
-        <v-sheet 
-          class="text-center text-h5 mt-2"
+        <v-sheet
+          class="text-center text-body mt-2"
+          style=" min-width:20px"
         >  
-        {{ userLikeValue }}
+        {{ likeDisplay(userLikeValue) }}
         </v-sheet>
       </v-col>
       <v-col>
@@ -82,5 +83,15 @@ function handleDislike() {
     userLikeValue.value = -1
     props.addDislike()
   }
+}
+
+function likeDisplay(likeValue: number) {
+  if (Math.abs(likeValue) > 999999) {
+    return likeValue > 0 ? "1M+" : "-1M+"
+  }
+  else if (Math.abs(likeValue) > 999) {
+    return `${likeValue / 1000}k`
+  }
+  return likeValue
 }
 </script>

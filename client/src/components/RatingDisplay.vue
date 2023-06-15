@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="d-flex justify-sm-center">
+    <v-row>
       <v-col>
         <v-btn 
           :icon="'mdi-thumb-up'+ (userLikeValue === 1 ? '' : '-outline')" 
@@ -8,7 +8,7 @@
           @click="handleLike"
         ></v-btn>
       </v-col>
-      <v-col cols="4">
+      <v-col>
         <v-sheet 
           class="text-center text-h5 mt-2"
         >  

@@ -29,12 +29,13 @@
         >
           {{ post.body }}
         </v-card-text>
+
+
         <v-card-actions>
             <v-row class="d-flex justify-space-between">
-              <!-- left -->
-              <div class="display-inline">
-                <v-col>
-                  <v-btn
+
+              <v-col class="d-flex justify-start">
+                <v-btn
                     :icon="'mdi-comment-multiple-outline'"
                     @click="showComments = !showComments"
                     :disabled="comments.length === 0 ? true : false"
@@ -43,24 +44,20 @@
                     :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
                     @click="showCommentBox = !showCommentBox"
                   ></v-btn>
-                </v-col>
-              </div> 
-              
-              <!-- middle -->
-              <v-col cols="8">
+              </v-col>
+              <v-col class="d-flex  justify-end justify-sm-center" cols="6">
                 <RatingDisplay 
-                  :interactions="post.interactions"
-                  :addLike="addLike"
-                  :addDislike="addDislike"
-                  :removeLike="removeLike"
-                  :removeDislike="removeDislike"
-                  :storedLikeValue="storedLikeValue"
-                />
+                    :interactions="post.interactions"
+                    :addLike="addLike"
+                    :addDislike="addDislike"
+                    :removeLike="removeLike"
+                    :removeDislike="removeDislike"
+                    :storedLikeValue="storedLikeValue"
+                  />
               </v-col>
               <v-col>
-                <!-- right -->
                 <v-sheet
-                  style="min-width: 130px;"
+                  style="min-width: 121px;"
                   class="sm-and-up-float-right xs-float-left"
                 >
                   <v-chip
@@ -72,6 +69,19 @@
                   >{{ tag }}</v-chip>
                 </v-sheet>
               </v-col>
+
+              <!-- <div class="display-inline" style="background: blue">
+                <v-col color="red">
+                  
+                </v-col>
+              </div> 
+              
+              <v-col cols="5" color="green">
+                  
+              </v-col>
+              <v-col>
+                
+              </v-col> -->
             </v-row>
         </v-card-actions>
         <v-expand-transition>

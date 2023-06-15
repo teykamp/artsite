@@ -45,7 +45,7 @@
                     @click="showCommentBox = !showCommentBox"
                   ></v-btn>
               </v-col>
-              <v-col class="d-flex  justify-end justify-sm-center" cols="6">
+              <v-col class="d-flex justify-end justify-sm-center" cols="6">
                 <RatingDisplay 
                     :interactions="post.interactions"
                     :addLike="addLike"
@@ -58,7 +58,7 @@
               <v-col>
                 <v-sheet
                   style="min-width: 121px;"
-                  class="sm-and-up-float-right xs-float-left"
+                  class="float-md-right float-left"
                 >
                   <v-chip
                     v-for="tag in post.tagData"

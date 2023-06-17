@@ -60,7 +60,7 @@
         </v-row>
       </div>
       <div
-        v-else-if="displayPosts.length === 0 && searchValue==''"
+        v-else-if="displayPosts.length === 0 && searchValue === ''"
       >
         <Alert 
           type="error"

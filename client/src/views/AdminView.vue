@@ -71,6 +71,22 @@
       @update:posts="handleLoadingPosts($event)"
     />
 
+    <v-navigation-drawer
+      v-model="drawer"
+      temporary
+    >
+      <v-list density="compact" nav>
+        <v-list-item
+          v-for="(value, key) in navLinks"
+          :key="key"
+          :title="key" 
+          class="d-flex justify-center"
+          :prepend-icon="value.icon"
+          @click="$router.push(value.link)"
+        ></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
     <div
       style="width: 95%; height: 600px; overflow-y: scroll; border-top: 1px solid black;"
       class="d-flex flex-wrap flex-start justify-center align-start"
@@ -116,6 +132,8 @@ import NavBar from "../components/NavBar.vue";
 import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import TagInterface from "../components/TagInterface.vue";
 import { ref, watch, computed } from "vue";
+import { navLinks } from "../router/navLinks"
+
 
 const displayPosts = ref([])
 const loadingPosts = ref(false)

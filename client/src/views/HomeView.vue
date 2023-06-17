@@ -6,22 +6,9 @@
       @update:posts="handleLoadingPosts($event)"
       @update:search="searchValue = $event"
     />
-
-    <v-navigation-drawer
-      v-model="drawer"
-      temporary
-    >
-      <v-list density="compact" nav>
-        <v-list-item
-          v-for="(value, key) in navLinks"
-          :key="key"
-          :title="key" 
-          class="d-flex justify-center"
-          :prepend-icon="value.icon"
-          @click="$router.push(value.link)"
-        ></v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+    <NavDrawer 
+      :drawer="drawer"
+    />
 
     <!-- Posts -->
     <div class="d-flex flex-column justify-center align-center mt-10">
@@ -86,8 +73,8 @@ import { ref } from "vue"
 import MainPostDisplay from "../components/MainPostDisplay.vue"
 import Alert from "../components/Alert.vue"
 import NavBar from "../components/NavBar.vue"
+import NavDrawer from "../components/NavDrawer.vue"
 import type { Post } from "../types"
-import { navLinks } from "../router/navLinks"
 
 const displayPosts = ref<Post[]>([])
 const loadingPosts = ref(true)

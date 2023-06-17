@@ -1,7 +1,7 @@
 <template>
   <v-app-bar :elevation="2">
     <v-app-bar-nav-icon
-      @click.stop="handleDrawer()" 
+      @click.stop="handleNavDrawer()" 
       class="d-flex d-sm-none"
     ></v-app-bar-nav-icon>
     <div class="hidden-xs ml-3">
@@ -97,7 +97,7 @@ import { filterItems } from "../composables/filterItems"
 
 const props = withDefaults(
   defineProps<{
-    handleDrawer: () => void,
+    handleNavDrawer: () => void,
     loadPosts?: boolean,
   }>(),
   {

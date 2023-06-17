@@ -95,9 +95,15 @@ import { useQueryFilter } from "../composables/useQueryFilter"
 import { sortItems } from "../composables/sortItems"
 import { filterItems } from "../composables/filterItems"
 
-const props = defineProps<{
-  handleDrawer: () => void,
-}>()
+const props = withDefaults(
+  defineProps<{
+    handleDrawer: () => void,
+    loadPosts?: boolean,
+  }>(),
+  {
+    loadPosts: true,
+  }
+)
 
 // const search = computed({
 //   get: () => props.search,
@@ -159,7 +165,9 @@ async function fetchPosts() {
   posts.value = data.reverse()
 }
 
-fetchPosts()
+if (props.loadPosts) {
+  fetchPosts()
+}
 
 const emit = defineEmits(["update:posts",
                           "update:search",

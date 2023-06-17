@@ -1,5 +1,7 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
+    <div class="my-6"></div>
+    <div class="my-6"></div>
     <div style="width: 50%">
       <TagInterface 
         @update-tag="fetchTags"
@@ -64,12 +66,17 @@
       >add post</v-btn>
     </v-form>
 
+    <NavBar 
+      v-model:handleDrawer="handleDrawer"
+      @update:posts="handleLoadingPosts($event)"
+    />
+
     <div
       style="width: 95%; height: 600px; overflow-y: scroll; border-top: 1px solid black;"
       class="d-flex flex-wrap flex-start justify-center align-start"
     >
       <div
-        v-for="post in posts"
+        v-for="post in displayPosts"
         :key="post._id"
         class="post flex-wrap flex-column justify-center align-center"
       >
@@ -85,7 +92,7 @@
         ></v-progress-circular>
       </div>
       <div
-        v-else-if="posts.length === 0"
+        v-else-if="displayPosts.length === 0"
         style="color: red;"
       >
         <h2>
@@ -94,22 +101,23 @@
       </div>
     </div>
     <v-btn
-      v-if="posts.length"
+      v-if="displayPosts.length"
       @click="deletePosts"
       class="my-10"
       color="error"
-    >delete all posts ({{ posts.length }})</v-btn>
+    >delete all posts ({{ displayPosts.length }})</v-btn>
   </div>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
 import Compress from "compress.js";
+import NavBar from "../components/NavBar.vue";
 import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import TagInterface from "../components/TagInterface.vue";
 import { ref, watch, computed } from "vue";
 
-const posts = ref([])
+const displayPosts = ref([])
 const loadingPosts = ref(false)
 
 const addPost = ref({
@@ -141,13 +149,6 @@ watch(() => addPost.value.images, (newVal) => {
   }
 })
 
-async function fetchPosts() {
-  loadingPosts.value = true
-  const { data } = await axios.get("/api/posts")
-  loadingPosts.value = false
-  posts.value = data.reverse()
-}
-
 async function uploadPost() {
   const newPost = {
     title: addPost.value.title,
@@ -163,7 +164,7 @@ async function uploadPost() {
   console.log(kiloBytes, "KB")
 
   await axios.post("/api/posts", newPost)
-  posts.value.unshift(newPost)
+  displayPosts.value.unshift(newPost)
   addPost.value = {
     title: "",
     body: "",
@@ -176,16 +177,14 @@ async function uploadPost() {
   // await axios.post("/api/posts/comments", {id: posts.value[0]._id, comments: []})
 }
 
-fetchPosts();
-
 async function deletePosts() {
   await axios.delete("/api/posts")
-  posts.value = []
+  displayPosts.value = []
 }
 
 async function deletePost(id: string) {
   await axios.delete(`/api/posts/${id}`)
-  posts.value = posts.value.filter((post) => post._id !== id)
+  displayPosts.value = displayPosts.value.filter((post) => post._id !== id)
 }
 
 async function compressBase64Image(image: string[]) {
@@ -209,6 +208,19 @@ const fetchTags = async () => {
   tags.value = data
 }
 fetchTags()
+
+
+const drawer = ref(false)
+
+function handleDrawer() {
+  drawer.value = !drawer.value
+}
+
+async function handleLoadingPosts(posts: Post[]) {
+  displayPosts.value = await posts
+  loadingPosts.value = false
+}
+
 </script>
 
 <style scoped>

@@ -67,7 +67,7 @@
     </v-form>
 
     <NavBar 
-      v-model:handleDrawer="handleDrawer"
+      v-model:handleNavDrawer="handleNavDrawer"
       @update:posts="handleLoadingPosts($event)"
     />
 
@@ -230,7 +230,7 @@ fetchTags()
 
 const drawer = ref(false)
 
-function handleDrawer() {
+function handleNavDrawer() {
   drawer.value = !drawer.value
 }
 

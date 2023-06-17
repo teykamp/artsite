@@ -2,7 +2,7 @@
   <div>
     <!-- Nav -->
     <NavBar 
-      v-model:handleDrawer="handleDrawer"
+      v-model:handleNavDrawer="handleNavDrawer"
       @update:posts="handleLoadingPosts($event)"
       @update:search="searchValue = $event"
     />
@@ -95,7 +95,7 @@ const searchValue = ref("")
 
 const drawer = ref(false)
 
-function handleDrawer() {
+function handleNavDrawer() {
   drawer.value = !drawer.value
 }
 

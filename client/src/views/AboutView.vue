@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar 
-      v-model:handleDrawer="handleDrawer"
+      v-model:handleNavDrawer="handleNavDrawer"
     />
 
     <v-navigation-drawer
@@ -40,7 +40,7 @@ const textArea = ref("This is the about page. It's a great place to start.");
 
 const drawer = ref(false)
 
-function handleDrawer() {
+function handleNavDrawer() {
   drawer.value = !drawer.value
 }
 </script>

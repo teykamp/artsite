@@ -69,19 +69,6 @@
                   >{{ tag }}</v-chip>
                 </v-sheet>
               </v-col>
-
-              <!-- <div class="display-inline" style="background: blue">
-                <v-col color="red">
-                  
-                </v-col>
-              </div> 
-              
-              <v-col cols="5" color="green">
-                  
-              </v-col>
-              <v-col>
-                
-              </v-col> -->
             </v-row>
         </v-card-actions>
         <v-expand-transition>

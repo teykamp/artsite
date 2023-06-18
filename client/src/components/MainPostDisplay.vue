@@ -24,13 +24,17 @@
             style="width: 85vw; min-width: 400px; max-width: 1920px;"
           />
         </div>
-        <v-card-text
-          v-if="post.body"
+
+        <div
+          class="d-flex flex-row align-center justify-center"
         >
-          {{ post.body }}
-        </v-card-text>
-
-
+          <v-card-text
+            v-if="post.body"
+            style="max-width: 75ch;"
+          >
+            {{ post.body }}
+          </v-card-text>
+        </div>
         <v-card-actions>
             <v-row class="d-flex justify-space-between">
 

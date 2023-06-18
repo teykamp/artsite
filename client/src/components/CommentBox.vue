@@ -10,7 +10,7 @@
     ></v-textarea>
     <div class="d-flex flex-column justify-center align-center">
       <v-btn
-        v-if="commentArea"
+        :disabled="(commentArea && commentArea.length <= maxLengthCharacters) ? false : true"
         color="primary"
         @click="handleCommentPost"
       >Post</v-btn>
@@ -26,8 +26,10 @@ const props = defineProps<{
   addComment: (comment: string) => void,
 }>()
 
+const maxLengthCharacters: number = 256
+
 const commentArea = ref("")
-const maxCommentLength = ref([v => v.length <= 256 || 'Character Limit Reached'])
+const maxCommentLength = ref([v => v.length <= maxLengthCharacters || 'Character Limit Reached'])
 
 function handleCommentPost() {
   props.addComment({

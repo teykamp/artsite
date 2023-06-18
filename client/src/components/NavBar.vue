@@ -105,13 +105,6 @@ const props = withDefaults(
   }
 )
 
-// const search = computed({
-//   get: () => props.search,
-//   set: (v) => {
-//     emit('update:search', v)
-//   }
-// })
-
 const posts = ref<Post[]>([])
 
 const showSearchBar = ref(false)
@@ -169,9 +162,10 @@ if (props.loadPosts) {
   fetchPosts()
 }
 
-const emit = defineEmits(["update:posts",
-                          "update:search",
-                        ])
+const emit = defineEmits([
+  "update:posts",
+  "update:search",
+])
 
 watch(filteredPosts, (newPosts) => {
   emit("update:posts", newPosts)

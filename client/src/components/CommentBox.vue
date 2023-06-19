@@ -20,7 +20,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// import Snackbar from './Snackbar.vue'
 
 const props = defineProps<{
   addComment: (comment: string) => void,

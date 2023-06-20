@@ -4,7 +4,7 @@
 			elevation="0"
 			:subtitle="dateDisplay(date.toString())"
 			:text="body"
-			style="max-width: 72ch;"
+			style="max-width: 72ch; white-space: pre-wrap;"
 		>
 		</v-card>
 	</div>

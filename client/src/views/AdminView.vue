@@ -1,5 +1,13 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
+    <NavBar 
+      v-model:handleNavDrawer="handleNavDrawer"
+      @update:posts="handleLoadingPosts($event)"
+    />
+
+    <NavDrawer 
+      :drawer="drawer"
+    />
     <div class="my-6"></div>
     <div class="my-6"></div>
     <div style="width: 50%">
@@ -20,10 +28,12 @@
         prepend-icon="mdi-format-title"
         label="title"
       />
-      <v-text-field
+      <v-textarea
         v-model="addPost.body"
         prepend-icon="mdi-text"
         label="body"
+        rows="2"
+        auto-grow
       />
       <!-- tag map needs color -->
       <v-combobox
@@ -65,15 +75,6 @@
         type="submit"
       >add post</v-btn>
     </v-form>
-
-    <NavBar 
-      v-model:handleNavDrawer="handleNavDrawer"
-      @update:posts="handleLoadingPosts($event)"
-    />
-
-    <NavDrawer 
-      :drawer="drawer"
-    />
 
     <div
       style="width: 95%; height: 600px; overflow-y: scroll; border-top: 1px solid black;"
@@ -158,7 +159,7 @@ watch(() => addPost.value.images, (newVal) => {
 async function uploadPost() {
   const newPost = {
     title: addPost.value.title,
-    body: addPost.value.body,
+    body: addPost.value.body.trim(),
     images: addPost.value.imageEncodings,
     tagData: addPost.value.tagData,
     date: new Date(),

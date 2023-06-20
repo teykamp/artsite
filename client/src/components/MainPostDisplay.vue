@@ -30,7 +30,7 @@
         >
           <v-card-text
             v-if="post.body"
-            style="max-width: 75ch;"
+            style="max-width: 75ch; white-space: pre-wrap;"
           >
             {{ post.body }}
           </v-card-text>

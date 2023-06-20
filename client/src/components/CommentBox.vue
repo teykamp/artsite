@@ -32,7 +32,7 @@ const maxCommentLength = ref([v => v.length <= maxLengthCharacters || 'Character
 
 function handleCommentPost() {
   props.addComment({
-    body: commentArea.value, 
+    body: commentArea.value.trim(), 
     date: new Date(),
   })
   commentArea.value = ""

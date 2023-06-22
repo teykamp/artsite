@@ -67,6 +67,7 @@
                   <v-chip
                     v-for="tag in post.tagData"
                     :key="tag"
+                    @click="emit('update:tag-click', tag)"
                     label
                     size="x-small"
                     class="mr-1"
@@ -219,6 +220,11 @@ const sortOptions = {
 }
 
 const { setKey, activeSortKey, ascending } = sortItems<Comment>(comments, sortOptions)
+
+const emit = defineEmits([
+  "update:tag-click",
+])
+
 </script>
 
 <style scoped>

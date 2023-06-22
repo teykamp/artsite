@@ -10,17 +10,20 @@
     <NavDrawer 
       :drawer="drawer"
     />
-
+    
     <!-- Posts -->
+    
     <div class="d-flex flex-column justify-center align-center mt-10">
-
       <div class="my-6"></div>
       
       <div
         v-for="(post, index) in displayPosts"
         :key="post._id"
       >
-        <MainPostDisplay :post="post" />
+        <MainPostDisplay 
+          :post="post"
+          @update:tag-click="updateSearchOnTagClick($event)"
+        />
         <v-divider
           v-if="index + 1 < displayPosts.length"
           :key="`divider-${index}`"
@@ -92,4 +95,7 @@ async function handleLoadingPosts(posts: Post[]) {
   loadingPosts.value = false
 }
 const navBar = ref(null)
+function updateSearchOnTagClick(tagValue: string) {
+  navBar.value.setSearch(tagValue)
+}
 </script>

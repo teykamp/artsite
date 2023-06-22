@@ -114,9 +114,17 @@ const filterOptions = {
   "i dont like D": (post: Post) => !post.title.toLowerCase().includes('d')
 }
 
-
 const search = ref("")
 const { searchedItems: searchedPosts } = useQueryFilter(search, posts)
+
+function setSearch(value: string) {
+  search.value = value
+  showSearchBar.value = true
+}
+
+defineExpose({
+  setSearch,
+})
 
 const { filteredPosts, activeFilterKeys } = filterItems<Post>(searchedPosts, filterOptions)
 

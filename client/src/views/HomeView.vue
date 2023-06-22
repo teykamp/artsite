@@ -5,6 +5,7 @@
       v-model:handleNavDrawer="handleNavDrawer"
       @update:posts="handleLoadingPosts($event)"
       @update:search="searchValue = $event"
+      ref="navBar"
     />
     <NavDrawer 
       :drawer="drawer"
@@ -90,6 +91,5 @@ async function handleLoadingPosts(posts: Post[]) {
   displayPosts.value = await posts
   loadingPosts.value = false
 }
-
-
+const navBar = ref(null)
 </script>

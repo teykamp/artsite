@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import Home from '../views/HomeView.vue'
 import About from '../views/AboutView.vue'
 import Admin from '../views/AdminView.vue'
+import notFound from '../views/404.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: Admin
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    component: notFound
   },
 ]
 

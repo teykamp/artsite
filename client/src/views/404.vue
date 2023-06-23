@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex flex-column justify-center align-center mt-10">
     <Alert 
       type="info"
       title="404"

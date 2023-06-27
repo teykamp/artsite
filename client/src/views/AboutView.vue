@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="mt-10">
+    
     <NavBar 
       v-model:handleNavDrawer="handleNavDrawer"
     />
@@ -8,13 +9,15 @@
       :drawer="drawer"
     />
 
+    <div class="my-9"></div>
+    
 
-    <div style="width: 30%; height: 15%">
+    <v-sheet style="width: 30%; height: 15%">
       <v-textarea
         v-model="textArea"
         label="About"
       ></v-textarea>
-    </div>
+    </v-sheet>
   </div>
 </template>
 

@@ -20,7 +20,9 @@
         ></v-icon>
       </v-btn>
     </div>
-    <template v-slot:append>
+    <template 
+      v-slot:append
+      v-if="loadPosts">
 
       <v-btn icon="mdi-magnify" @click="showSearchBar = !showSearchBar"></v-btn>
 

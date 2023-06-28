@@ -3,6 +3,7 @@
     
     <NavBar 
       v-model:handleNavDrawer="handleNavDrawer"
+      :loadPosts="false"
     />
 
     <NavDrawer 

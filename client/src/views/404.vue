@@ -2,6 +2,7 @@
   <div class="d-flex flex-column justify-center align-center mt-10">
     <NavBar 
         v-model:handleNavDrawer="handleNavDrawer"
+        :loadPosts="false"
     />
 
     <NavDrawer 

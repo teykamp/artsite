@@ -90,20 +90,6 @@
           @delete="deletePost(post._id)"
         />
       </div>
-      <div v-if="loadingPosts">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-      </div>
-      <div
-        v-else-if="displayPosts.length === 0"
-        style="color: red;"
-      >
-        <h2>
-          No posts yet
-        </h2>
-      </div>
     </div>
     <v-btn
       v-if="displayPosts.length"
@@ -122,10 +108,10 @@ import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import TagInterface from "../components/TagInterface.vue";
 import NavDrawer from "../components/NavDrawer.vue";
 import { ref, watch, computed } from "vue";
+import type { Post } from "../types"
 
 
-const displayPosts = ref([])
-const loadingPosts = ref(false)
+const displayPosts = ref([]) // type this array
 
 const addPost = ref({
   title: "",
@@ -225,7 +211,6 @@ function handleNavDrawer() {
 
 async function handleLoadingPosts(posts: Post[]) {
   displayPosts.value = await posts
-  loadingPosts.value = false
 }
 
 </script>

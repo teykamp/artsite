@@ -1,95 +1,140 @@
 <template>
-  <v-app-bar :elevation="2">
-    <v-app-bar-nav-icon
-      @click.stop="handleNavDrawer()" 
-      class="d-flex d-sm-none"
-    ></v-app-bar-nav-icon>
-    <div class="hidden-xs ml-3">
-      <v-btn 
-        v-for="(value, key) in navLinks"
-        :key="key"
-        :text="value.buttonType === 'text'"
-        :icon="value.buttonType === 'icon'"
-        :prepend-icon="value.icon"
-        @click="$router.push(value.link)"
-      >
-      {{value.buttonType === 'text' ? key : ''}}
-        <v-icon 
-          v-if="value.buttonType === 'icon'" 
-          :icon="value.icon"
-        ></v-icon>
-      </v-btn>
-    </div>
-    <template 
-      v-slot:append
-      v-if="loadPosts">
-
-      <v-btn icon="mdi-magnify" @click="showSearchBar = !showSearchBar"></v-btn>
-
-      <div class="text-center">
-        <v-menu open-on-hover :close-on-content-click="false" width="120">
-          <template v-slot:activator="{ props }">
-            <v-btn
-              icon="mdi-sort"
-              v-bind="props"
-            ></v-btn>
-          </template>
-          <v-list>
-            <v-list-item 
-              v-for="_, key in sortOptions" 
-              :key="key" 
-              class="text-overline noselect" 
-              @click="setKey(key)"
-            >
-            <v-icon
-              :style="key === activeSortKey ? '' : 'opacity: 0;'"
-              :icon="ascending ? 'mdi-arrow-up': 'mdi-arrow-down'"
-            ></v-icon>
-              {{ key }}
-            </v-list-item>
-          </v-list>
-        </v-menu>
-        <v-menu open-on-hover :close-on-content-click="false" width="160">
+  <div>
+    <v-app-bar :elevation="2">
+      <v-app-bar-nav-icon
+        @click.stop="handleNavDrawer()" 
+        class="d-flex d-sm-none"
+      ></v-app-bar-nav-icon>
+      <div class="hidden-xs ml-3">
+        <v-btn 
+          v-for="(value, key) in navLinks"
+          :key="key"
+          :text="value.buttonType === 'text'"
+          :icon="value.buttonType === 'icon'"
+          :prepend-icon="value.icon"
+          @click="$router.push(value.link)"
+        >
+        {{value.buttonType === 'text' ? key : ''}}
+          <v-icon 
+            v-if="value.buttonType === 'icon'" 
+            :icon="value.icon"
+          ></v-icon>
+        </v-btn>
+      </div>
+      <template 
+        v-slot:append
+        v-if="loadPosts">
+    
+        <v-btn icon="mdi-magnify" @click="showSearchBar = !showSearchBar"></v-btn>
+    
+        <div class="text-center">
+          <v-menu open-on-hover :close-on-content-click="false" width="120">
             <template v-slot:activator="{ props }">
               <v-btn
-                icon="mdi-filter"
+                icon="mdi-sort"
                 v-bind="props"
               ></v-btn>
             </template>
             <v-list>
               <v-list-item 
-                v-for="_, key in filterOptions" 
+                v-for="_, key in sortOptions" 
                 :key="key" 
                 class="text-overline noselect" 
-                @click="updateFilter(key)"
+                @click="setKey(key)"
               >
               <v-icon
-                :style="activeFilterKeys.includes(key)  ? '' : 'opacity: 0;'"
-                icon="mdi-check"
+                :style="key === activeSortKey ? '' : 'opacity: 0;'"
+                :icon="ascending ? 'mdi-arrow-up': 'mdi-arrow-down'"
               ></v-icon>
                 {{ key }}
               </v-list-item>
             </v-list>
           </v-menu>
-      </div>
-    </template>
-    <v-spacer></v-spacer>
-    <v-slide-x-reverse-transition v-show="showSearchBar">
-        <v-row class="flex-row-reverse">
-          <v-col xl="8" lg="8" md="10" sm="12" xs="12">
-            <SearchBar
-              v-model="search"
-            />
-          </v-col>
+          <v-menu open-on-hover :close-on-content-click="false" width="160">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon="mdi-filter"
+                  v-bind="props"
+                ></v-btn>
+              </template>
+              <v-list>
+                <v-list-item 
+                  v-for="_, key in filterOptions" 
+                  :key="key" 
+                  class="text-overline noselect" 
+                  @click="updateFilter(key)"
+                >
+                <v-icon
+                  :style="activeFilterKeys.includes(key)  ? '' : 'opacity: 0;'"
+                  icon="mdi-check"
+                ></v-icon>
+                  {{ key }}
+                </v-list-item>
+              </v-list>
+            </v-menu>
+        </div>
+      </template>
+      <v-spacer></v-spacer>
+      <v-slide-x-reverse-transition v-show="showSearchBar">
+          <v-row class="flex-row-reverse">
+            <v-col xl="8" lg="8" md="10" sm="12" xs="12">
+              <SearchBar
+                v-model="search"
+              />
+            </v-col>
+          </v-row>
+      </v-slide-x-reverse-transition>
+    </v-app-bar>
+    <div
+      v-if="loadingPosts"
+      style="margin-top: 200px"
+    >
+    <!-- No Posts Display -->
+      <div
+        v-if="loadingPosts"
+        class="d-flex flex-column justify-center align-center"
+      >
+        <v-row class="pa-6">
+          <v-progress-circular
+            indeterminate
+            color="info"
+          ></v-progress-circular>
         </v-row>
-    </v-slide-x-reverse-transition>
-  </v-app-bar>
+        <v-row class="pa-6">
+          <Alert 
+            type="info"
+            title="Loading Posts..."
+            msg=""
+          />
+        </v-row>
+      </div>
+      <div
+        v-else-if="posts.length === 0 && search === ''"
+      >
+        <Alert 
+          type="error"
+          title="No Posts Yet"
+          msg=""
+        />
+      </div>
+      <div
+        v-else-if="posts.length === 0"
+      >
+        <Alert 
+          type="warning"
+          title="No Posts Found"
+          :msg="'\'' + search + '\'' + ' returned no results.'"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
 import { ref, watch } from 'vue'
 import SearchBar from "./SearchBar.vue"
+import Alert from "../components/Alert.vue"
 import type { FilterOptions } from '../composables/filterItems'
 import type { Post } from "../types"
 import { navLinks } from "../router/navLinks"
@@ -159,13 +204,13 @@ const sortOptions = {
 
 const { setKey, activeSortKey, ascending } = sortItems<Post>(posts, sortOptions)
 
-const loadingPosts = ref(true)
+const loadingPosts = ref(props.loadPosts ? true : false)
 
 async function fetchPosts() {
   loadingPosts.value = true
   const { data } = await axios.get("/api/posts")
-  loadingPosts.value = false
   posts.value = data.reverse()
+  loadingPosts.value = false
 }
 
 if (props.loadPosts) {

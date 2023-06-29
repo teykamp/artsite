@@ -10,12 +10,9 @@
     <NavDrawer 
       :drawer="drawer"
     />
-    
-    <!-- Posts -->
-    
-    <div class="d-flex flex-column justify-center align-center mt-10">
-      <div class="my-6"></div>
-      
+    <div style="margin-top: 100px"></div>
+
+    <div class="d-flex flex-column justify-center align-center">
       <div
         v-for="(post, index) in displayPosts"
         :key="post._id"

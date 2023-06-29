@@ -1,13 +1,6 @@
 <template>
   <div class="d-flex flex-column justify-center align-center">
-    <NavBar 
-      v-model:handleNavDrawer="handleNavDrawer"
-      @update:posts="handleLoadingPosts($event)"
-    />
-
-    <NavDrawer 
-      :drawer="drawer"
-    />
+    
     <div class="my-6"></div>
     <div class="my-6"></div>
     <div style="width: 50%">
@@ -77,7 +70,7 @@
     </v-form>
 
     <div
-      style="width: 95%; height: 600px; overflow-y: scroll; border-top: 1px solid black;"
+      style="width: 95%; min-height: 200px; overflow-y: scroll; border-top: 1px solid black;"
       class="d-flex flex-wrap flex-start justify-center align-start"
     >
       <div
@@ -91,6 +84,14 @@
         />
       </div>
     </div>
+    <NavBar 
+      v-model:handleNavDrawer="handleNavDrawer"
+      @update:posts="handleLoadingPosts($event)"
+    />
+
+    <NavDrawer 
+      :drawer="drawer"
+    />
     <v-btn
       v-if="displayPosts.length"
       @click="deletePosts"

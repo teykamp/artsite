@@ -107,6 +107,8 @@
     </div>
     <div
       v-if="!loadingPosts"
+      class="d-flex flex-column justify-center align-center"
+      style="margin-top: 200px"
     >
       <div
         v-if="filteredPosts.length === 0 && posts.length === 0"

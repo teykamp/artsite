@@ -85,31 +85,31 @@
           </v-row>
       </v-slide-x-reverse-transition>
     </v-app-bar>
+    <!-- No Posts Display -->
     <div
       v-if="loadingPosts"
+      class="d-flex flex-column justify-center align-center"
       style="margin-top: 200px"
     >
-    <!-- No Posts Display -->
+      <v-row class="pa-6">
+        <v-progress-circular
+          indeterminate
+          color="info"
+        ></v-progress-circular>
+      </v-row>
+      <v-row class="pa-6">
+        <Alert 
+          type="info"
+          title="Loading Posts..."
+          msg=""
+        />
+      </v-row>
+    </div>
+    <div
+      v-if="!loadingPosts"
+    >
       <div
-        v-if="loadingPosts"
-        class="d-flex flex-column justify-center align-center"
-      >
-        <v-row class="pa-6">
-          <v-progress-circular
-            indeterminate
-            color="info"
-          ></v-progress-circular>
-        </v-row>
-        <v-row class="pa-6">
-          <Alert 
-            type="info"
-            title="Loading Posts..."
-            msg=""
-          />
-        </v-row>
-      </div>
-      <div
-        v-else-if="posts.length === 0 && search === ''"
+        v-if="filteredPosts.length === 0 && posts.length === 0"
       >
         <Alert 
           type="error"
@@ -118,12 +118,21 @@
         />
       </div>
       <div
-        v-else-if="posts.length === 0"
+        v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search !== ''"
       >
         <Alert 
           type="warning"
           title="No Posts Found"
           :msg="'\'' + search + '\'' + ' returned no results.'"
+        />
+      </div>
+      <div
+        v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search === ''"
+      >
+        <Alert 
+          type="warning"
+          title="No Posts Found"
+          msg="Filter parameters returned no results."
         />
       </div>
     </div>

@@ -4,13 +4,15 @@ const Post = require('./postModel.js');
 const Tag = require('./tagModel.js');
 const Comment = require('./commentModel.js');
 
-router.get('/', async (req, res) => {
+router.get('/posts', async (req, res) => {
   Post.find()
     .then(posts => res.json(posts))
     .catch(err => res.status(404).json(err));
 });
 
-router.post('/', async (req, res) => {
+// router.get('/post/:id')
+
+router.post('/posts', async (req, res) => {
   console.log('posting')
   const newPost = new Post({ ...req.body });
   newPost.save()
@@ -21,13 +23,13 @@ router.post('/', async (req, res) => {
     });
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/posts/:id', async (req, res) => {
   Post.deleteOne({ _id: req.params.id })
     .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/posts', async (req, res) => {
   Post.deleteMany()
     .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));
@@ -54,27 +56,27 @@ router.delete('/tags/:id', async (req, res) => {
 });
 
 // Interactions
-router.get('/likes/increment/:id', async (req, res) => {
+router.get('posts/likes/increment/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: {'interactions.likes': 1 }})
   res.json('likes incremented on post' + req.params.id)
 })
 
-router.get('/likes/decrement/:id', async (req, res) => {
+router.get('posts/likes/decrement/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.likes': -1 } })
   res.json('likes decremented on post' + req.params.id)
 })
 
-router.get('/dislikes/increment/:id', async (req, res) => {
+router.get('posts/dislikes/increment/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.dislikes': 1 } })
   res.json('dislikes incremented on post' + req.params.id)
 })
 
-router.get('/dislikes/decrement/:id', async (req, res) => {
+router.get('posts/dislikes/decrement/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.dislikes': -1 } })
   res.json('dislikes decremented on post' + req.params.id)
 })
 
-router.post('/comments/:id', async (req, res) => {
+router.post('posts/comments/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': { $each: [req.body], $position: 0 } } }) 
   res.json('added comment to post' + req.params.id)
 })

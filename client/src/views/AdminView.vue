@@ -198,7 +198,7 @@ async function compressBase64Image(image: string[]) {
 
 const tags = ref([])
 const fetchTags = async () => {
-  const { data } = await axios.get("/api/posts/tags")
+  const { data } = await axios.get("/api/tags")
   tags.value = data
 }
 fetchTags()

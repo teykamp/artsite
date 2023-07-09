@@ -73,7 +73,7 @@ const tag = ref<Tag>({
   color: '',
 });
 
-const tagEndpoint = '/api/posts/tags'
+const tagEndpoint = '/api/tags'
 
 const addTag = async () => {
   await axios.post(tagEndpoint, tag.value);

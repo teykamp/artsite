@@ -3,10 +3,17 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config()
+const serverConfig = require('./serverConfig')
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected...'))
-  .catch(err => console.log(err));
+
+
+function connectToDatabase() {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('Production MongoDB connected...'))
+    .catch(err => console.log(err));
+}
+
+
 
 // parse body to json
 app.use(express.json());
@@ -26,6 +33,16 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}!`);
-});
+function startApp() {
+  app.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}!`);
+  });
+}
+
+
+if (serverConfig.getIsProdServer()) {
+  connectToDatabase();
+  startApp();
+}
+
+module.exports = app;

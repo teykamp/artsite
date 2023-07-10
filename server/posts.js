@@ -4,6 +4,10 @@ const Post = require('./postModel.js');
 const Tag = require('./tagModel.js');
 const Comment = require('./commentModel.js');
 
+// const app = express();
+// app.use(express.json());
+
+
 router.get('/posts', async (req, res) => {
   Post.find()
     .then(posts => res.json(posts))

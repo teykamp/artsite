@@ -105,37 +105,39 @@
         />
       </v-row>
     </div>
-    <div
-      v-if="!loadingPosts"
-      class="d-flex flex-column justify-center align-center"
-      style="margin-top: 200px"
-    >
+    <div v-if="currentRouteName in ['admin', '']">
       <div
-        v-if="filteredPosts.length === 0 && posts.length === 0"
+        v-if="!loadingPosts"
+        class="d-flex flex-column justify-center align-center"
+        style="margin-top: 200px"
       >
-        <Alert 
-          type="error"
-          title="No Posts Yet"
-          msg=""
-        />
-      </div>
-      <div
-        v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search !== ''"
-      >
-        <Alert 
-          type="warning"
-          title="No Posts Found"
-          :msg="'\'' + search + '\'' + ' returned no results.'"
-        />
-      </div>
-      <div
-        v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search === ''"
-      >
-        <Alert 
-          type="warning"
-          title="No Posts Found"
-          msg="Filter parameters returned no results."
-        />
+        <div
+          v-if="filteredPosts.length === 0 && posts.length === 0"
+        >
+          <Alert 
+            type="error"
+            title="No Posts Yet"
+            msg=""
+          />
+        </div>
+        <div
+          v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search !== ''"
+        >
+          <Alert 
+            type="warning"
+            title="No Posts Found"
+            :msg="'\'' + search + '\'' + ' returned no results.'"
+          />
+        </div>
+        <div
+          v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search === ''"
+        >
+          <Alert 
+            type="warning"
+            title="No Posts Found"
+            msg="Filter parameters returned no results."
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -143,7 +145,8 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router';
+import { ref, watch, computed } from 'vue'
 import SearchBar from "./SearchBar.vue"
 import Alert from "../components/Alert.vue"
 import type { FilterOptions } from '../composables/filterItems'
@@ -162,6 +165,11 @@ const props = withDefaults(
     loadPosts: true,
   }
 )
+
+const route = useRoute()
+const currentRouteName = computed(() => route.name)
+console.log(currentRouteName.value)
+
 
 const posts = ref<Post[]>([])
 
@@ -240,6 +248,7 @@ watch(search, (newSearch) => {
   emit("update:search", newSearch)
 })
 
+
 </script>
 
 <style scoped>
@@ -251,4 +260,4 @@ watch(search, (newSearch) => {
   -ms-user-select: none;
   user-select: none;
 }
-</style>
+</style>../composables/getCurrentRoute

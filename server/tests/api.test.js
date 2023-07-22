@@ -2,14 +2,35 @@ const request = require("supertest");
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 
+// const assert = require('assert');
+
 const serverConfig = require('../serverConfig')
 
 
-serverConfig.setIsProdServer(false);
+// Comment this out to run tests on production database (but don't do this)
+serverConfig.setConnectFunction(connect_to_database_for_testing);
 
 
 console.log("Requiring index")
 const app = require("../index");
+
+let count = -1;
+
+function setCount(c) {
+    count = c;
+    console.log(`Setting count to ${c}`)
+}
+
+async function connect_to_database_for_testing(app, port) { 
+    console.log("Setting up test database");
+    
+    mongod = await MongoMemoryServer.create();
+    const uri = mongod.getUri();
+    
+    await mongoose.connect(uri);
+}
+
+
 
 describe("Test example", () => {
     // test("POST /send", (done) => {
@@ -34,32 +55,12 @@ describe("Test example", () => {
 
 
 
-    // beforeAll(() => {
-    //     console.log("Before all");
-    // });
-
-    // afterAll(() => {
-    //     console.log("After all")
-    // });
-
-
-    beforeAll(async () => {
-
-        console.log("Setting up test database")
-
-        mongod = await MongoMemoryServer.create();
-        const uri = mongod.getUri();
-
-        await mongoose.connect(uri);
-
-    });
-
     afterAll(async () => {
         // TODO: Need to close mongo!!!
         console.log("Cleaning up test database")
-        //     await mongoose.connection.dropDatabase();
-        //     await mongoose.connection.close();
-        //     await mongod.stop();
+        await mongoose.connection.dropDatabase();
+        await mongoose.connection.close();
+        await mongod.stop();
     });
 
 
@@ -69,26 +70,41 @@ describe("Test example", () => {
             .expect("Content-Type", /json/)
             .expect(200)
             .expect((res) => {
-                // console.log(res.body[0]._id);
-
-                let count = res.body.length;
-                // if (res.body.length != 0) throw new Error("Database should be empty");
-                
-                // Create an obj in db
-                
-                if (res.body.length != count + 1) throw new Error("Database should have an item in it");
-                
-                
-                // if (res.body.length > 0 && res.body[0]._id != "64ab312b91c08d51fb737a42") throw new Error("missing data");
-
-                // [{ "_id": "64ab312b91c08d51fb737a42", "title": "test", "body": "bodybody", "date": "2023-07-09T22:14:03.473Z", "images": [], "tagData": [], "interactions": { "likes": 0, "dislikes": 0, "comments": [], "_id": "64ab312b91c08d51fb737a41" }, "__v": 0 }]
-                // res.body.data.length = 1;
-                // res.body.data[0].email = "test@example.com";
+                console.log(res);
+                setCount(res.body.length);
+                console.log(count);
             })
             .end((err, res) => {
                 if (err) return done(err);
-                return done();
             });
+            
+            
+            newPost = {"title": "test", "body": "xxxxxxxx", "date": "2023-07-09T22:14:03.473Z", "images": [], "tagData": [], "interactions": { "likes": 0, "dislikes": 0, "comments": [] }, "__v": 0 }
+
+            request(app)
+                .post("/posts")
+                .send(newPost)
+                .expect("Content-Type", /json/)
+                .expect(200)
+                .expect((res) => {
+                    // TODO: Check that the object comes back with ids that look ok
+                })
+                .end((err, res) => {
+                    if (err) return done(err);
+                });
+
+
+            request(app)
+                .get("/posts")
+                .expect("Content-Type", /json/)
+                .expect(200)
+                .expect((res) => {
+                    if (res.body.length != count + 1) throw new Error(`Did not add new item to database! (count = ${count}, res.body.length = ${res.body.length})`);
+                })
+                .end((err, res) => {
+                    if (err) return done(err);
+                    return done();
+                });     
     });
 
 

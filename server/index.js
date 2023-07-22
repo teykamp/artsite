@@ -1,17 +1,10 @@
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
+
 const bodyParser = require('body-parser');
 require('dotenv').config()
 const serverConfig = require('./serverConfig')
 
-
-
-function connectToDatabase() {
-  mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Production MongoDB connected...'))
-    .catch(err => console.log(err));
-}
 
 
 
@@ -33,16 +26,8 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-function startApp() {
-  app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}!`);
-  });
-}
 
+serverConfig.connectToDatabase(app, PORT);
 
-if (serverConfig.getIsProdServer()) {
-  connectToDatabase();
-  startApp();
-}
 
 module.exports = app;

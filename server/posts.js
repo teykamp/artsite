@@ -17,7 +17,7 @@ router.get('/posts', async (req, res) => {
 // router.get('/post/:id')
 
 router.post('/posts', async (req, res) => {
-  console.log('posting')
+  console.log('posting') 
   const newPost = new Post({ ...req.body });
   newPost.save()
     .then(post => res.json(post))
@@ -80,7 +80,7 @@ router.get('posts/dislikes/decrement/:id', async (req, res) => {
   res.json('dislikes decremented on post' + req.params.id)
 })
 
-router.post('posts/comments/:id', async (req, res) => {
+router.post('comments/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': { $each: [req.body], $position: 0 } } }) 
   res.json('added comment to post' + req.params.id)
 })

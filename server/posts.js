@@ -78,10 +78,6 @@ router.get('/post/:id/likes/decrement', async (req, res) => {
   res.json('likes decremented on post' + req.params.id)
 })
 
-router.get('/hello', (req, res) => {
-  res.send('Server Works')
-})
-
 router.get('/post/:id/dislikes/increment', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.dislikes': 1 } })
   res.json('dislikes incremented on post' + req.params.id)
@@ -97,25 +93,33 @@ router.get('/post/:id/dislikes/decrement', async (req, res) => {
 //   res.json('added comment to post' + req.params.id)
 // })
 
-// Comments
-router.get('/comments/:id', async (req, res) => {
-  Comment.findOne(req.params.id)
+// get comments on one post
+router.get('/comments/:postId', async (req, res) => {
+  Comment.findOne(req.params.postId)
+    .then(comments => res.json(comments))
+    .catch(err => res.status(404).json(err));
+});
+
+// get all comments
+router.get('/comments', async (req, res) => {
+  Comment.find()
     .then(comments => res.json(comments))
     .catch(err => res.status(404).json(err));
 });
 
 // called when post created
-router.post('/comments', async (req, res) => {
+router.post('/comments/', async (req, res) => {
   const newComment = new Comment({ ...req.body });
+  console.log(`posting comment with contents ${newComment}`)
   newComment.save()
     .then(comment => res.json(comment))
     .catch(err => res.status(404).json(err));
 });
 
 // called when comment posted
-router.post('/comments/:id', async (req, res) => {
-  await Post.findByIdAndUpdate(req.params.id, { $push: { 'comments': { $each: [req.body], $position: 0 } } })
-  res.json('added comment to post' + req.params.id)
+router.post('/comments/update/:postId', async (req, res) => {
+  await Post.findByIdAndUpdate(req.params.postId, { $push: { 'comments': { $each: [req.body], $position: 0 } } })
+  res.json('added comment to post' + req.params.postId)
 })
 
 module.exports = router;

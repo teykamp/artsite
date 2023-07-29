@@ -41,8 +41,8 @@
               <v-col class="d-flex justify-start">
                 <v-btn
                     :icon="'mdi-comment-multiple-outline'"
-                    @click="showComments = !showComments"
-                    :disabled="comments.length === 0 ? true : false"
+                    @click="showComments = !showComments, 
+                            fetchComments()"
                   ></v-btn> 
                   <v-btn
                     :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
@@ -108,13 +108,32 @@
             </v-card>
             <v-sheet class="d-flex justify-center">
               <v-col xl="7" lg="8" md="10" sm="12">
-                <div v-for="( comment, index) in post.interactions.comments" :key="comment.date">
+
+                <div
+                  v-if="loadingComments"
+                  class="d-flex flex-column justify-center align-center"
+                >
+                  <v-row class="pa-6">
+                    <v-progress-circular
+                      indeterminate
+                      color="info"
+                    ></v-progress-circular>
+                  </v-row>
+                  <v-row class="pa-6">
+                    <Alert 
+                      type="info"
+                      title="Loading Comments..."
+                      msg=""
+                    />
+                  </v-row>
+                </div>
+                <div v-for="( comment, index) in comments" :key="comment.date">
                   <CommentDisplay 
                     :body="comment.body"
                     :date="comment.date"
                   />
                   <v-divider
-                    v-if="index + 1 < post.interactions.comments.length"
+                    v-if="index + 1 < comments.length"
                     :key="`divider-${index}`"
                   ></v-divider>
                 </div>
@@ -144,6 +163,7 @@ import { ref } from 'vue';
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue';
+import Alert from "./Alert.vue";
 import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'
 import { sortItems } from "../composables/sortItems"
@@ -167,12 +187,23 @@ const props = defineProps<{
     interactions: {
       likes: number,
       dislikes: number,
-      comments: Comment[],
     },
   }
 }>()
 
-const comments = ref(props.post.interactions.comments)
+const comments = ref<Comment[]>([])
+const loadingComments = ref(true)
+
+async function fetchComments() {
+  console.log(`/api/comments/${props.post._id}`)
+  if (comments.value.length === 0) {
+    loadingComments.value = true
+    const { data } = await axios.get(`/api/comments/${props.post._id}`)
+    console.log(data)
+    comments.value = data.reverse()
+    loadingComments.value = false
+  }
+}
 
 let storedLikeValue = 0
 const storedLikeById = localStorage.getItem(props.post._id)
@@ -201,12 +232,12 @@ function removeDislike() {
 }
 
 async function addComment(comment: Comment) {
-  await axios.post('/api/posts/comments/' + props.post._id, comment)
+  await axios.post('/api/posts/comments/update/' + props.post._id, comment)
   .catch(err => {
     console.log(err)
   })
   showCommentBox.value = false
-  props.post.interactions.comments.unshift(comment)
+  comments.value.unshift(comment)
   showSnackbar.value = true
   showComments.value = true
 }

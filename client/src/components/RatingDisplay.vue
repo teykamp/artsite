@@ -47,11 +47,10 @@ function handleLike() {
   if (userLikeValue.value === 1) {
     userLikeValue.value = 0
     props.removeLike()
-  }
-
-  else {
-    if (userLikeValue.value === -1) 
-    props.removeDislike()
+  } else {
+    if (userLikeValue.value === -1) {
+      props.removeDislike()
+    }
     userLikeValue.value = 1
     props.addLike()
   }
@@ -61,11 +60,10 @@ function handleDislike() {
   if (userLikeValue.value === -1) {
     userLikeValue.value = 0
     props.removeDislike()
-  }
-
-  else {
-    if (userLikeValue.value === 1) 
-    props.removeLike()
+  } else {
+    if (userLikeValue.value === 1) {
+      props.removeLike()
+    }
     userLikeValue.value = -1
     props.addDislike()
   }

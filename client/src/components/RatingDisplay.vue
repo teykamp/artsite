@@ -13,7 +13,7 @@
           class="text-center text-body mt-2"
           style=" min-width:20px"
         >  
-        {{ likeDisplay(userLikeValue) }}
+        {{ likeDisplay() }}
         </v-sheet>
       </v-col>
       <v-col>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps<{
   interactions: {
@@ -38,24 +38,10 @@ const props = defineProps<{
   addDislike: () => void,
   removeLike: () => void,
   removeDislike: () => void,
-  storedLikeValue: number,
+  storedLikeValue: 1 | 0 | -1,
 }>()
 
-const userLikeValue = ref(props.storedLikeValue);
-// const ratingValue = computed(() => {
-//   var totalLikes = props.interactions.likes;
-//   var totalDislikes = props.interactions.dislikes;
-
-//   switch (userLikeValue.value) {
-//     case 1:
-//       totalLikes++
-//       break
-//     case -1:
-//       totalDislikes++
-//       break
-//   }
-//   return totalLikes / (totalLikes + totalDislikes) * 100
-// })
+const userLikeValue = ref<1 | 0 | -1>(props.storedLikeValue);
 
 function handleLike() {
   if (userLikeValue.value === 1) {
@@ -85,13 +71,17 @@ function handleDislike() {
   }
 }
 
-function likeDisplay(likeValue: number) {
-  if (Math.abs(likeValue) > 999999) {
-    return likeValue > 0 ? "1M+" : "-1M+"
+const likeCount = computed(() => {
+  const count = props.interactions.likes - props.interactions.dislikes + userLikeValue.value - props.storedLikeValue
+  if (Math.abs(count) > 999999) {
+    return count > 0 ? "1M+" : "-1M+"
+  } else if (Math.abs(count) > 999) {
+    return `${count / 1000}k`
   }
-  else if (Math.abs(likeValue) > 999) {
-    return `${likeValue / 1000}k`
-  }
-  return likeValue
+  return count
+})
+
+function likeDisplay() {
+  return likeCount.value
 }
 </script>

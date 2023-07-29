@@ -181,22 +181,22 @@ if (storedLikeById !== null) {
 }
 
 function addLike() {
-  handleRating('/api/posts/likes/increment/' + props.post._id)
+  handleRating(`/api/post/${props.post._id}/likes/increment/`)
   localStorage.setItem(props.post._id, "1")
 }
 
 function addDislike() {
-  handleRating('/api/posts/dislikes/increment/' + props.post._id)
+  handleRating(`/api/post/${props.post._id}/dislikes/increment/`)
   localStorage.setItem(props.post._id, "-1")
 }
 
 function removeLike() {
-  handleRating('/api/posts/likes/decrement/' + props.post._id)
+  handleRating(`/api/post/${props.post._id}/likes/decrement/`)
   localStorage.setItem(props.post._id, "0")
 }
 
 function removeDislike() {
-  handleRating('/api/posts/dislikes/decrement/' + props.post._id)
+  handleRating(`/api/post/${props.post._id}/dislikes/decrement/`)
   localStorage.setItem(props.post._id, "0")
 }
 

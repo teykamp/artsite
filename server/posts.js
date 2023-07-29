@@ -4,18 +4,28 @@ const Post = require('./postModel.js');
 const Tag = require('./tagModel.js');
 const Comment = require('./commentModel.js');
 
-// const app = express();
-// app.use(express.json());
-
-
+// get all posts
 router.get('/posts', async (req, res) => {
   Post.find()
     .then(posts => res.json(posts))
     .catch(err => res.status(404).json(err));
 });
 
-// router.get('/post/:id')
+// get one post
+router.get('/post/:id', async (req, res) => {
+  Post.findById(req.params.id)
+  .then(post => res.json(post))
+  .catch(err => res.status(404).json(err));
+})
 
+// delete one post
+router.delete('/post/:id', async (req, res) => {
+  Post.deleteOne({ _id: req.params.id })
+    .then(() => res.json({ success: true }))
+    .catch(err => res.status(404).json(err));
+});
+
+// new post
 router.post('/posts', async (req, res) => {
   console.log('posting') 
   const newPost = new Post({ ...req.body });
@@ -27,25 +37,22 @@ router.post('/posts', async (req, res) => {
     });
 });
 
-router.delete('/posts/:id', async (req, res) => {
-  Post.deleteOne({ _id: req.params.id })
-    .then(() => res.json({ success: true }))
-    .catch(err => res.status(404).json(err));
-});
-
+// delete all posts
 router.delete('/posts', async (req, res) => {
   Post.deleteMany()
     .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));
 });
 
-// Tags
+
+// get all tags
 router.get('/tags', async (req, res) => {
   Tag.find()
     .then(tags => res.json(tags))
     .catch(err => res.status(404).json(err));
 });
 
+// new tag
 router.post('/tags', async (req, res) => {
   const newTag = new Tag({ ...req.body });
   newTag.save()
@@ -53,6 +60,7 @@ router.post('/tags', async (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
+// delete tag
 router.delete('/tag/:id', async (req, res) => {
   Tag.deleteOne({ _id: req.params.id })
     .then(() => res.json({ success: true }))
@@ -60,33 +68,34 @@ router.delete('/tag/:id', async (req, res) => {
 });
 
 // Interactions
-router.get('posts/likes/increment/:id', async (req, res) => {
+router.get('/post/:id/likes/increment', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: {'interactions.likes': 1 }})
   res.json('likes incremented on post' + req.params.id)
 })
 
-router.get('posts/likes/decrement/:id', async (req, res) => {
+router.get('/post/:id/likes/decrement', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.likes': -1 } })
   res.json('likes decremented on post' + req.params.id)
 })
 
-router.get('posts/dislikes/increment/:id', async (req, res) => {
+router.get('/hello', (req, res) => {
+  res.send('Server Works')
+})
+
+router.get('/post/:id/dislikes/increment', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.dislikes': 1 } })
   res.json('dislikes incremented on post' + req.params.id)
 })
 
-router.get('posts/dislikes/decrement/:id', async (req, res) => {
+router.get('/post/:id/dislikes/decrement', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $inc: { 'interactions.dislikes': -1 } })
   res.json('dislikes decremented on post' + req.params.id)
 })
 
-router.post('comments/:id', async (req, res) => {
-  await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': { $each: [req.body], $position: 0 } } }) 
-  res.json('added comment to post' + req.params.id)
-})
-
-
-/*
+// router.post('comments/:id', async (req, res) => {
+//   await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': { $each: [req.body], $position: 0 } } })
+//   res.json('added comment to post' + req.params.id)
+// })
 
 // Comments
 router.get('/comments/:id', async (req, res) => {
@@ -108,7 +117,5 @@ router.post('/comments/:id', async (req, res) => {
   await Post.findByIdAndUpdate(req.params.id, { $push: { 'comments': { $each: [req.body], $position: 0 } } })
   res.json('added comment to post' + req.params.id)
 })
-
-*/
 
 module.exports = router;

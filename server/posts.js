@@ -53,7 +53,7 @@ router.post('/tags', async (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
-router.delete('/tags/:id', async (req, res) => {
+router.delete('/tag/:id', async (req, res) => {
   Tag.deleteOne({ _id: req.params.id })
     .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));

@@ -14,11 +14,12 @@ export type Post = {
 
 export type Comment = {
     body: string,
-    date: string,
+    date: Date,
+    postId: string,
 }
 
 export type Tag = {
-  name: string;
-  color: string;
-  _id?: string;
+  name: string,
+  color: string,
+  _id?: string,
 };

@@ -5,10 +5,14 @@ const commentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  comments: { // array created when new post created. array pushed when comment posted
-    type: Array, // each comment has a date and a body
+  body: { 
+    type: String,
     required: false,
-    default: []
+    default: ''
+  },
+  date: {
+    type: Date,
+    required: true
   }
 });
 

@@ -88,11 +88,6 @@ router.get('/post/:id/dislikes/decrement', async (req, res) => {
   res.json('dislikes decremented on post' + req.params.id)
 })
 
-// router.post('comments/:id', async (req, res) => {
-//   await Post.findByIdAndUpdate(req.params.id, { $push: { 'interactions.comments': { $each: [req.body], $position: 0 } } })
-//   res.json('added comment to post' + req.params.id)
-// })
-
 // get comments on one post
 router.get('/comments/:postId', async (req, res) => {
   Comment.find({postId: req.params.postId})
@@ -107,7 +102,7 @@ router.get('/comments', async (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
-// called when post created
+// create new comment
 router.post('/comments/', async (req, res) => {
   const newComment = new Comment({ ...req.body });
   console.log(`posting comment with contents ${newComment}`)

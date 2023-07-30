@@ -233,7 +233,6 @@ function removeDislike() {
 }
 
 async function addComment(comment: Comment) {
-  console.log(comment)
   await axios.post('/api/comments', comment)
   .catch(err => {
     console.log(err)

@@ -166,10 +166,10 @@ async function uploadPost() {
     imageEncodings: [],
     tagData: [],
   }
-  // create empty comment section for posts
-  // posts dont have ID until pulled from DB!!!
-  await axios.post(`/api/comments/`, {postId: 123, comments: []})
-  // await axios.post(`/api/comments/${displayPosts.value[0]._id}`, {id: displayPosts.value[0]._id, comments: []})
+  // // create empty comment section for posts
+  // // posts dont have ID until pulled from DB!!!
+  // await axios.post(`/api/comments/`, {postId: 123, comments: []})
+  // // await axios.post(`/api/comments/${displayPosts.value[0]._id}`, {id: displayPosts.value[0]._id, comments: []})
 
 }
 

@@ -105,7 +105,6 @@ router.get('/comments', async (req, res) => {
 // create new comment
 router.post('/comments/', async (req, res) => {
   const newComment = new Comment({ ...req.body });
-  console.log(`posting comment with contents ${newComment}`)
   newComment.save()
     .then(comment => res.json(comment))
     .catch(err => res.status(404).json(err));

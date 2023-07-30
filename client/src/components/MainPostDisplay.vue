@@ -167,7 +167,7 @@ import { ref } from 'vue';
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue';
-import Alert from "./Alert.vue";
+// import Alert from "./Alert.vue";
 import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'
 import { sortItems } from "../composables/sortItems"
@@ -199,7 +199,6 @@ const comments = ref<Comment[]>([])
 const loadingComments = ref(true)
 
 async function fetchComments() {
-  console.log(`/api/comments/${props.post._id}`)
   if (comments.value.length === 0) {
     loadingComments.value = true
     const { data } = await axios.get(`/api/comments/${props.post._id}`)

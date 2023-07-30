@@ -90,7 +90,7 @@ router.get('/post/:id/dislikes/decrement', async (req, res) => {
 
 // get comments on one post
 router.get('/comments/:postId', async (req, res) => {
-  Comment.find({postId: req.params.postId})
+  Comment.find({ postId: req.params.postId })
     .then(comments => res.json(comments))
     .catch(err => res.status(404).json(err));
 });

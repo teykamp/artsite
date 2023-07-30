@@ -81,6 +81,7 @@
             
             <CommentBox 
               :addComment="addComment"
+              :postId="post._id"
             />
             
           </v-container>
@@ -232,7 +233,8 @@ function removeDislike() {
 }
 
 async function addComment(comment: Comment) {
-  await axios.post('/api/posts/comments/update/' + props.post._id, comment)
+  console.log(comment)
+  await axios.post('/api/comments', comment)
   .catch(err => {
     console.log(err)
   })

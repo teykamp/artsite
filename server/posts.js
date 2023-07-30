@@ -95,7 +95,7 @@ router.get('/post/:id/dislikes/decrement', async (req, res) => {
 
 // get comments on one post
 router.get('/comments/:postId', async (req, res) => {
-  Comment.findOne(req.params.postId)
+  Comment.find({postId: req.params.postId})
     .then(comments => res.json(comments))
     .catch(err => res.status(404).json(err));
 });
@@ -115,11 +115,5 @@ router.post('/comments/', async (req, res) => {
     .then(comment => res.json(comment))
     .catch(err => res.status(404).json(err));
 });
-
-// called when comment posted
-router.post('/comments/update/:postId', async (req, res) => {
-  await Post.findByIdAndUpdate(req.params.postId, { $push: { 'comments': { $each: [req.body], $position: 0 } } })
-  res.json('added comment to post' + req.params.postId)
-})
 
 module.exports = router;

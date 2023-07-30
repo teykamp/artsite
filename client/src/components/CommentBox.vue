@@ -20,9 +20,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Comment } from '../types'
 
 const props = defineProps<{
-  addComment: (comment: string) => void,
+  addComment: (comment: Comment) => void,
+  postId: string,
 }>()
 
 const maxLengthCharacters: number = 256
@@ -31,10 +33,13 @@ const commentArea = ref("")
 const maxCommentLength = ref([v => v.length <= maxLengthCharacters || 'Character Limit Reached'])
 
 function handleCommentPost() {
+  console.log(commentArea.value)
   props.addComment({
     body: commentArea.value.trim(), 
     date: new Date(),
+    postId: props.postId
   })
+
   commentArea.value = ""
 }
 </script>

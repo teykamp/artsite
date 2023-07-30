@@ -90,7 +90,7 @@
         <v-expand-transition>
           <div v-show="showComments">
             <v-card elevation="0">
-              <v-card-subtitle>
+              <v-card-subtitle v-if="comments.length">
                 Sort Comments by
                 <button 
                   v-for="_, key in sortOptions" 
@@ -106,40 +106,43 @@
                   ></v-icon>  
                 </button>
               </v-card-subtitle>
-            </v-card>
-            <v-sheet class="d-flex justify-center">
-              <v-col xl="7" lg="8" md="10" sm="12">
-
-                <div
-                  v-if="loadingComments"
-                  class="d-flex flex-column justify-center align-center"
-                >
-                  <v-row class="pa-6">
-                    <v-progress-circular
-                      indeterminate
-                      color="info"
-                    ></v-progress-circular>
-                  </v-row>
-                  <v-row class="pa-6">
-                    <Alert 
-                      type="info"
-                      title="Loading Comments..."
-                      msg=""
-                    />
-                  </v-row>
-                </div>
-                <div v-for="( comment, index) in comments" :key="comment.date">
-                  <CommentDisplay 
+                <v-sheet class="d-flex justify-center">
+                  <v-col xl="7" lg="8" md="10" sm="12">
+                  <!-- <div
+                    v-if="loadingComments"
+                    class="d-flex flex-column justify-center align-center"
+                  >
+                    <v-row class="pa-6">
+                      <v-progress-circular
+                        indeterminate
+                        color="info"
+                        ></v-progress-circular>
+                      </v-row>
+                      <v-row class="pa-6">
+                        <Alert 
+                        type="info"
+                        title="Loading Comments..."
+                        msg=""
+                        />
+                      </v-row>
+                    </div> -->
+                  <div v-for="( comment, index) in comments" :key="comment.date">
+                    <CommentDisplay 
                     :body="comment.body"
                     :date="comment.date"
-                  />
-                  <v-divider
+                    />
+                    <v-divider
                     v-if="index + 1 < comments.length"
                     :key="`divider-${index}`"
-                  ></v-divider>
-                </div>
-              </v-col>
-            </v-sheet>
+                    ></v-divider>
+                  </div>
+                  <div
+                    v-if="comments.length === 0" 
+                    class="text-center text-caption"
+                  >No Comments Yet!</div>
+                </v-col>
+              </v-sheet>
+            </v-card>
           </div>
         </v-expand-transition>
       </v-card>

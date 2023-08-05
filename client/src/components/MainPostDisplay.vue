@@ -36,45 +36,44 @@
           </v-card-text>
         </div>
         <v-card-actions>
-            <v-row class="d-flex justify-space-between">
-
-              <v-col class="d-flex justify-start">
-                <v-btn
-                    :icon="'mdi-comment-multiple-outline'"
-                    @click="showComments = !showComments, 
-                            fetchComments()"
-                  ></v-btn> 
-                  <v-btn
-                    :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
-                    @click="showCommentBox = !showCommentBox"
-                  ></v-btn>
-              </v-col>
-              <v-col class="d-flex justify-end justify-sm-center" cols="6">
-                <RatingDisplay 
-                    :interactions="post.interactions"
-                    :addLike="addLike"
-                    :addDislike="addDislike"
-                    :removeLike="removeLike"
-                    :removeDislike="removeDislike"
-                    :storedLikeValue="storedLikeValue"
-                  />
-              </v-col>
-              <v-col>
-                <v-sheet
-                  style="min-width: 121px;"
-                  class="float-md-right float-left"
-                >
-                  <v-chip
-                    v-for="tag in post.tagData"
-                    :key="tag"
-                    @click="emit('update:tag-click', tag)"
-                    label
-                    size="x-small"
-                    class="mr-1"
-                  >{{ tag }}</v-chip>
-                </v-sheet>
-              </v-col>
-            </v-row>
+          <v-row class="d-flex justify-space-between">
+            <v-col class="d-flex justify-start">
+              <v-btn
+                :icon="'mdi-comment-multiple-outline'"
+                @click="showComments = !showComments, 
+                        fetchComments()"
+              ></v-btn> 
+              <v-btn
+                :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
+                @click="showCommentBox = !showCommentBox"
+              ></v-btn>
+            </v-col>
+            <v-col class="d-flex justify-end justify-sm-center" cols="6">
+              <RatingDisplay 
+                :interactions="post.interactions"
+                :addLike="addLike"
+                :addDislike="addDislike"
+                :removeLike="removeLike"
+                :removeDislike="removeDislike"
+                :storedLikeValue="storedLikeValue"
+              />
+            </v-col>
+            <v-col>
+              <v-sheet
+                style="min-width: 121px;"
+                class="float-md-right float-left"
+              >
+                <v-chip
+                  v-for="tag in post.tagData"
+                  :key="tag"
+                  @click="emit('update:tag-click', tag)"
+                  label
+                  size="x-small"
+                  class="mr-1"
+                >{{ tag }}</v-chip>
+              </v-sheet>
+            </v-col>
+          </v-row>
         </v-card-actions>
         <v-expand-transition>
           <v-container v-show="showCommentBox">

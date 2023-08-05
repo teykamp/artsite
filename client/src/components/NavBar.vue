@@ -105,7 +105,7 @@
         />
       </v-row>
     </div>
-    <div v-if="currentRouteName in ['admin', '']">
+    <div v-if="currentRouteName === 'home' || currentRouteName === 'admin'">
       <div
         v-if="!loadingPosts"
         class="d-flex flex-column justify-center align-center"
@@ -167,7 +167,7 @@ const props = withDefaults(
 )
 
 const route = useRoute()
-const currentRouteName = computed(() => route.name)
+const currentRouteName = computed(() => route.name || '')
 console.log(currentRouteName.value)
 
 

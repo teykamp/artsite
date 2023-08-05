@@ -175,6 +175,7 @@ async function deletePosts() {
 
 async function deletePost(id: string) {
   await axios.delete(`/api/post/${id}`)
+  await axios.delete(`/api/comments/${id}`)
   displayPosts.value = displayPosts.value.filter((post) => post._id !== id)
 }
 

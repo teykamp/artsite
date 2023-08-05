@@ -110,4 +110,11 @@ router.post('/comments/', async (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
+// delete comments associated to post 
+router.delete('/comments/:postId', async (req, res) => {
+  Comment.deleteMany({ postId: req.params.postId })
+    .then(() => res.json({ success: true }))
+    .catch(err => res.status(404).json(err));
+});
+
 module.exports = router;

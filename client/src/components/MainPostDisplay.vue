@@ -148,16 +148,16 @@
       </v-card>
     </v-layout>
 
-    <v-snackbar
-        v-model="showSnackbar"
-        :timeout="4000"
-        color="success"
-      >
-      <div class="text-center">
-        Comment posted successfully
-      </div>
-      </v-snackbar>
-
+    <Snackbar
+      v-model:showSnackbar="showSnackbar"
+      :timeout="4000"
+    >
+      <template #content>
+        <div class="text-center">
+          Comment posted successfully
+        </div>
+      </template>
+    </Snackbar>
   </div>
 </template>
 
@@ -167,6 +167,7 @@ import { ref } from 'vue';
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue';
+import Snackbar from "./Snackbar.vue";
 // import Alert from "./Alert.vue";
 import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'

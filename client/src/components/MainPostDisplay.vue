@@ -59,8 +59,9 @@
                     append-icon="mdi-share"
                     @click="sharePost()"
                   >Share</v-list-item>
-                  <v-list-item 
-                    append-icon="mdi-arrow-top-right" 
+                  <v-list-item
+                    v-if="post.images.length"
+                    append-icon="mdi-open-in-new" 
                     @click="openImageInNewTab(post.images[0])"
                   >Open</v-list-item>
                 </v-list>

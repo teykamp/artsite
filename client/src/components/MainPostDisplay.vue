@@ -22,8 +22,39 @@
             v-if="post.images"
             :src="post.images[0]"
             style="width: 85vw; min-width: 400px; max-width: 1920px;"
+            @click="showImageDialog = true"
           />
         </div>
+
+        <Dialog 
+          v-model:showDialog="showImageDialog"
+        >
+          <template #content>
+            <img
+              :src="post.images[0]"
+              style="width: 100%; 
+                     max-height: 88vh; 
+                     margin-top: -10px; 
+                     margin-left: -10px;
+                     padding-left: 10px;
+                     margin-bottom: -5px;"
+            />
+          </template>
+          <template #actions>
+            <v-btn 
+              prepend-icon="mdi-close" 
+              @click="showImageDialog = false"
+            >Close</v-btn>
+            <v-btn 
+              prepend-icon="mdi-share" 
+              @click="showImageDialog = false"
+            >Share</v-btn>
+            <v-btn 
+              prepend-icon="mdi-arrow-top-right" 
+              @click="openImageInNewTab(post.images[0])"
+            >Open</v-btn>
+          </template>
+        </Dialog>
 
         <div
           class="d-flex flex-row align-center justify-center"
@@ -47,6 +78,13 @@
                 :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
                 @click="showCommentBox = !showCommentBox"
               ></v-btn>
+              <v-menu>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-button icon="mdi-dots-vertical" v-bind="attrs" v-on="on">
+                    
+                  </v-button>
+                </template>
+              </v-menu>
             </v-col>
             <v-col class="d-flex justify-end justify-sm-center" cols="6">
               <RatingDisplay 
@@ -165,8 +203,9 @@ import axios from "axios";
 import { ref } from 'vue';
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
-import CommentDisplay from './CommentDisplay.vue';
-import Snackbar from "./Snackbar.vue";
+import CommentDisplay from './CommentDisplay.vue'
+import Snackbar from "./Snackbar.vue"
+import Dialog from "./Dialog.vue"
 // import Alert from "./Alert.vue";
 import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'
@@ -194,6 +233,11 @@ const props = defineProps<{
     },
   }
 }>()
+
+const showImageDialog = ref(false)
+function openImageInNewTab(url: string) {
+  window.open(url, '_blank')
+}
 
 const comments = ref<Comment[]>([])
 const loadingComments = ref(true)

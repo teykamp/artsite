@@ -22,40 +22,8 @@
             v-if="post.images"
             :src="post.images[0]"
             style="width: 85vw; min-width: 400px; max-width: 1920px;"
-            @click="showImageDialog = true"
           />
         </div>
-
-        <Dialog 
-          v-model:showDialog="showImageDialog"
-        >
-          <template #content>
-            <img
-              :src="post.images[0]"
-              style="width: 100%; 
-                     max-height: 88vh; 
-                     margin-top: -10px; 
-                     margin-left: -10px;
-                     padding-left: 10px;
-                     margin-bottom: -5px;"
-            />
-          </template>
-          <template #actions>
-            <v-btn 
-              prepend-icon="mdi-close" 
-              @click="showImageDialog = false"
-            >Close</v-btn>
-            <v-btn 
-              prepend-icon="mdi-share" 
-              @click="showImageDialog = false"
-            >Share</v-btn>
-            <v-btn 
-              prepend-icon="mdi-arrow-top-right" 
-              @click="openImageInNewTab(post.images[0])"
-            >Open</v-btn>
-          </template>
-        </Dialog>
-
         <div
           class="d-flex flex-row align-center justify-center"
         >
@@ -79,11 +47,23 @@
                 @click="showCommentBox = !showCommentBox"
               ></v-btn>
               <v-menu>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-button icon="mdi-dots-vertical" v-bind="attrs" v-on="on">
-                    
-                  </v-button>
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    icon="mdi-dots-vertical"
+                    v-bind="props"
+                  >
+                  </v-btn>
                 </template>
+                <v-list>
+                  <v-list-item
+                    append-icon="mdi-share"
+                    @click="sharePost()"
+                  >Share</v-list-item>
+                  <v-list-item 
+                    append-icon="mdi-arrow-top-right" 
+                    @click="openImageInNewTab(post.images[0])"
+                  >Open</v-list-item>
+                </v-list>
               </v-menu>
             </v-col>
             <v-col class="d-flex justify-end justify-sm-center" cols="6">
@@ -234,7 +214,10 @@ const props = defineProps<{
   }
 }>()
 
-const showImageDialog = ref(false)
+function sharePost() {
+  return
+}
+
 function openImageInNewTab(url: string) {
   window.open(url, '_blank')
 }

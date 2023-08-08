@@ -216,7 +216,7 @@ const props = defineProps<{
 }>()
 
 function sharePost() {
-  return
+  navigator.clipboard.writeText(`${window.location.origin}/post/${props.post._id}`)
 }
 
 function openImageInNewTab(url: string) {

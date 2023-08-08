@@ -8,7 +8,6 @@ export type Post = {
     interactions: {
         likes: number,
         dislikes: number,
-        comments?: string[],
     }
 }
 

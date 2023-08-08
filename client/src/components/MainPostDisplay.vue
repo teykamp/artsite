@@ -22,6 +22,7 @@
             v-if="post.images"
             :src="post.images[0]"
             style="width: 85vw; min-width: 400px; max-width: 1920px;"
+            @click="$router.push({ path: `post/${post._id}`})"
           />
         </div>
         <div
@@ -186,7 +187,6 @@ import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue'
 import Snackbar from "./Snackbar.vue"
-import Dialog from "./Dialog.vue"
 // import Alert from "./Alert.vue";
 import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'

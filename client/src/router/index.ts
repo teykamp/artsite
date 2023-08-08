@@ -2,7 +2,8 @@ import { createWebHistory, createRouter } from 'vue-router'
 import Home from '../views/HomeView.vue'
 import About from '../views/AboutView.vue'
 import Admin from '../views/AdminView.vue'
-import notFound from '../views/404.vue'
+import NotFound from '../views/404.vue'
+import SpecificPost from '../views/SpecificPost.vue'
 
 const routes = [
   {
@@ -21,9 +22,14 @@ const routes = [
     component: Admin
   },
   {
+    path: '/post/:postId',
+    name: 'specific',
+    component: SpecificPost
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
-    component: notFound
+    component: NotFound
   },
 ]
 

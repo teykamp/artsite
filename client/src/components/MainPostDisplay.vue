@@ -9,7 +9,7 @@
       >
         <v-card-title
         :class="getCurrentRoute() === `/post/${post._id}` ? '' : 'cursor-pointer hover-underline'"
-          @click="$router.push({ path: `post/${post._id}`})"
+          @click="checkRouteThenPush()"
         >
           {{ post.title }}
         </v-card-title>
@@ -26,7 +26,7 @@
             :src="post.images[0]"
             style="width: 85vw; min-width: 400px; max-width: 1920px;"
             :class="getCurrentRoute() === `/post/${post._id}` ? '' : 'cursor-pointer'"
-            @click="$router.push({ path: `post/${post._id}`})"
+            @click="checkRouteThenPush()"
           />
         </div>
         <div
@@ -187,7 +187,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref } from 'vue';
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue'
@@ -197,10 +197,6 @@ import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'
 import { sortItems } from "../composables/sortItems"
 import type { Comment } from '../types'
-
-const showCommentBox = ref(false)
-const showSnackbar = ref(false)
-const showComments = ref(false)
 
 
 const props = defineProps<{
@@ -218,12 +214,24 @@ const props = defineProps<{
   }
 }>()
 
+const router = useRouter()
+
+const showCommentBox = ref(false)
+const showSnackbar = ref(false)
+const showComments = ref(false)
+
 function sharePost() {
   navigator.clipboard.writeText(`${window.location.origin}/post/${props.post._id}`)
 }
 
 function getCurrentRoute(): string {
-  return useRoute().fullPath
+  return router.currentRoute.value.path
+}
+
+function checkRouteThenPush(): void {
+  if (getCurrentRoute() !== `/post/${props.post._id}`) {
+    router.push({ path: `/post/${props.post._id}` })
+  }
 }
 
 function openImageInNewTab(url: string) {

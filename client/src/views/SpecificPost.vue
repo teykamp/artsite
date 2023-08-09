@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex justify-center">
     <MainPostDisplay :post="post" />
   </div>
 </template>

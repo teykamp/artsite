@@ -7,7 +7,10 @@
         elevation="0"
         style="width: 90vw; min-width: 400px; max-width: 1920px;"
       >
-        <v-card-title>
+        <v-card-title
+        :class="getCurrentRoute() === `/post/${post._id}` ? '' : 'cursor-pointer hover-underline'"
+          @click="$router.push({ path: `post/${post._id}`})"
+        >
           {{ post.title }}
         </v-card-title>
         <v-card-subtitle
@@ -22,6 +25,7 @@
             v-if="post.images"
             :src="post.images[0]"
             style="width: 85vw; min-width: 400px; max-width: 1920px;"
+            :class="getCurrentRoute() === `/post/${post._id}` ? '' : 'cursor-pointer'"
             @click="$router.push({ path: `post/${post._id}`})"
           />
         </div>
@@ -183,6 +187,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref } from 'vue';
+import { useRoute } from 'vue-router'
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue'
@@ -192,8 +197,6 @@ import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'
 import { sortItems } from "../composables/sortItems"
 import type { Comment } from '../types'
-
-
 
 const showCommentBox = ref(false)
 const showSnackbar = ref(false)
@@ -217,6 +220,10 @@ const props = defineProps<{
 
 function sharePost() {
   navigator.clipboard.writeText(`${window.location.origin}/post/${props.post._id}`)
+}
+
+function getCurrentRoute(): string {
+  return useRoute().fullPath
 }
 
 function openImageInNewTab(url: string) {
@@ -298,5 +305,13 @@ const emit = defineEmits([
   -moz-user-select: none; 
   -ms-user-select: none; 
   user-select: none; 
+}
+
+.hover-underline:hover {
+  text-decoration: underline;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

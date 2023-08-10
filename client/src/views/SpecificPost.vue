@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref, created } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import MainPostDisplay from '../components/MainPostDisplay.vue';
 import type { Post } from '../types'

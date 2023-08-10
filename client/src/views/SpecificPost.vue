@@ -1,12 +1,14 @@
 <template>
   <div>
-    <p
-      class="cursor-pointer hover-underline"
-      @click="$router.go(-1)"
-    >← Back</p>
+    <v-btn prepend-icon="mdi-arrow-left" class="ma-2">Back</v-btn>
+
     <div class="d-flex justify-center">
       <MainPostDisplay :post="post" />
     </div>
+    <v-row class="d-flex justify-space-between mt-2">
+      <v-btn prepend-icon="mdi-arrow-left" class="ml-10">Previous Post</v-btn>
+      <v-btn append-icon="mdi-arrow-right" class="mr-10">Next Post</v-btn>
+    </v-row>
   </div>
 </template>
 
@@ -20,6 +22,7 @@ import type { Post } from '../types'
 const post = ref<Post>()
 
 // add cache check code here
+// if all posts are cached can use cached posts as a next and prev buttons
 // add loading icon here 
 async function fetchPost(postId: string): Promise<void> {
   try {
@@ -33,13 +36,3 @@ async function fetchPost(postId: string): Promise<void> {
 const route = useRoute()
 fetchPost(String(route.params.postId))
 </script>
-
-<style scoped>
-.hover-underline:hover {
-  text-decoration: underline;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-</style>

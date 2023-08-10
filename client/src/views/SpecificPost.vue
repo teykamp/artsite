@@ -1,6 +1,12 @@
 <template>
-  <div class="d-flex justify-center">
-    <MainPostDisplay :post="post" />
+  <div>
+    <p
+      class="cursor-pointer hover-underline"
+      @click="$router.go(-1)"
+    >← Back</p>
+    <div class="d-flex justify-center">
+      <MainPostDisplay :post="post" />
+    </div>
   </div>
 </template>
 
@@ -25,5 +31,14 @@ async function fetchPost(postId: string): Promise<void> {
 
 const route = useRoute()
 fetchPost(String(route.params.postId))
-
 </script>
+
+<style scoped>
+.hover-underline:hover {
+  text-decoration: underline;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+</style>

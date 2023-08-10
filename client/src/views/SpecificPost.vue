@@ -20,6 +20,7 @@ import type { Post } from '../types'
 const post = ref<Post>()
 
 // add cache check code here
+// add loading icon here 
 async function fetchPost(postId: string): Promise<void> {
   try {
     const { data } = await axios.get(`/api/post/${postId}`)

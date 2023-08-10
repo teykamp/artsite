@@ -229,6 +229,7 @@ async function fetchPosts() {
   loadingPosts.value = true
   const { data } = await axios.get("/api/posts")
   posts.value = data.reverse()
+  localStorage.setItem("posts", JSON.stringify(data))
   loadingPosts.value = false
 }
 

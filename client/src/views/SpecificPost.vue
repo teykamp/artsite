@@ -1,7 +1,10 @@
 <template>
   <div>
-    <v-btn prepend-icon="mdi-arrow-left" class="ma-2">Back</v-btn>
-
+    <v-btn 
+      prepend-icon="mdi-arrow-left" 
+      class="ma-2"
+      @click="$router.go(-1)"
+    >Back</v-btn>
     <div class="d-flex justify-center">
       <MainPostDisplay :post="post" />
     </div>
@@ -20,8 +23,9 @@ import MainPostDisplay from '../components/MainPostDisplay.vue';
 import type { Post } from '../types'
 
 const post = ref<Post>()
+const postsList = ref<Post[]>([])
+const route = useRoute()
 
-// add cache check code here
 // if all posts are cached can use cached posts as a next and prev buttons
 // add loading icon here 
 async function fetchPost(postId: string): Promise<void> {
@@ -33,6 +37,14 @@ async function fetchPost(postId: string): Promise<void> {
   }
 }
 
-const route = useRoute()
-fetchPost(String(route.params.postId))
+function checkCachedPosts() {
+  if (localStorage.getItem("posts")) {
+    postsList.value = JSON.parse(localStorage.getItem("posts")!)
+    post.value = postsList.value.find(post => post._id === route.params.postId)
+  } else {
+    fetchPost(String(route.params.postId))
+  }
+}
+
+checkCachedPosts()
 </script>

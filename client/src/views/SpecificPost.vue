@@ -6,6 +6,9 @@
       v-model:handleNavDrawer="handleNavDrawer"
       :loadPosts="false"
     />
+    <NavDrawer 
+      :drawer="drawer"
+    />
     <v-btn 
       prepend-icon="mdi-arrow-left" 
       class="ma-2"
@@ -40,6 +43,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import MainPostDisplay from '../components/MainPostDisplay.vue';
 import NavBar from "../components/NavBar.vue";
+import NavDrawer from "../components/NavDrawer.vue";
 import type { Post } from '../types'
 
 const post = ref<Post>()

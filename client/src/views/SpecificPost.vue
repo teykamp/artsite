@@ -51,16 +51,14 @@ async function fetchPost(postId: string): Promise<void> {
 function checkCachedPosts() {
   if (localStorage.getItem("posts")) {
     postsList.value = JSON.parse(localStorage.getItem("posts")!)
-    post.value = postsList.value.find(post => post._id === postId)
+    const postsMap = new Map(postsList.value.map(post => [post._id, post]))
+    post.value = postsMap.get(postId)
     postIndex.value = postsList.value.findIndex(post => post._id === postId)
   } else {
     fetchPost(String(postId))
   }
 }
 
-checkCachedPosts()
-
-// extract checking into separate function
 function onClickNextButton(direction: 1 | -1) {
   if (postIndex.value !== null && checkInRange(direction)) {
     const newIndex = postIndex.value + direction
@@ -80,4 +78,6 @@ function checkInRange(direction: 1 | -1): boolean {
   }
   return false
 }
+
+checkCachedPosts()
 </script>

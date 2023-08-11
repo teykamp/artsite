@@ -9,12 +9,14 @@
       <MainPostDisplay :post="post" />
     </div>
     <v-row class="d-flex justify-space-between mt-2">
-      <v-btn 
+      <v-btn
+        :disabled="!checkInRange(-1)"
         prepend-icon="mdi-arrow-left" 
         class="ml-10"
         @click="onClickNextButton(-1)"
       >Previous Post</v-btn>
-      <v-btn 
+      <v-btn
+        :disabled="!checkInRange(1)"
         append-icon="mdi-arrow-right" 
         class="mr-10"
         @click="onClickNextButton(1)"
@@ -60,13 +62,22 @@ checkCachedPosts()
 
 // extract checking into separate function
 function onClickNextButton(direction: 1 | -1) {
-  if (postIndex.value !== null) {
-    const newIndex = postIndex.value + direction;
-    const isValidIndex = newIndex >= 0 && newIndex < postsList.value.length;
-    if (isValidIndex) {
-      postIndex.value = newIndex;
-      post.value = postsList.value[newIndex];
-    }
+  if (postIndex.value !== null && checkInRange(direction)) {
+    const newIndex = postIndex.value + direction
+    postIndex.value = newIndex
+    post.value = postsList.value[newIndex]
   }
+}
+
+function checkInRange(direction: 1 | -1): boolean {
+  if (postIndex.value !== null) {
+    const newIndex = postIndex.value + direction
+    const isValidIndex = newIndex >= 0 && newIndex < postsList.value.length
+    if (isValidIndex) {
+      return true
+    }
+    return false
+  }
+  return false
 }
 </script>

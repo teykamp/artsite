@@ -9,8 +9,16 @@
       <MainPostDisplay :post="post" />
     </div>
     <v-row class="d-flex justify-space-between mt-2">
-      <v-btn prepend-icon="mdi-arrow-left" class="ml-10">Previous Post</v-btn>
-      <v-btn append-icon="mdi-arrow-right" class="mr-10">Next Post</v-btn>
+      <v-btn 
+        prepend-icon="mdi-arrow-left" 
+        class="ml-10"
+        @click="onClickNextButton(-1)"
+      >Previous Post</v-btn>
+      <v-btn 
+        append-icon="mdi-arrow-right" 
+        class="mr-10"
+        @click="onClickNextButton(1)"
+      >Next Post</v-btn>
     </v-row>
   </div>
 </template>
@@ -24,9 +32,10 @@ import type { Post } from '../types'
 
 const post = ref<Post>()
 const postsList = ref<Post[]>([])
+const postIndex = ref<number | null>(null)
 const route = useRoute()
 const postId = route.params.postId
-// if all posts are cached can use cached posts as a next and prev buttons
+
 // add loading icon here 
 async function fetchPost(postId: string): Promise<void> {
   try {
@@ -41,6 +50,7 @@ function checkCachedPosts() {
   if (localStorage.getItem("posts")) {
     postsList.value = JSON.parse(localStorage.getItem("posts")!)
     post.value = postsList.value.find(post => post._id === postId)
+    postIndex.value = postsList.value.findIndex(post => post._id === postId)
   } else {
     fetchPost(String(postId))
   }
@@ -48,4 +58,14 @@ function checkCachedPosts() {
 
 checkCachedPosts()
 
+function onClickNextButton(direction: 1 | -1) {
+  if (postIndex.value !== null) {
+    const newIndex = postIndex.value + direction;
+    const isValidIndex = newIndex >= 0 && newIndex < postsList.value.length;
+    if (isValidIndex) {
+      postIndex.value = newIndex;
+      post.value = postsList.value[newIndex];
+    }
+  }
+}
 </script>

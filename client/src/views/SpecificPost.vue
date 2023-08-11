@@ -1,8 +1,15 @@
 <template>
   <div>
+    <div style="height:65px"></div>
+
+    <NavBar
+      v-model:handleNavDrawer="handleNavDrawer"
+      :loadPosts="false"
+    />
     <v-btn 
       prepend-icon="mdi-arrow-left" 
       class="ma-2"
+      variant="plain"
       @click="$router.go(-1)"
     >Back</v-btn>
     <div class="d-flex justify-center">
@@ -13,12 +20,14 @@
         :disabled="!checkInRange(-1)"
         prepend-icon="mdi-arrow-left" 
         class="ml-10"
+        variant="plain" 
         @click="onClickNextButton(-1)"
       >Previous Post</v-btn>
       <v-btn
         :disabled="!checkInRange(1)"
         append-icon="mdi-arrow-right" 
         class="mr-10"
+        variant="plain"
         @click="onClickNextButton(1)"
       >Next Post</v-btn>
     </v-row>
@@ -30,6 +39,7 @@ import axios from "axios";
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import MainPostDisplay from '../components/MainPostDisplay.vue';
+import NavBar from "../components/NavBar.vue";
 import type { Post } from '../types'
 
 const post = ref<Post>()
@@ -37,6 +47,11 @@ const postsList = ref<Post[]>([])
 const postIndex = ref<number | null>(null)
 const route = useRoute()
 const postId = route.params.postId
+const drawer = ref(false)
+
+function handleNavDrawer() {
+  drawer.value = !drawer.value
+}
 
 // add loading icon here 
 async function fetchPost(postId: string): Promise<void> {

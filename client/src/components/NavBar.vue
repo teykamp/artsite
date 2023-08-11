@@ -109,7 +109,6 @@
       <div
         v-if="!loadingPosts"
         class="d-flex flex-column justify-center align-center"
-        style="margin-top: 200px"
       >
         <div
           v-if="filteredPosts.length === 0 && posts.length === 0"
@@ -118,6 +117,7 @@
             type="error"
             title="No Posts Yet"
             msg=""
+            style="margin-top: 200px"
           />
         </div>
         <div
@@ -127,6 +127,7 @@
             type="warning"
             title="No Posts Found"
             :msg="'\'' + search + '\'' + ' returned no results.'"
+            style="margin-top: 200px"
           />
         </div>
         <div
@@ -136,6 +137,7 @@
             type="warning"
             title="No Posts Found"
             msg="Filter parameters returned no results."
+            style="margin-top: 200px"
           />
         </div>
       </div>

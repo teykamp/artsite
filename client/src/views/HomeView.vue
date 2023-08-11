@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Nav -->
+    <div style="height: 117px"></div>
     <NavBar 
       v-model:handleNavDrawer="handleNavDrawer"
       @update:posts="handleLoadingPosts($event)"
@@ -10,7 +10,6 @@
     <NavDrawer 
       :drawer="drawer"
     />
-    <div style="margin-top: 100px"></div>
 
     <div class="d-flex flex-column justify-center align-center">
       <div
@@ -27,8 +26,6 @@
           class="my-3"
         ></v-divider>
       </div>
-  
-      
     </div>
   </div>
 </template>

@@ -1,7 +1,6 @@
 <template>
   <div>
     <div style="height:65px"></div>
-
     <NavBar
       v-model:handleNavDrawer="handleNavDrawer"
       :loadPosts="false"

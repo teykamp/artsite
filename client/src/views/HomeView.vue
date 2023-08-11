@@ -23,7 +23,7 @@
         <v-divider
           v-if="index + 1 < displayPosts.length"
           :key="`divider-${index}`"
-          class="my-3"
+          class="mt-3 mb-5"
         ></v-divider>
       </div>
     </div>

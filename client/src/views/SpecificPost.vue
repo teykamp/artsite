@@ -58,6 +58,7 @@ function checkCachedPosts() {
 
 checkCachedPosts()
 
+// extract checking into separate function
 function onClickNextButton(direction: 1 | -1) {
   if (postIndex.value !== null) {
     const newIndex = postIndex.value + direction;

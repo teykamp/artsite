@@ -25,7 +25,7 @@ import type { Post } from '../types'
 const post = ref<Post>()
 const postsList = ref<Post[]>([])
 const route = useRoute()
-
+const postId = route.params.postId
 // if all posts are cached can use cached posts as a next and prev buttons
 // add loading icon here 
 async function fetchPost(postId: string): Promise<void> {
@@ -40,11 +40,12 @@ async function fetchPost(postId: string): Promise<void> {
 function checkCachedPosts() {
   if (localStorage.getItem("posts")) {
     postsList.value = JSON.parse(localStorage.getItem("posts")!)
-    post.value = postsList.value.find(post => post._id === route.params.postId)
+    post.value = postsList.value.find(post => post._id === postId)
   } else {
-    fetchPost(String(route.params.postId))
+    fetchPost(String(postId))
   }
 }
 
 checkCachedPosts()
+
 </script>

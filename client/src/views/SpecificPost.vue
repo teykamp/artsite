@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import axios from "axios"
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MainPostDisplay from '../components/MainPostDisplay.vue'
 import NavBar from "../components/NavBar.vue"
 import NavDrawer from "../components/NavDrawer.vue"
@@ -49,6 +49,7 @@ const post = ref<Post>()
 const postsList = ref<Post[]>([])
 const postIndex = ref<number | null>(null)
 const route = useRoute()
+const router = useRouter()
 const postId = route.params.postId
 const drawer = ref(false)
 
@@ -82,6 +83,7 @@ function onClickNextButton(direction: 1 | -1) {
     const newIndex = postIndex.value + direction
     postIndex.value = newIndex
     post.value = postsList.value[newIndex]
+    router.replace({ path: `/post/${ post.value._id }`} )
   }
 }
 

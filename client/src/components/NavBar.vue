@@ -170,8 +170,6 @@ const props = withDefaults(
 
 const route = useRoute()
 const currentRouteName = computed(() => route.name || '')
-console.log(currentRouteName.value)
-
 
 const posts = ref<Post[]>([])
 

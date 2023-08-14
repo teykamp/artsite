@@ -37,12 +37,12 @@
 </template>
 
 <script setup lang="ts">
-import axios from "axios";
+import axios from "axios"
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import MainPostDisplay from '../components/MainPostDisplay.vue';
-import NavBar from "../components/NavBar.vue";
-import NavDrawer from "../components/NavDrawer.vue";
+import MainPostDisplay from '../components/MainPostDisplay.vue'
+import NavBar from "../components/NavBar.vue"
+import NavDrawer from "../components/NavDrawer.vue"
 import type { Post } from '../types'
 
 const post = ref<Post>()

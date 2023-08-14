@@ -8,7 +8,8 @@
     <NavDrawer 
       :drawer="drawer"
     />
-    <v-btn 
+    <v-btn
+      :disabled="checkHistory()"
       prepend-icon="mdi-arrow-left" 
       class="ma-2"
       variant="plain"
@@ -97,6 +98,10 @@ function checkInRange(direction: 1 | -1): boolean {
     return false
   }
   return false
+}
+
+function checkHistory() {
+  return window.history.length === 2
 }
 
 checkCachedPosts()

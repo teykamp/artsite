@@ -8,8 +8,9 @@
     <NavDrawer 
       :drawer="drawer"
     />
+    <div v-if="checkHistory()" class="my-12"></div>
     <v-btn
-      :disabled="checkHistory()"
+      v-if="!checkHistory()"
       prepend-icon="mdi-arrow-left" 
       class="ma-2"
       variant="plain"

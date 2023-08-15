@@ -17,7 +17,10 @@
       @click="$router.go(-1)"
     >Back</v-btn>
     <div class="d-flex justify-center">
-      <MainPostDisplay :post="post" />
+      <MainPostDisplay 
+        :post="post"
+        :key="post._id"
+      />
     </div>
     <v-row class="d-flex justify-space-between mt-2">
       <v-btn

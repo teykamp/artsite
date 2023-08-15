@@ -251,7 +251,7 @@ async function fetchComments() {
 }
 
 // put into function?
-let storedLikeValue = 0
+let storedLikeValue: 1 | 0 | -1 = 0
 const storedLikeById = localStorage.getItem(props.post._id)
 if (storedLikeById !== null) {
   storedLikeValue = Number(storedLikeById)

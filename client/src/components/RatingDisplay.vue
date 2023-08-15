@@ -45,7 +45,6 @@ const props = defineProps<{
 }>()
 
 const userLikeValue = ref<1 | 0 | -1>(props.storedLikeValue.likes);
-console.log(userLikeValue.value)
 
 function handleLike() {
   if (userLikeValue.value === 1) {

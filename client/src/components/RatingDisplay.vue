@@ -38,13 +38,10 @@ const props = defineProps<{
   addDislike: () => void,
   removeLike: () => void,
   removeDislike: () => void,
-  storedLikeValue: {
-    likes: 1 | 0 | -1,
-    postId: String
-  },
+  storedLikeValue: 1 | 0 | -1,
 }>()
 
-const userLikeValue = ref<1 | 0 | -1>(props.storedLikeValue.likes);
+const userLikeValue = ref<1 | 0 | -1>(props.storedLikeValue);
 
 function handleLike() {
   if (userLikeValue.value === 1) {
@@ -73,7 +70,7 @@ function handleDislike() {
 }
 
 const likeCount = computed(() => {
-  const count = props.interactions.likes - props.interactions.dislikes + userLikeValue.value - props.storedLikeValue.likes
+  const count = props.interactions.likes - props.interactions.dislikes + userLikeValue.value - props.storedLikeValue
   if (Math.abs(count) > 999999) {
     return count > 0 ? "1M+" : "-1M+"
   } else if (Math.abs(count) > 999) {

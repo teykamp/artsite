@@ -192,7 +192,6 @@ import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
 import CommentDisplay from './CommentDisplay.vue'
 import Snackbar from "./Snackbar.vue"
-// import Alert from "./Alert.vue";
 import { dateDisplay } from '../composables/dateDisplay'
 import { handleRating } from '../functions/handleRating'
 import { sortItems } from "../composables/sortItems"
@@ -251,10 +250,14 @@ async function fetchComments() {
   }
 }
 
-let storedLikeValue = 0
+// put into function?
+let storedLikeValue = {
+  postId: props.post._id,
+  likes: 0,
+}
 const storedLikeById = localStorage.getItem(props.post._id)
 if (storedLikeById !== null) {
-  storedLikeValue = Number(storedLikeById)
+  storedLikeValue.likes = Number(storedLikeById)
 }
 
 function addLike() {

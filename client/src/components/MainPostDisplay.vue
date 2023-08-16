@@ -72,6 +72,7 @@
                 </v-list>
               </v-menu>
             </v-col>
+            
             <v-col class="d-flex justify-end justify-sm-center" cols="6">
               <RatingDisplay 
                 :interactions="post.interactions"
@@ -151,8 +152,8 @@
                     </div> -->
                   <div v-for="( comment, index) in comments" :key="comment.date">
                     <CommentDisplay 
-                    :body="comment.body"
-                    :date="comment.date"
+                      :body="comment.body"
+                      :date="comment.date"
                     />
                     <v-divider
                     v-if="index + 1 < comments.length"
@@ -172,12 +173,22 @@
     </v-layout>
 
     <Snackbar
-      v-model:showSnackbar="showSnackbar"
+      v-model:showSnackbar="showCommentSnackbar"
       :timeout="4000"
     >
       <template #content>
         <div class="text-center">
           Comment posted successfully
+        </div>
+      </template>
+    </Snackbar>
+    <Snackbar
+      v-model:showSnackbar="showShareSnackbar"
+      :timeout="4000"
+    >
+      <template #content>
+        <div class="text-center">
+          Link Copied to Clipboard
         </div>
       </template>
     </Snackbar>
@@ -216,11 +227,14 @@ const props = defineProps<{
 const router = useRouter()
 
 const showCommentBox = ref(false)
-const showSnackbar = ref(false)
+const showCommentSnackbar = ref(false)
 const showComments = ref(false)
+
+const showShareSnackbar = ref(false)
 
 function sharePost() {
   navigator.clipboard.writeText(`${window.location.origin}/post/${props.post._id}`)
+  showShareSnackbar.value = true
 }
 
 function getCurrentRoute(): string {
@@ -284,7 +298,7 @@ async function addComment(comment: Comment) {
   })
   showCommentBox.value = false
   comments.value.unshift(comment)
-  showSnackbar.value = true
+  showCommentSnackbar.value = true
   showComments.value = true
 }
 

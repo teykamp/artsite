@@ -19,7 +19,7 @@
     <div class="d-flex justify-center">
       <MainPostDisplay 
         :post="post"
-        :key="post._id"
+        :key="post?._id"
       />
     </div>
     <v-row class="d-flex justify-space-between mt-2">
@@ -50,7 +50,7 @@ import NavBar from "../components/NavBar.vue"
 import NavDrawer from "../components/NavDrawer.vue"
 import type { Post } from '../types'
 
-const post = ref<Post>()
+const post = ref<Post & { _id: string }>()
 const postsList = ref<Post[]>([])
 const postIndex = ref<number | null>(null)
 const route = useRoute()

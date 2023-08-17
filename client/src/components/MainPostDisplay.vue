@@ -266,7 +266,7 @@ async function fetchComments() {
 
 // put into function?
 const storedLikeById = localStorage.getItem(props.post._id)
-let storedLikeValue: 1 | 0 | -1 = storedLikeById !== null ? JSON.parse(storedLikeById).userLikeValue : 0
+const storedLikeValue: -1 | 0 | 1 = storedLikeById === null ? 0 : JSON.parse(storedLikeById).userLikeValue
 
 function addLike() {
   handleRating(`/api/post/${props.post._id}/likes/increment/`)

@@ -102,9 +102,11 @@
       <template #content> Are you sure you want to delete ALL posts?</template>
       <template #actions>
         <v-btn
+          color="red"
           @click="areYouSure(deletePosts)"
         >Delete All Posts</v-btn>
         <v-btn
+          color="primary"
           @click="areYouSure()"
         >Cancel</v-btn>
       </template>

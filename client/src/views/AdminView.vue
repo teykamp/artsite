@@ -94,10 +94,21 @@
     />
     <v-btn
       v-if="displayPosts.length"
-      @click="deletePosts"
       class="my-10"
       color="error"
+      @click="showAreYouSureDialog = true"
     >delete all posts ({{ displayPosts.length }})</v-btn>
+    <Dialog v-model:showDialog="showAreYouSureDialog">
+      <template #content> Are you sure you want to delete ALL posts?</template>
+      <template #actions>
+        <v-btn
+          @click="areYouSure(deletePosts)"
+        >Delete All Posts</v-btn>
+        <v-btn
+          @click="areYouSure()"
+        >Cancel</v-btn>
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -108,11 +119,23 @@ import NavBar from "../components/NavBar.vue";
 import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import TagInterface from "../components/TagInterface.vue";
 import NavDrawer from "../components/NavDrawer.vue";
+import Dialog from "../components/Dialog.vue";
 import { ref, watch, computed } from "vue";
 import type { Post } from "../types"
 
 
 const displayPosts = ref([]) // type this array
+
+const showAreYouSureDialog = ref(false)
+
+// move to functions
+function areYouSure(functionCall?: () => void | Promise<void>) {
+  if (functionCall) {
+    // figure out how to pass variables
+    functionCall()
+  }
+  showAreYouSureDialog.value = false
+}
 
 const addPost = ref({
   title: "",

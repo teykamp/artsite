@@ -48,7 +48,7 @@ import { useRoute, useRouter } from 'vue-router'
 import MainPostDisplay from '../components/MainPostDisplay.vue'
 import NavBar from "../components/NavBar.vue"
 import NavDrawer from "../components/NavDrawer.vue"
-import type { Post } from '../types'
+import type { Post } from '?../types'
 
 const post = ref<Post & { _id: string }>()
 const postsList = ref<Post[]>([])
@@ -88,7 +88,7 @@ function onClickNextButton(direction: 1 | -1) {
     const newIndex = postIndex.value + direction
     postIndex.value = newIndex
     post.value = postsList.value[newIndex]
-    router.replace({ path: `/post/${ post.value._id }`} )
+    router.replace({ path: `/post/${ post.value?._id }`} )
   }
 }
 

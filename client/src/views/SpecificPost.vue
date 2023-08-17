@@ -48,7 +48,7 @@ import { useRoute, useRouter } from 'vue-router'
 import MainPostDisplay from '../components/MainPostDisplay.vue'
 import NavBar from "../components/NavBar.vue"
 import NavDrawer from "../components/NavDrawer.vue"
-import type { Post } from '?../types'
+import type { Post } from '../types'
 
 const post = ref<Post & { _id: string }>()
 const postsList = ref<Post[]>([])

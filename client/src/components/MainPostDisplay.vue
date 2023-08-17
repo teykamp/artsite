@@ -265,30 +265,27 @@ async function fetchComments() {
 }
 
 // put into function?
-let storedLikeValue: 1 | 0 | -1 = 0
 const storedLikeById = localStorage.getItem(props.post._id)
-if (storedLikeById !== null) {
-  storedLikeValue = Number(storedLikeById)
-}
+let storedLikeValue: 1 | 0 | -1 = storedLikeById !== null ? JSON.parse(storedLikeById).userLikeValue : 0
 
 function addLike() {
   handleRating(`/api/post/${props.post._id}/likes/increment/`)
-  localStorage.setItem(props.post._id, "1")
+  localStorage.setItem(props.post._id, JSON.stringify({ userLikeValue: 1 }))
 }
 
 function addDislike() {
   handleRating(`/api/post/${props.post._id}/dislikes/increment/`)
-  localStorage.setItem(props.post._id, "-1")
+  localStorage.setItem(props.post._id, JSON.stringify({ userLikeValue: -1 }))
 }
 
 function removeLike() {
   handleRating(`/api/post/${props.post._id}/likes/decrement/`)
-  localStorage.setItem(props.post._id, "0")
+  localStorage.setItem(props.post._id, JSON.stringify({ userLikeValue: 0 }))
 }
 
 function removeDislike() {
   handleRating(`/api/post/${props.post._id}/dislikes/decrement/`)
-  localStorage.setItem(props.post._id, "0")
+  localStorage.setItem(props.post._id, JSON.stringify({ userLikeValue: 0 }))
 }
 
 async function addComment(comment: Comment) {

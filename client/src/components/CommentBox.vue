@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Comment } from '../types'
+import { onBeforeRouteLeave } from 'vue-router'
 
 const props = defineProps<{
   addComment: (comment: Comment) => void,
@@ -41,4 +42,13 @@ function handleCommentPost() {
 
   commentArea.value = ""
 }
+
+onBeforeRouteLeave((to, from) => {
+  if (commentArea.value) {
+    const answer = window.confirm(
+      'Do you really want to leave? you have unsaved changes!'
+    )
+    if (!answer) return false
+  }
+})
 </script>

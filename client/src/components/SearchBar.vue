@@ -31,7 +31,7 @@ const userSearch = computed({
 })
 
 function clearSearch(): void {
-  userSearch.value = ''
+  userSearch.value = ""
 }
 </script>
 

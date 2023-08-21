@@ -150,14 +150,17 @@
                         />
                       </v-row>
                     </div> -->
-                  <div v-for="( comment, index) in comments" :key="comment.date">
+                  <div 
+                    v-for="( comment, index) in comments" 
+                    :key="comment._id"
+                  >
                     <CommentDisplay 
                       :body="comment.body"
                       :date="comment.date"
                     />
                     <v-divider
-                    v-if="index + 1 < comments.length"
-                    :key="`divider-${index}`"
+                      v-if="index + 1 < comments.length"
+                      :key="`divider-${index}`"
                     ></v-divider>
                   </div>
                   <div

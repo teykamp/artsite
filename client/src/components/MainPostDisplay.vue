@@ -8,7 +8,7 @@
         style="width: 90vw; min-width: 400px; max-width: 1920px;"
       >
         <v-card-title
-        :class="getCurrentRoute() === `/post/${post._id}` ? '' : 'cursor-pointer hover-underline'"
+        :class="currentRoute === `/post/${post._id}` ? '' : 'cursor-pointer hover-underline'"
           @click="checkRouteThenPush()"
         >
           {{ post.title }}
@@ -25,7 +25,7 @@
             v-if="post.images"
             :src="post.images[0]"
             style="width: 85vw; min-width: 400px; max-width: 1920px;"
-            :class="getCurrentRoute() === `/post/${post._id}` ? '' : 'cursor-pointer'"
+            :class="currentRoute === `/post/${post._id}` ? '' : 'cursor-pointer'"
             @click="checkRouteThenPush()"
           />
         </div>
@@ -197,7 +197,7 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router'
 import CommentBox from './CommentBox.vue'
 import RatingDisplay from './RatingDisplay.vue'
@@ -239,12 +239,10 @@ function sharePost() {
   showShareSnackbar.value = true
 }
 
-function getCurrentRoute() {
-  return router.currentRoute.value.path
-}
+const currentRoute = computed(() => router.currentRoute.value.path)
 
 function checkRouteThenPush() {
-  if (getCurrentRoute() !== `/post/${props.post._id}`) {
+  if (currentRoute.value !== `/post/${props.post._id}`) {
     router.push({ path: `/post/${props.post._id}` })
   }
 }

@@ -1,10 +1,13 @@
 <template>
 <div>
   <v-card
-    elevation="0"
     :subtitle="date"
     :text="body"
-    style="max-width: 72ch; white-space: pre-wrap;"
+    elevation="0"
+    style="{
+      'max-width': '72ch',
+      'white-space': 'pre-wrap'
+    }"
   >
   </v-card>
 </div>

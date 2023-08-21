@@ -8,25 +8,25 @@
         style="width: 90vw; min-width: 400px; max-width: 1920px;"
       >
         <v-card-title
-        :class="currentRoute === `/post/${post._id}` ? '' : 'cursor-pointer hover-underline'"
           @click="checkRouteThenPush()"
+          :class="currentRoute === `/post/${post._id}` ? '' : 'cursor-pointer hover-underline'"
         >
           {{ post.title }}
         </v-card-title>
-        <v-card-subtitle
-          class="mb-2"
-        >
+        <v-card-subtitle class="mb-2">
           Posted on {{ date }}
         </v-card-subtitle>
-        <div
-          class="d-flex flex-row align-center justify-center"
-        >
+        <div class="d-flex flex-row align-center justify-center">
           <img
             v-if="post.images"
-            :src="post.images[0]"
-            style="width: 85vw; min-width: 400px; max-width: 1920px;"
-            :class="currentRoute === `/post/${post._id}` ? '' : 'cursor-pointer'"
             @click="checkRouteThenPush()"
+            :src="post.images[0]"
+            :class="currentRoute === `/post/${post._id}` ? '' : 'cursor-pointer'"
+            style="{
+              'width': '85vw',
+              'min-width': '400px',
+              'max-width': '1920px'
+            }"
           />
         </div>
         <div
@@ -34,7 +34,10 @@
         >
           <v-card-text
             v-if="post.body"
-            style="max-width: 75ch; white-space: pre-wrap;"
+            style="{
+              'max-width': '75ch'
+              'white-space': 'pre-wrap'
+            }"
           >
             {{ post.body }}
           </v-card-text>
@@ -43,37 +46,40 @@
           <v-row class="d-flex justify-space-between">
             <v-col class="d-flex justify-start">
               <v-btn
-                :icon="'mdi-comment-multiple-outline'"
                 @click="showComments = !showComments, 
                         fetchComments()"
+                :icon="'mdi-comment-multiple-outline'"
               ></v-btn> 
               <v-btn
-                :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
                 @click="showCommentBox = !showCommentBox"
+                :icon="showCommentBox ? 'mdi-comment-remove-outline' : 'mdi-comment-plus-outline'"
               ></v-btn>
               <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn
-                    icon="mdi-dots-vertical"
                     v-bind="props"
+                    icon="mdi-dots-vertical"
                   >
                   </v-btn>
                 </template>
                 <v-list>
                   <v-list-item
-                    append-icon="mdi-share"
                     @click="sharePost()"
+                    append-icon="mdi-share"
                   >Share</v-list-item>
                   <v-list-item
                     v-if="post.images.length"
-                    append-icon="mdi-open-in-new" 
                     @click="openImageInNewTab(post.images[0])"
+                    append-icon="mdi-open-in-new" 
                   >Open</v-list-item>
                 </v-list>
               </v-menu>
             </v-col>
             
-            <v-col class="d-flex justify-end justify-sm-center" cols="6">
+            <v-col
+              class="d-flex justify-end justify-sm-center" 
+              cols="6"
+            >
               <RatingDisplay 
                 :interactions="post.interactions"
                 :addLike="addLike"
@@ -95,7 +101,9 @@
                   label
                   size="x-small"
                   class="mr-1"
-                >{{ tag }}</v-chip>
+                >
+                  {{ tag }}
+                </v-chip>
               </v-sheet>
             </v-col>
           </v-row>
@@ -119,9 +127,9 @@
                 <button 
                   v-for="_, key in sortOptions" 
                   :key="key" 
+                  @click="setKey(key)"
                   class="noselect text-decoration-underline"
                   style="cursor: pointer;"
-                  @click="setKey(key)"
                 >
                   {{ key }}
                   <v-icon

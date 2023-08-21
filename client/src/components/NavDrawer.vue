@@ -8,10 +8,10 @@
         <v-list-item
           v-for="(value, key) in navLinks"
           :key="key"
-          :title="key" 
-          class="d-flex justify-center"
-          :prepend-icon="value.icon"
           @click="$router.push(value.link)"
+          :title="key" 
+          :prepend-icon="value.icon"
+          class="d-flex justify-center"
         ></v-list-item>
       </v-list>
     </v-navigation-drawer>

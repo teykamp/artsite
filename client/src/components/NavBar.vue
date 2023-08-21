@@ -9,10 +9,10 @@
         <v-btn 
           v-for="(value, key) in navLinks"
           :key="key"
+          @click="$router.push(value.link)"
           :text="value.buttonType === 'text'"
           :icon="value.buttonType === 'icon'"
           :prepend-icon="value.icon"
-          @click="$router.push(value.link)"
         >
         {{value.buttonType === 'text' ? key : ''}}
           <v-icon 
@@ -22,47 +22,59 @@
         </v-btn>
       </div>
       <template 
+        v-if="loadPosts"
         v-slot:append
-        v-if="loadPosts">
+      >
     
-        <v-btn icon="mdi-magnify" @click="showSearchBar = !showSearchBar"></v-btn>
+        <v-btn
+          @click="showSearchBar = !showSearchBar"
+          icon="mdi-magnify" 
+        ></v-btn>
     
         <div class="text-center">
-          <v-menu open-on-hover :close-on-content-click="false" width="120">
+          <v-menu 
+            :close-on-content-click="false" 
+            open-on-hover 
+            width="120"
+          >
             <template v-slot:activator="{ props }">
               <v-btn
-                icon="mdi-sort"
                 v-bind="props"
+                icon="mdi-sort"
               ></v-btn>
             </template>
             <v-list>
               <v-list-item 
                 v-for="_, key in sortOptions" 
                 :key="key" 
-                class="text-overline noselect" 
                 @click="setKey(key)"
+                class="text-overline noselect" 
               >
               <v-icon
-                :style="key === activeSortKey ? '' : 'opacity: 0;'"
                 :icon="ascending ? 'mdi-arrow-up': 'mdi-arrow-down'"
+                :style="key === activeSortKey ? '' : 'opacity: 0;'"
               ></v-icon>
                 {{ key }}
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-menu open-on-hover :close-on-content-click="false" width="160">
+          <v-menu
+            :close-on-content-click="false" 
+            open-on-hover 
+            width="160"
+          >
               <template v-slot:activator="{ props }">
                 <v-btn
-                  icon="mdi-filter"
                   v-bind="props"
+                  icon="mdi-filter"
                 ></v-btn>
               </template>
               <v-list>
                 <v-list-item 
                   v-for="_, key in filterOptions" 
                   :key="key" 
-                  class="text-overline noselect" 
                   @click="updateFilter(key)"
+                  class="text-overline noselect" 
                 >
                 <v-icon
                   :style="activeFilterKeys.includes(key)  ? '' : 'opacity: 0;'"
@@ -110,9 +122,7 @@
         v-if="!loadingPosts"
         class="d-flex flex-column justify-center align-center"
       >
-        <div
-          v-if="filteredPosts.length === 0 && posts.length === 0"
-        >
+        <div v-if="filteredPosts.length === 0 && posts.length === 0">
           <Alert 
             type="error"
             title="No Posts Yet"
@@ -120,9 +130,7 @@
             style="margin-top: 200px"
           />
         </div>
-        <div
-          v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search !== ''"
-        >
+        <div v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search !== ''">
           <Alert 
             type="warning"
             title="No Posts Found"
@@ -130,9 +138,7 @@
             style="margin-top: 200px"
           />
         </div>
-        <div
-          v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search === ''"
-        >
+        <div v-else-if="filteredPosts.length === 0 && posts.length !== 0 && search === ''">
           <Alert 
             type="warning"
             title="No Posts Found"

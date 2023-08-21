@@ -34,7 +34,10 @@
       class="transition d-flex flex-column"
     >
       <v-divider class="my-3"></v-divider>
-      <p style="max-height: 100px; overflow: auto">
+      <p style="{
+        'max-height': '100px',
+        'overflow': 'auto'
+      }">
         {{ post.body }}
       </p>
       <v-chip

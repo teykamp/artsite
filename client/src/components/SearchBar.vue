@@ -2,11 +2,11 @@
   <div>
     <v-text-field 
       v-model="userSearch" 
-      prepend-inner-icon="mdi-magnify"
+      @click:append-inner="clearSearch"
       :append-inner-icon="userSearch ? 'mdi-close-circle' : ''" 
+      prepend-inner-icon="mdi-magnify"
       placeholder="Search..." 
       class="mt-9"
-      @click:append-inner="clearSearch"
     ></v-text-field>
     <div class="mb-3"></div>  
   </div>

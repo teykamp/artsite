@@ -3,9 +3,9 @@
     <v-row>
       <v-col>
         <v-btn 
+          @click="handleLike"
           :icon="'mdi-thumb-up'+ (userLikeValue === 1 ? '' : '-outline')" 
           class="float-right"
-          @click="handleLike"
         ></v-btn>
       </v-col>
       <v-col>
@@ -18,8 +18,8 @@
       </v-col>
       <v-col>
         <v-btn 
-          :icon="'mdi-thumb-down'+ (userLikeValue === -1 ? '' : '-outline')"
           @click="handleDislike"
+          :icon="'mdi-thumb-down'+ (userLikeValue === -1 ? '' : '-outline')"
         ></v-btn>
       </v-col>
     </v-row>

@@ -2,17 +2,17 @@
   <div>
     <v-textarea
       v-model="commentArea"
+      :rules="maxCommentLength"
       label="New Comment"
       auto-grow
-      :rules="maxCommentLength"
       counter="256"
       class="mb-2 mx-8"
     ></v-textarea>
     <div class="d-flex flex-column justify-center align-center">
       <v-btn
+        @click="handleCommentPost"
         :disabled="(commentArea && commentArea.length <= maxLengthCharacters) ? false : true"
         color="primary"
-        @click="handleCommentPost"
       >Post</v-btn>
     </div>
   </div>

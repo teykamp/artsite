@@ -11,10 +11,10 @@
     <div v-if="checkHistory()" class="my-12"></div>
     <v-btn
       v-if="!checkHistory()"
-      prepend-icon="mdi-arrow-left" 
-      class="ma-2"
-      variant="plain"
       @click="$router.go(-1)"
+      prepend-icon="mdi-arrow-left" 
+      variant="plain"
+      class="ma-2"
     >Back</v-btn>
     <div class="d-flex justify-center">
       <MainPostDisplay 
@@ -24,18 +24,18 @@
     </div>
     <v-row class="d-flex justify-space-between mt-2">
       <v-btn
+        @click="onClickNextButton(-1)"
         :disabled="!checkInRange(-1)"
         prepend-icon="mdi-arrow-left" 
-        class="ml-10"
         variant="plain" 
-        @click="onClickNextButton(-1)"
+        class="ml-10"
       >Previous Post</v-btn>
       <v-btn
+        @click="onClickNextButton(1)"
         :disabled="!checkInRange(1)"
         append-icon="mdi-arrow-right" 
-        class="mr-10"
         variant="plain"
-        @click="onClickNextButton(1)"
+        class="mr-10"
       >Next Post</v-btn>
     </v-row>
   </div>

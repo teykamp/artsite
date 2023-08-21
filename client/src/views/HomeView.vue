@@ -17,8 +17,8 @@
         :key="post._id"
       >
         <MainPostDisplay 
-          :post="post"
           @update:tag-click="updateSearchOnTagClick($event)"
+          :post="post"
         />
         <v-divider
           v-if="index + 1 < displayPosts.length"

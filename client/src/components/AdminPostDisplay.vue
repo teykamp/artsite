@@ -17,7 +17,7 @@
       </v-icon>
     </div>
     <p>
-      {{ dateDisplay(post.date) }}
+      {{ date }}
     </p>
     <div style="height: 20px;">
       <i
@@ -62,6 +62,7 @@ const props = defineProps<{
   }
 }>()
 
+const { date } = dateDisplay(props.post.date)
 const emits = defineEmits<{
   delete: () => void
 }>()

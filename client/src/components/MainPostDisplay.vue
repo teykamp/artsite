@@ -16,7 +16,7 @@
         <v-card-subtitle
           class="mb-2"
         >
-          Posted on {{ dateDisplay(post.date) }}
+          Posted on {{ date }}
         </v-card-subtitle>
         <div
           class="d-flex flex-row align-center justify-center"
@@ -224,6 +224,8 @@ const props = defineProps<{
   }
 }>()
 
+const { date } = dateDisplay(props.post.date)
+
 const router = useRouter()
 
 const showCommentBox = ref(false)
@@ -237,11 +239,11 @@ function sharePost() {
   showShareSnackbar.value = true
 }
 
-function getCurrentRoute(): string {
+function getCurrentRoute() {
   return router.currentRoute.value.path
 }
 
-function checkRouteThenPush(): void {
+function checkRouteThenPush() {
   if (getCurrentRoute() !== `/post/${props.post._id}`) {
     router.push({ path: `/post/${props.post._id}` })
   }

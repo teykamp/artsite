@@ -2,7 +2,7 @@
 <div>
   <v-card
     elevation="0"
-    :subtitle="dateDisplay(date.toString())"
+    :subtitle="date"
     :text="body"
     style="max-width: 72ch; white-space: pre-wrap;"
   >
@@ -18,4 +18,5 @@ const props = defineProps<{
   date: string
 }>()
 
+const { date } = dateDisplay(props.date)
 </script>

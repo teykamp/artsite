@@ -9,17 +9,30 @@
       'white-space': 'pre-wrap'
     }"
   >
-    <div v-if="replies.length">
-      <CommentDisplay v-for="reply in replies" :body="reply.body" :date="reply.date" />
+    <v-btn
+      v-if="replies.length"
+      @click="showReplies = !showReplies"
+      variant="text"
+      size="x-small"
+    >{{ showReplies ? 'Hide Replies' : 'Show Replies' }}</v-btn>
+    <div 
+      v-if="replies.length" 
+      v-show="showReplies"
+    >
+      <CommentDisplay 
+        v-for="reply in replies" 
+        :body="reply.body" 
+        :date="reply.date" 
+      />
     </div>
   </v-card>
 </div>
 </template>
 
 <script setup lang="ts">
+import axios from 'axios'
 import { ref } from 'vue'
 import { dateDisplay } from '../composables/dateDisplay'
-import axios from 'axios'
 import type { Comment } from '../types'
 
 const props = defineProps<{
@@ -31,15 +44,19 @@ const props = defineProps<{
 
 const replies = ref<Comment[]>([])
 const loadingReplies = ref(false)
+const showReplies = ref(true)
 
+// can use function for no repeats
 async function fetchReplies() {
-  if (replies.value.length === 0) {
+  if (replies.value.length === 0 && props.id !== undefined) {
     loadingReplies.value = true
     const { data } = await axios.get(`/api/comments/${props.id}`)
     replies.value = data.reverse()
     loadingReplies.value = false
   }
 }
+
+fetchReplies()
 
 const { date } = dateDisplay(props.date)
 </script>

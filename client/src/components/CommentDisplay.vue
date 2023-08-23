@@ -36,7 +36,6 @@ async function fetchReplies() {
   if (replies.value.length === 0) {
     loadingReplies.value = true
     const { data } = await axios.get(`/api/comments/${props.id}`)
-    console.log(data)
     replies.value = data.reverse()
     loadingReplies.value = false
   }

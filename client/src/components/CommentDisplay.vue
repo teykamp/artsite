@@ -20,7 +20,8 @@
       v-show="showReplies"
     >
       <CommentDisplay 
-        v-for="reply in replies" 
+        v-for="reply in replies"
+        :key="reply._id"
         :body="reply.body" 
         :date="reply.date" 
       />

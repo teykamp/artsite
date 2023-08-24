@@ -165,7 +165,7 @@
                     <CommentDisplay 
                       :body="comment.body"
                       :date="comment.date"
-                      :id="comment._id"
+                      :parentId="comment._id"
                     />
                     <v-divider
                       v-if="index + 1 < comments.length"

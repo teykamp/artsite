@@ -25,7 +25,7 @@ import { onBeforeRouteLeave } from 'vue-router'
 
 const props = defineProps<{
   addComment: (comment: Comment) => void,
-  postId: string,
+  parentId: string,
 }>()
 
 const maxLengthCharacters: number = 256
@@ -37,7 +37,7 @@ function handleCommentPost() {
   props.addComment({
     body: commentArea.value.trim(), 
     date: new Date(),
-    postId: props.postId
+    parentId: props.parentId
   })
 
   commentArea.value = ""

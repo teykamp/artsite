@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const commentSchema = mongoose.Schema({
-  postId: {
+  parentId: {
+    // the id of the post/comment it is referencing
     type: String,
     required: true
   },

@@ -113,7 +113,7 @@
             
             <CommentBox 
               :addComment="addComment"
-              :postId="post._id"
+              :parentId="post._id"
             />
             
           </v-container>

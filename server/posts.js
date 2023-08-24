@@ -89,8 +89,8 @@ router.get('/post/:id/dislikes/decrement', async (req, res) => {
 })
 
 // get comments on one post
-router.get('/comments/:postId', async (req, res) => {
-  Comment.find({ postId: req.params.postId })
+router.get('/comments/:parentId', async (req, res) => {
+  Comment.find({ parentId: req.params.parentId })
     .then(comments => res.json(comments))
     .catch(err => res.status(404).json(err));
 });
@@ -111,8 +111,8 @@ router.post('/comments/', async (req, res) => {
 });
 
 // delete comments associated to post 
-router.delete('/comments/:postId', async (req, res) => {
-  Comment.deleteMany({ postId: req.params.postId })
+router.delete('/comments/:parentId', async (req, res) => {
+  Comment.deleteMany({ parentId: req.params.parentId })
     .then(() => res.json({ success: true }))
     .catch(err => res.status(404).json(err));
 });

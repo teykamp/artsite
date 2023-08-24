@@ -14,7 +14,7 @@ export type Post = {
 export type Comment = {
     body: string,
     date: Date,
-    postId: string,
+    parentId: string,
 }
 
 export type Tag = {

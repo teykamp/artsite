@@ -13,13 +13,14 @@
       v-if="parentId !== undefined"
       @click="showReplyBox = !showReplyBox"
       append-icon="mdi-reply"
+      variant="text"
       size="x-small"
     >Reply</v-btn>
     <CommentBox
       v-if="parentId !== undefined"
       v-show="showReplyBox"
       :addComment="addReply"
-      :postId="parentId"
+      :parentId="parentId"
     ></CommentBox>
 
     <v-btn

@@ -185,7 +185,7 @@
     </v-layout>
     <Snackbar
       v-model:showSnackbar="showSnackbar"
-      :timeout="4000"
+      :timeout="snackbarData.timeout"
     >
       <template #content>
         <div class="text-center">
@@ -234,7 +234,11 @@ const showComments = ref(false)
 
 
 const showSnackbar = ref(false)
-const snackbarData = ref({content: "", actions: ""})
+const snackbarData = ref({
+  content: "",
+  actions: "", 
+  timeout: 4000
+})
 
 function sharePost() {
   const toClipboard = `${window.location.origin}/post/${props.post._id}`

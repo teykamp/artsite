@@ -247,8 +247,13 @@ const showComments = ref(false)
 const showShareSnackbar = ref(false)
 
 function sharePost() {
-  navigator.clipboard.writeText(`${window.location.origin}/post/${props.post._id}`)
-  showShareSnackbar.value = true
+  const toClipboard = `${window.location.origin}/post/${props.post._id}`
+  navigator.clipboard.writeText(toClipboard).then(() => {
+    showShareSnackbar.value = true
+  }, (err) => {
+    // have this display error in snackbar when update snackbar api
+    console.error('Async: Could not copy text: ', err)
+  })
 }
 
 const currentRoute = computed(() => router.currentRoute.value.path)

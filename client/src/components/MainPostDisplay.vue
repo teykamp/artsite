@@ -183,24 +183,13 @@
         </v-expand-transition>
       </v-card>
     </v-layout>
-
     <Snackbar
-      v-model:showSnackbar="showCommentSnackbar"
+      v-model:showSnackbar="showSnackbar"
       :timeout="4000"
     >
       <template #content>
         <div class="text-center">
-          Comment posted successfully
-        </div>
-      </template>
-    </Snackbar>
-    <Snackbar
-      v-model:showSnackbar="showShareSnackbar"
-      :timeout="4000"
-    >
-      <template #content>
-        <div class="text-center">
-          Link Copied to Clipboard
+          {{ snackbarData.content }}
         </div>
       </template>
     </Snackbar>
@@ -241,15 +230,17 @@ const { date } = dateDisplay(props.post.date)
 const router = useRouter()
 
 const showCommentBox = ref(false)
-const showCommentSnackbar = ref(false)
 const showComments = ref(false)
 
-const showShareSnackbar = ref(false)
+
+const showSnackbar = ref(false)
+const snackbarData = ref({content: "", actions: ""})
 
 function sharePost() {
   const toClipboard = `${window.location.origin}/post/${props.post._id}`
   navigator.clipboard.writeText(toClipboard).then(() => {
-    showShareSnackbar.value = true
+    snackbarData.value.content = "Link Copied to Clipboard"
+    showSnackbar.value = true
   }, (err) => {
     // have this display error in snackbar when update snackbar api
     console.error('Async: Could not copy text: ', err)
@@ -311,7 +302,8 @@ async function addComment(comment: Comment) {
   })
   showCommentBox.value = false
   comments.value.unshift(comment)
-  showCommentSnackbar.value = true
+  snackbarData.value.content = "Comment posted successfully"
+  showSnackbar.value = true
   showComments.value = true
 }
 

@@ -116,14 +116,14 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import Compress from "compress.js";
-import { ref, watch, computed } from "vue";
+import Compress from "compress.js"
+import { ref, watch, computed } from "vue"
 import { onBeforeRouteLeave } from 'vue-router'
-import NavBar from "../components/NavBar.vue";
-import AdminPostDisplay from "../components/AdminPostDisplay.vue";
-import TagInterface from "../components/TagInterface.vue";
-import NavDrawer from "../components/NavDrawer.vue";
-import Dialog from "../components/Dialog.vue";
+import NavBar from "../components/NavBar.vue"
+import AdminPostDisplay from "../components/AdminPostDisplay.vue"
+import TagInterface from "../components/TagInterface.vue"
+import NavDrawer from "../components/NavDrawer.vue"
+import Dialog from "../components/Dialog.vue"
 import type { Post } from "../types"
 
 

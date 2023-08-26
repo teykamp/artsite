@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div style="height: 175px;">
+    <div :style="post.images[0] ? 'height: 175px;' : ''">
       <img
         :src="post.images[0]"
         class="thumbnail"
-        alt="Cannot display image"
+        alt="Post Has no Image"
       />
     </div>
     <div class="d-flex flex-row align-center">
@@ -22,37 +22,47 @@
     <div style="height: 20px;">
       <i
         v-if="post.body || post.tagData"
-        @click="showBody = !showBody"
+        @click="showPostActions = !showPostActions"
       >
-        {{ showBody ? 'Hide' : 'Show' }} post content...
+        {{ showPostActions ? 'Hide' : 'Show' }} post actions...
       </i>
     </div>
-    <div
-      :style="{
-        height: showBody ? '100px' : '0px',
-      }"
-      class="transition d-flex flex-column"
-    >
-      <v-divider class="my-3"></v-divider>
-      <p style="{
-        'max-height': '100px',
-        'overflow': 'auto'
-      }">
-        {{ post.body }}
-      </p>
-      <v-chip
-        v-for="tag in post.tagData"
-        :key="tag"
-      >
-        {{ tag }}
-      </v-chip>
+    <div>
+      <v-expand-transition>
+        <v-container v-show="showPostActions">
+          <v-divider class="my-3"></v-divider>
+          <div class="d-flex justify-space-around">
+            <v-btn @click="showAreYouSureDialog = true">
+              Clear Comments
+            </v-btn>
+            <!-- <v-btn>
+              Clear Likes
+            </v-btn> -->
+          </div>
+        </v-container>
+      </v-expand-transition>
+      <Dialog v-model:showDialog="showAreYouSureDialog">
+      <template #content> Are you sure you want to delete ALL Comments associated with this post?</template>
+      <template #actions>
+        <v-btn
+          color="red"
+          @click="areYouSure(deletePostComments)"
+        >Delete All Comments</v-btn>
+        <v-btn
+          color="primary"
+          @click="areYouSure()"
+        >Cancel</v-btn>
+      </template>
+    </Dialog>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { dateDisplay } from "../composables/dateDisplay";
+import axios from "axios"
+import { ref } from "vue"
+import { dateDisplay } from "../composables/dateDisplay"
+import Dialog from "./Dialog.vue"
 
 const props = defineProps<{
   post: {
@@ -70,7 +80,21 @@ const emits = defineEmits<{
   delete: () => void
 }>()
 
-const showBody = ref(false)
+const showPostActions = ref(false)
+
+const showAreYouSureDialog = ref(false)
+
+// move to functions
+function areYouSure(functionCall?: () => void | Promise<void>) {
+  if (functionCall) {
+    functionCall()
+  }
+  showAreYouSureDialog.value = false
+}
+
+async function deletePostComments() {
+  await axios.delete(`/api/comments/${props.post._id}`)
+}
 </script>
 
 <style scoped>

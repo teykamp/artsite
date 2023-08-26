@@ -45,11 +45,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import axios from "axios";
+import axios from "axios"
+import { ref } from "vue"
+import { onBeforeRouteLeave } from "vue-router"
 import type { Tag } from "../types"
 
-const tags = ref<Tag[]>([]);
+const tags = ref<Tag[]>([])
 
 const emit = defineEmits<{
   (e: 'updateTag'): void
@@ -66,35 +67,44 @@ const colors = [
   'orange',
   'brown',
   'black',
-];
+]
 
 const tag = ref<Tag>({
   name: '',
   color: '',
-});
+})
 
 const tagEndpoint = '/api/tags'
 
 const addTag = async () => {
-  await axios.post(tagEndpoint, tag.value);
+  await axios.post(tagEndpoint, tag.value)
   tag.value = {
     name: '',
     color: '',
-  };
-  fetchTags();
-  emit('updateTag');
-};
+  }
+  fetchTags()
+  emit('updateTag')
+}
 
 const deleteTag = async (id: string) => {
-  await axios.delete(`/api/tag/${id}`);
-  tags.value = tags.value.filter((tag) => tag._id !== id);
-  emit('updateTag');
+  await axios.delete(`/api/tag/${id}`)
+  tags.value = tags.value.filter((tag) => tag._id !== id)
+  emit('updateTag')
 };
 
 const fetchTags = async () => {
-  const { data } = await axios.get(tagEndpoint);
-  tags.value = data;
-};
+  const { data } = await axios.get(tagEndpoint)
+  tags.value = data
+}
 
-fetchTags();
+fetchTags()
+
+onBeforeRouteLeave((to, from) => {
+  if (tag.value) {
+    const answer = window.confirm(
+      'Do you really want to leave? you have unsaved changes!'
+    )
+    if (!answer) return false
+  }
+})
 </script>

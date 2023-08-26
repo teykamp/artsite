@@ -117,16 +117,17 @@
 <script setup lang="ts">
 import axios from "axios";
 import Compress from "compress.js";
+import { ref, watch, computed } from "vue";
+import { onBeforeRouteLeave } from 'vue-router'
 import NavBar from "../components/NavBar.vue";
 import AdminPostDisplay from "../components/AdminPostDisplay.vue";
 import TagInterface from "../components/TagInterface.vue";
 import NavDrawer from "../components/NavDrawer.vue";
 import Dialog from "../components/Dialog.vue";
-import { ref, watch, computed } from "vue";
 import type { Post } from "../types"
 
 
-const displayPosts = ref([]) // type this array
+const displayPosts = ref<Post[]>([])
 
 const showAreYouSureDialog = ref(false)
 
@@ -237,6 +238,14 @@ async function handleLoadingPosts(posts: Post[]) {
   displayPosts.value = await posts
 }
 
+onBeforeRouteLeave((to, from) => {
+  if (addPost.value) {
+    const answer = window.confirm(
+      'Do you really want to leave? you have unsaved changes!'
+    )
+    if (!answer) return false
+  }
+})
 </script>
 
 <style scoped>

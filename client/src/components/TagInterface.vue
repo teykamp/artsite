@@ -1,16 +1,15 @@
 <template>
   <div>
-    <h2>
+    <h2 class="ml-4">
       Tags
     </h2>
-    <div
-      class="d-flex flex-row align-center"
-    >
+    <v-row class="d-flex align-center ma-6">
       <v-text-field
         v-model="tag.name"
         prepend-icon="mdi-tag"
         label="name"
-        class="mr-2"
+        class="mx-2"
+        style="width: 300px;"
       ></v-text-field>
       <v-autocomplete
         v-model="tag.color"
@@ -19,14 +18,10 @@
         prepend-icon="mdi-palette"
         label="color"
         class="mr-2"
+        style="width: 300px;"
       ></v-autocomplete>
-    </div>
-    <v-btn
-      @click="addTag"
-      color="primary"
-      class="mb-2"
-    >add tag</v-btn>
-    <div>
+    </v-row>
+    <div class="ml-4">
       <v-chip
         v-for="tag in tags"
         :key="tag.name"
@@ -41,6 +36,11 @@
         </v-icon>
       </v-chip>
     </div>
+    <v-btn
+      @click="addTag"
+      color="primary"
+      class="my-2 ml-4"
+    >add tag</v-btn>
   </div>
 </template>
 
@@ -100,7 +100,7 @@ const fetchTags = async () => {
 fetchTags()
 
 onBeforeRouteLeave((to, from) => {
-  if (tag.value) {
+  if (tag.value.color.length || tag.value.name.length) {
     const answer = window.confirm(
       'Do you really want to leave? you have unsaved changes!'
     )

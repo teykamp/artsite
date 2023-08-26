@@ -3,11 +3,9 @@
     
     <div class="my-6"></div>
     <div class="my-6"></div>
-    <div style="width: 50%">
       <TagInterface 
         @update-tag="fetchTags"
       />
-    </div>
     <h1 class="mt-4">
       Make A Post
     </h1>
@@ -129,6 +127,9 @@ import type { Post } from "../types"
 
 const displayPosts = ref<Post[]>([])
 
+const showTagDisplay = ref(false)
+const showNewPostDisplay = ref(false)
+
 const showAreYouSureDialog = ref(false)
 
 // move to functions
@@ -239,7 +240,10 @@ async function handleLoadingPosts(posts: Post[]) {
 }
 
 onBeforeRouteLeave((to, from) => {
-  if (addPost.value) {
+  if (addPost.value.title.length
+   || addPost.value.body.length 
+   || addPost.value.images.length 
+   || addPost.value.tagData.length) {
     const answer = window.confirm(
       'Do you really want to leave? you have unsaved changes!'
     )

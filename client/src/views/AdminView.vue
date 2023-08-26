@@ -127,9 +127,6 @@ import type { Post } from "../types"
 
 const displayPosts = ref<Post[]>([])
 
-const showTagDisplay = ref(false)
-const showNewPostDisplay = ref(false)
-
 const showAreYouSureDialog = ref(false)
 
 // move to functions

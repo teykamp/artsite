@@ -24,8 +24,8 @@
           color="red"
         >
           Rejecter
-        </v-btn>
-    </div> -->
+        </v-btn> -->
+    </div>
   </div>
 </template>
 

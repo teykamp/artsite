@@ -14,7 +14,7 @@
         :disabled="!(commentText && commentText.length <= maxLengthCharacters)"
         color="primary"
       >Post</v-btn>
-      <v-btn
+      <!-- <v-btn
         @click="resolveHandler"
       >
         Resolver
@@ -25,7 +25,7 @@
         >
           Rejecter
         </v-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 

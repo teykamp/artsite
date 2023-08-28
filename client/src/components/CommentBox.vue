@@ -41,6 +41,7 @@ import { ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import type { Comment } from '../types'
 import Dialog from './Dialog.vue'
+import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 
 const props = defineProps<{
   addComment: (comment: Comment) => void,
@@ -48,10 +49,6 @@ const props = defineProps<{
 }>()
 
 const maxLengthCharacters = 256
-
-const rejectHandler = ref<any>(false)
-const resolveHandler = ref<any>(false)
-const showDialog = ref(false)
 
 const commentText = ref("")
 const commentRules = [v => v.length <= maxLengthCharacters || 'Character Limit Reached'];
@@ -66,35 +63,5 @@ function handleCommentPost() {
   commentText.value = ""
 }
 
-onBeforeRouteLeave(async () => {
-  if (!commentText.value) {
-    return true
-  }
-  // make decision
-  showDialog.value = true
-  try {
-    // resolve
-    await makeDecision()
-    showDialog.value = false
-  } catch {
-    // reject
-    showDialog.value = false
-    return false
-  }
-})
-
-const makeDecision = () => {
-  return new Promise((resolve, reject) => {
-
-
-    // this is the logic to display a dialog
-    //
-    //
-    //  one button will call the "reject" fn, another will call the "resolve" fn. 
-
-
-    resolveHandler.value = resolve
-    rejectHandler.value = reject
-  })
-}
+const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(commentText)
 </script>

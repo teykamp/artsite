@@ -62,5 +62,5 @@ function handleCommentPost() {
   commentText.value = ""
 }
 
-const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(commentText)
+const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return commentText.value === "" })
 </script>

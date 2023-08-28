@@ -109,6 +109,25 @@
         >Cancel</v-btn>
       </template>
     </Dialog>
+
+    <Dialog v-model:show-dialog="showDialog">
+          <template #content>
+            You have unsaved changes. Do you wish to proceed?
+          </template>
+          <template #actions>
+            <v-btn
+              @click="resolveHandler"
+            >
+              Continue
+            </v-btn>
+            <v-btn
+              @click="rejectHandler"
+              color="red"
+            >
+              Cancel
+            </v-btn>
+          </template>
+        </Dialog>
   </div>
 </template>
 
@@ -116,13 +135,13 @@
 import axios from "axios";
 import Compress from "compress.js"
 import { ref, watch, computed } from "vue"
-import { onBeforeRouteLeave } from 'vue-router'
 import NavBar from "../components/NavBar.vue"
 import AdminPostDisplay from "../components/AdminPostDisplay.vue"
 import TagInterface from "../components/TagInterface.vue"
 import NavDrawer from "../components/NavDrawer.vue"
 import Dialog from "../components/Dialog.vue"
 import type { Post } from "../types"
+import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 
 
 const displayPosts = ref<Post[]>([])
@@ -236,17 +255,8 @@ async function handleLoadingPosts(posts: Post[]) {
   displayPosts.value = await posts
 }
 
-onBeforeRouteLeave((to, from) => {
-  if (addPost.value.title.length
-   || addPost.value.body.length 
-   || addPost.value.images.length 
-   || addPost.value.tagData.length) {
-    const answer = window.confirm(
-      'Do you really want to leave? you have unsaved changes!'
-    )
-    if (!answer) return false
-  }
-})
+const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return (addPost.value.title.length || addPost.value.body.length || addPost.value.images.length || addPost.value.tagData.length) === 0})
+
 </script>
 
 <style scoped>

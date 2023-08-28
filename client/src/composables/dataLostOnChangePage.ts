@@ -1,14 +1,14 @@
 import { ref, Ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 
-export function dataLostOnChangePage(runCondition: Ref<any>) {
+export function dataLostOnChangePage(runCondition: () => boolean) {
 
   const rejectHandler = ref<any>(false)
   const resolveHandler = ref<any>(false)
   const showDialog = ref(false)
 
   onBeforeRouteLeave(async () => {
-    if (!runCondition.value) {
+    if (runCondition()) {
       return true
     }
     // make decision

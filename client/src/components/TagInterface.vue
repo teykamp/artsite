@@ -41,14 +41,34 @@
       color="primary"
       class="my-2 ml-4"
     >add tag</v-btn>
+
+    <Dialog v-model:show-dialog="showDialog">
+      <template #content>
+        You have unsaved changes. Do you wish to proceed?
+      </template>
+      <template #actions>
+        <v-btn
+          @click="resolveHandler"
+        >
+          Continue
+        </v-btn>
+        <v-btn
+          @click="rejectHandler"
+          color="red"
+        >
+          Cancel
+        </v-btn>
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import axios from "axios"
 import { ref } from "vue"
-import { onBeforeRouteLeave } from "vue-router"
+import Dialog from "./Dialog.vue"
 import type { Tag } from "../types"
+import { dataLostOnChangePage } from "../composables/dataLostOnChangePage"
 
 const tags = ref<Tag[]>([])
 
@@ -99,12 +119,5 @@ const fetchTags = async () => {
 
 fetchTags()
 
-onBeforeRouteLeave((to, from) => {
-  if (tag.value.color.length || tag.value.name.length) {
-    const answer = window.confirm(
-      'Do you really want to leave? you have unsaved changes!'
-    )
-    if (!answer) return false
-  }
-})
+const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return ((tag.value.color.length || tag.value.name.length)) === 0 })
 </script>

@@ -14,25 +14,33 @@
         :disabled="!(commentText && commentText.length <= maxLengthCharacters)"
         color="primary"
       >Post</v-btn>
-      <!-- <v-btn
-        @click="resolveHandler"
-      >
-        Resolver
-      </v-btn>
-      <v-btn
-          @click="rejectHandler"
-          color="red"
-        >
-          Rejecter
-        </v-btn> -->
+      <Dialog v-model:show-dialog="showDialog">
+        <template #content>
+          You have unsaved changes. Do you wish to proceed?
+        </template>
+        <template #actions>
+          <v-btn
+            @click="resolveHandler"
+          >
+            Continue
+          </v-btn>
+          <v-btn
+              @click="rejectHandler"
+              color="red"
+            >
+              Cancel
+            </v-btn>
+        </template>
+      </Dialog>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Comment } from '../types'
 import { onBeforeRouteLeave } from 'vue-router'
+import type { Comment } from '../types'
+import Dialog from './Dialog.vue'
 
 const props = defineProps<{
   addComment: (comment: Comment) => void,
@@ -43,6 +51,7 @@ const maxLengthCharacters = 256
 
 const rejectHandler = ref<any>(false)
 const resolveHandler = ref<any>(false)
+const showDialog = ref(false)
 
 const commentText = ref("")
 const commentRules = [v => v.length <= maxLengthCharacters || 'Character Limit Reached'];
@@ -61,20 +70,15 @@ onBeforeRouteLeave(async () => {
   if (!commentText.value) {
     return true
   }
-
-  console.log(
-    'Make A Decision'
-  )
-
+  // make decision
+  showDialog.value = true
   try {
+    // resolve
     await makeDecision()
-    console.log(
-      'Resolved'
-    )
+    showDialog.value = false
   } catch {
-    console.log(
-      'Rejected'
-    )
+    // reject
+    showDialog.value = false
     return false
   }
 })
@@ -86,7 +90,7 @@ const makeDecision = () => {
     // this is the logic to display a dialog
     //
     //
-    //  one button will call the "reject" fn, another will call the "resolve" fn. FN
+    //  one button will call the "reject" fn, another will call the "resolve" fn. 
 
 
     resolveHandler.value = resolve

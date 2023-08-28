@@ -25,11 +25,11 @@
             Continue
           </v-btn>
           <v-btn
-              @click="rejectHandler"
-              color="red"
-            >
-              Cancel
-            </v-btn>
+            @click="rejectHandler"
+            color="red"
+          >
+            Cancel
+          </v-btn>
         </template>
       </Dialog>
     </div>
@@ -38,7 +38,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { onBeforeRouteLeave } from 'vue-router'
 import type { Comment } from '../types'
 import Dialog from './Dialog.vue'
 import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'

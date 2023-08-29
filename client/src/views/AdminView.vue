@@ -255,7 +255,7 @@ async function handleLoadingPosts(posts: Post[]) {
   displayPosts.value = await posts
 }
 
-const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return (addPost.value.title.length || addPost.value.body.length || addPost.value.images.length || addPost.value.tagData.length) === 0})
+const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return (addPost.value.title.length || addPost.value.body.length || addPost.value.images.length || addPost.value.tagData.length) === 0 })
 
 </script>
 

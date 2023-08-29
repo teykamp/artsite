@@ -111,23 +111,29 @@
     </Dialog>
 
     <Dialog v-model:show-dialog="showDialog">
-          <template #content>
-            You have unsaved changes. Do you wish to proceed?
-          </template>
-          <template #actions>
-            <v-btn
-              @click="resolveHandler"
-            >
-              Continue
+      <template #content>
+        You have unsaved changes. Do you wish to proceed?
+      </template>
+      <template #actions>
+        <v-btn
+          @click="resolveHandler"
+        >
+          Continue
         </v-btn>
-            <v-btn
-              @click="rejectHandler"
-              color="red"
-            >
-              Cancel
-            </v-btn>
-          </template>
-        </Dialog>
+        <v-btn
+          @click="rejectHandler"
+          color="red"
+        >
+          Cancel
+        </v-btn>
+      </template>
+    </Dialog>
+
+    <v-card style="width: 500px">
+      Average Post Likes: {{ getPostStats.likes }}
+      Average Post Dislikes: {{ getPostStats.dislikes }}
+      Average Post Comments: {{ getPostStats.comments }}
+    </v-card>
   </div>
 </template>
 
@@ -256,6 +262,31 @@ async function handleLoadingPosts(posts: Post[]) {
 }
 
 const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return (addPost.value.title.length || addPost.value.body.length || addPost.value.images.length || addPost.value.tagData.length) === 0 })
+
+const comments = ref([])
+
+async function getAllComments() {
+  const { data } = await axios.get("/api/comments")
+  comments.value = data
+}
+
+const getPostStats = computed(() => {
+  let postLikes = 0
+  let postDislikes = 0
+  getAllComments()
+  let postComments = comments.value.length
+
+  for (let i = 0; i < displayPosts.value.length; i++) {
+    postLikes += displayPosts.value[i].interactions.likes
+    postDislikes += displayPosts.value[i].interactions.dislikes
+  }
+
+  return {
+    likes: postLikes / displayPosts.value.length,
+    dislikes: postDislikes / displayPosts.value.length,
+    comments: postComments / displayPosts.value.length
+  }
+})
 
 </script>
 

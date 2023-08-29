@@ -13,9 +13,9 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // import routes
 const postsRoute = require('./posts.js');
-app.use('/', postsRoute);
+app.use('/api', postsRoute);
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.json({
     message: 'Hello World!'
   });

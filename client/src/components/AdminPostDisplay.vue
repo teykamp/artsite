@@ -20,10 +20,7 @@
       {{ date }}
     </p>
     <div style="height: 20px;">
-      <i
-        v-if="post.body || post.tagData"
-        @click="showPostActions = !showPostActions"
-      >
+      <i @click="showPostActions = !showPostActions">
         {{ showPostActions ? 'Hide' : 'Show' }} post actions...
       </i>
     </div>
@@ -38,6 +35,9 @@
             <!-- <v-btn>
               Clear Likes
             </v-btn> -->
+            <p>Likes: {{ post.interactions.likes }}</p>
+            <p>Dislikes: {{ post.interactions.dislikes }}</p>
+            <!-- add number of comments when that gets stored -->
           </div>
         </v-container>
       </v-expand-transition>
@@ -66,12 +66,16 @@ import Dialog from "./Dialog.vue"
 
 const props = defineProps<{
   post: {
-    _id: string;
-    title: string;
-    body: string;
-    date: string;
-    images: string[];
-    tagData: string;
+    _id: string,
+    title: string,
+    body: string,
+    date: string,
+    images: string[],
+    tagData: string,
+    interactions: {
+        likes: number,
+        dislikes: number,
+      },
   }
 }>()
 

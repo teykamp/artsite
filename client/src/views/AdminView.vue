@@ -119,7 +119,7 @@
               @click="resolveHandler"
             >
               Continue
-            </v-btn>
+        </v-btn>
             <v-btn
               @click="rejectHandler"
               color="red"

@@ -21,9 +21,10 @@
 
       <v-window v-model="tab">
         <v-window-item value="posts">
+            
           <div
-            style="width: 95%; min-height: 200px; overflow-y: scroll; border-top: 1px solid black;"
             class="d-flex flex-wrap flex-start justify-center align-start"
+            style="width: 95%; min-height: 200px; overflow-y: scroll; border-top: 1px solid black;"
           >
             <div
               v-for="post in displayPosts"
@@ -33,15 +34,24 @@
               <AdminPostDisplay
                 :post="post"
                 @delete="deletePost(post._id)"
-              />
+                />
             </div>
           </div>
-          
-          <v-card style="width: 500px">
+            
+          <v-sheet style="width: 100%; text-align: center;">
             Average Post Likes: {{ getPostStats.likes }}
             Average Post Dislikes: {{ getPostStats.dislikes }}
             Average Post Comments: {{ getPostStats.comments }}
-          </v-card>
+          </v-sheet>
+          
+          <div class="d-flex justify-center">
+              <v-btn
+                v-if="displayPosts.length"
+                @click="showAreYouSureDialog = true"
+                class="my-10"
+                color="error"
+              >delete all posts ({{ displayPosts.length }})</v-btn>
+            </div>
         </v-window-item>
 
         <v-window-item value="new">
@@ -126,12 +136,6 @@
     <NavDrawer 
       :drawer="drawer"
     />
-    <v-btn
-      v-if="displayPosts.length"
-      class="my-10"
-      color="error"
-      @click="showAreYouSureDialog = true"
-    >delete all posts ({{ displayPosts.length }})</v-btn>
     <Dialog v-model:showDialog="showAreYouSureDialog">
       <template #content> Are you sure you want to delete ALL posts?</template>
       <template #actions>

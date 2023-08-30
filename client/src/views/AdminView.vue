@@ -36,6 +36,12 @@
               />
             </div>
           </div>
+          
+          <v-card style="width: 500px">
+            Average Post Likes: {{ getPostStats.likes }}
+            Average Post Dislikes: {{ getPostStats.dislikes }}
+            Average Post Comments: {{ getPostStats.comments }}
+          </v-card>
         </v-window-item>
 
         <v-window-item value="new">
@@ -159,11 +165,6 @@
       </template>
     </Dialog>
 
-    <v-card style="width: 500px">
-      Average Post Likes: {{ getPostStats.likes }}
-      Average Post Dislikes: {{ getPostStats.dislikes }}
-      Average Post Comments: {{ getPostStats.comments }}
-    </v-card>
   </div>
 </template>
 

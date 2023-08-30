@@ -21,24 +21,29 @@
 
       <v-window v-model="tab">
         <v-window-item value="posts">
-            
-          <div
-            class="d-flex flex-wrap flex-start justify-center align-start"
-            style="width: 95%; min-height: 200px; overflow-y: scroll; border-top: 1px solid black;"
-          >
+          <v-row>
+            <v-col>Title</v-col>
+            <v-col>Tags</v-col>
+            <v-col class="d-none d-md-flex">Post Stats</v-col>
+          </v-row>
+          <div class="overflow-auto" style="max-height: 60vh">
+            <v-divider></v-divider>
             <div
-              v-for="post in displayPosts"
+              v-for="post, index in displayPosts"
               :key="post._id"
-              class="post flex-wrap flex-column justify-center align-center"
             >
               <AdminPostDisplay
                 :post="post"
                 @delete="deletePost(post._id)"
-                />
+              />
+              <v-divider></v-divider>
             </div>
           </div>
-            
-          <v-sheet style="width: 100%; text-align: center;">
+          
+          <v-sheet 
+            v-if="displayPosts.length"
+            style="width: 100%; text-align: center;"
+          >
             Average Post Likes: {{ getPostStats.likes }}
             Average Post Dislikes: {{ getPostStats.dislikes }}
             Average Post Comments: {{ getPostStats.comments }}

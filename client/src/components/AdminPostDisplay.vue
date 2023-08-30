@@ -1,11 +1,66 @@
 <template>
   <div>
-    <div :style="post.images[0] ? 'height: 175px;' : ''">
-      <img
-        :src="post.images[0]"
-        class="thumbnail"
-        alt="Post Has no Image"
-      />
+
+    <v-card style="height: 100px; width: 100%;" class="mb-2" elevation="0">
+      <v-row>
+        <v-col class="mt-5 ml-4 text-h6">
+          <v-avatar
+            :image="post.images[0]"
+            color="surface-variant"
+            size="70"
+            class="mr-4"
+          />
+          {{ post.title }}
+        </v-col>
+        <v-col>
+          <v-chip v-for="tag in post.tagData" :key="tag">
+            {{ tag }}
+          </v-chip>
+        </v-col>
+        
+        <v-col class="mt-10 d-none d-md-flex">
+            <v-chip variant="text" prepend-icon="mdi-thumb-up-outline" class="mr-2">
+              {{ post.interactions.likes }}
+            </v-chip>
+            <v-chip variant="text" prepend-icon="mdi-thumb-down-outline" class="mr-2">
+              {{  post.interactions.dislikes }}
+            </v-chip>
+            <v-chip variant="text" prepend-icon="mdi-comment-outline">
+              {{  post.interactions.dislikes }}
+              <!-- comments in future -->
+            </v-chip>
+        </v-col>
+        <v-col cols="1" class="mr-4 d-flex justify-end mt-8">
+          <v-menu>
+            <template v-slot:activator="{ props }">
+                <v-btn 
+                  variant="text" 
+                  icon="mdi-dots-vertical" 
+                  v-bind="props"
+                ></v-btn>
+            </template>
+            <v-list>
+              <v-list-item prepend-icon="mdi-pencil">
+                Edit
+              </v-list-item>
+              <v-list-item prepend-icon="mdi-comment-remove-outline">
+                Delete Comments
+              </v-list-item>
+              <v-list-item prepend-icon="mdi-thumbs-up-down">
+                Delete Likes
+              </v-list-item>
+              <v-list-item 
+                @click="emits('delete')"
+                prepend-icon="mdi-delete"
+              >
+                Delete Post
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
+      </v-row>
+    </v-card>
+    <!-- <div :style="post.images[0] ? 'height: 175px;' : ''">
     </div>
     <div class="d-flex flex-row align-center">
       <h2>
@@ -32,15 +87,16 @@
             <v-btn @click="showAreYouSureDialog = true">
               Clear Comments
             </v-btn>
-            <!-- <v-btn>
+            <v-btn>
               Clear Likes
-            </v-btn> -->
+            </v-btn>
             <p>Likes: {{ post.interactions.likes }}</p>
             <p>Dislikes: {{ post.interactions.dislikes }}</p>
-            <!-- add number of comments when that gets stored -->
           </div>
         </v-container>
-      </v-expand-transition>
+      </v-expand-transition> -->
+      <!-- add number of comments when that gets stored -->
+
       <Dialog v-model:showDialog="showAreYouSureDialog">
       <template #content> Are you sure you want to delete ALL Comments associated with this post?</template>
       <template #actions>
@@ -54,7 +110,7 @@
         >Cancel</v-btn>
       </template>
     </Dialog>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 

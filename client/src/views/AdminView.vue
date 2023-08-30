@@ -2,86 +2,116 @@
   <div class="d-flex flex-column justify-center align-center">
     
     <div class="my-6"></div>
-    <div class="my-6"></div>
-      <TagInterface 
-        @update-tag="fetchTags"
-      />
-    <h1 class="mt-4">
-      Make A Post
-    </h1>
-    <v-form
-      @submit.prevent="null"
-      class="mb-10"
-      style="width: 90%; max-width: 400px;"
+    <div class="my-2"></div>
+    <v-sheet
+      elevation="0"
+      style="width: 100%"
     >
-      <v-text-field
-        v-model="addPost.title"
-        prepend-icon="mdi-format-title"
-        label="title"
-      />
-      <v-textarea
-        v-model="addPost.body"
-        prepend-icon="mdi-text"
-        label="body"
-        rows="2"
-        auto-grow
-      />
-      <!-- tag map needs color -->
-      <v-combobox
-        v-model="addPost.tagData"
-        :items="tags.map(tag => tag.name)" 
-        prepend-icon="mdi-tag"
-        label="tags"
-        multiple
-        chips
+      <v-tabs
+        v-model="tab"
+        bg-color="primary"
       >
-        <template #selection="{ tag }">
-          <v-chip
-            :color="tag.color"
-            class="ma-1"
-          >
-            {{ tag.name }}
-          </v-chip>
-        </template>
-      </v-combobox>
-      <v-file-input
-        v-model="addPost.images"
-        @change="encodeImage"
-        multiple
-        label="image"
-        prepend-icon="mdi-camera"
-        accept="image/*"
-      ></v-file-input>
-      <img
-        v-for="image in addPost.imageEncodings"
-        :key="image"
-        :src="image"
-        class="thumbnail"
-        alt="image"
-      />
-      <v-btn
-        @click="uploadPost"
-        :disabled="disablePostButton"
-        color="primary"
-        type="submit"
-      >add post</v-btn>
-    </v-form>
+        <v-tab value="posts">Current Posts</v-tab>
+        <v-tab value="new">New Post</v-tab>
+        <v-tab value="database">Database Actions</v-tab>
+      </v-tabs>
 
-    <div
-      style="width: 95%; min-height: 200px; overflow-y: scroll; border-top: 1px solid black;"
-      class="d-flex flex-wrap flex-start justify-center align-start"
-    >
-      <div
-        v-for="post in displayPosts"
-        :key="post._id"
-        class="post flex-wrap flex-column justify-center align-center"
-      >
-        <AdminPostDisplay
-          :post="post"
-          @delete="deletePost(post._id)"
-        />
-      </div>
-    </div>
+      <div class="my-6"></div>
+      
+
+      <v-window v-model="tab">
+        <v-window-item value="posts">
+          <div
+            style="width: 95%; min-height: 200px; overflow-y: scroll; border-top: 1px solid black;"
+            class="d-flex flex-wrap flex-start justify-center align-start"
+          >
+            <div
+              v-for="post in displayPosts"
+              :key="post._id"
+              class="post flex-wrap flex-column justify-center align-center"
+            >
+              <AdminPostDisplay
+                :post="post"
+                @delete="deletePost(post._id)"
+              />
+            </div>
+          </div>
+        </v-window-item>
+
+        <v-window-item value="new">
+          <div class="d-flex flex-column justify-center align-center">
+            <TagInterface 
+              @update-tag="fetchTags"
+            />
+            <h1 class="mt-4">
+              Make A Post
+            </h1>
+            <v-form
+              @submit.prevent="null"
+              class="mb-10"
+              style="width: 90%; max-width: 400px;"
+            >
+              <v-text-field
+                v-model="addPost.title"
+                prepend-icon="mdi-format-title"
+                label="title"
+              />
+              <v-textarea
+                v-model="addPost.body"
+                prepend-icon="mdi-text"
+                label="body"
+                rows="2"
+                auto-grow
+              />
+              <!-- tag map needs color -->
+              <v-combobox
+                v-model="addPost.tagData"
+                :items="tags.map(tag => tag.name)" 
+                prepend-icon="mdi-tag"
+                label="tags"
+                multiple
+                chips
+              >
+                <template #selection="{ tag }">
+                  <v-chip
+                    :color="tag.color"
+                    class="ma-1"
+                  >
+                    {{ tag.name }}
+                  </v-chip>
+                </template>
+              </v-combobox>
+              <v-file-input
+                v-model="addPost.images"
+                @change="encodeImage"
+                multiple
+                label="image"
+                prepend-icon="mdi-camera"
+                accept="image/*"
+              ></v-file-input>
+              <img
+                v-for="image in addPost.imageEncodings"
+                :key="image"
+                :src="image"
+                class="thumbnail"
+                alt="image"
+              />
+              <v-btn
+                @click="uploadPost"
+                :disabled="disablePostButton"
+                color="primary"
+                type="submit"
+              >add post</v-btn>
+            </v-form>
+          </div>
+        </v-window-item>
+
+        <v-window-item value="database">
+          Three
+        </v-window-item>
+      </v-window>
+    </v-sheet>
+
     <NavBar 
       v-model:handleNavDrawer="handleNavDrawer"
       @update:posts="handleLoadingPosts($event)"
@@ -149,6 +179,7 @@ import Dialog from "../components/Dialog.vue"
 import type { Post } from "../types"
 import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 
+const tab = ref(null)
 
 const displayPosts = ref<Post[]>([])
 

@@ -61,7 +61,7 @@ const props = defineProps<{
 
 const replies = ref<Comment[]>([])
 const loadingReplies = ref(false)
-const showReplies = ref(true)
+const showReplies = ref(false)
 const showReplyBox = ref(false)
 
 // can use function for no repeats

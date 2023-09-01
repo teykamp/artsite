@@ -21,10 +21,12 @@
 
       <v-window v-model="tab">
         <v-window-item value="posts">
-          <v-row>
-            <v-col>Title</v-col>
+          <v-row class="text-overline">
+            <div style="width: 110px;"></div>
+            <v-col cols="3">Title</v-col>
             <v-col>Tags</v-col>
             <v-col class="d-none d-md-flex">Post Stats</v-col>
+            <div style="width:110px"></div>
           </v-row>
           <div class="overflow-auto" style="max-height: 60vh">
             <v-divider></v-divider>

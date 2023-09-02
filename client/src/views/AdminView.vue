@@ -24,14 +24,14 @@
           <v-row class="text-overline">
             <div style="width: 110px;"></div>
             <v-col cols="3">Title</v-col>
-            <v-col>Tags</v-col>
-            <v-col class="d-none d-md-flex">Post Stats</v-col>
+            <v-col class="d-none d-md-flex">Tags</v-col>
+            <v-col class="d-none d-sm-flex">Post Stats</v-col>
             <div style="width:110px"></div>
           </v-row>
           <div class="overflow-auto" style="max-height: 60vh">
             <v-divider></v-divider>
             <div
-              v-for="post, index in displayPosts"
+              v-for="post in displayPosts"
               :key="post._id"
             >
               <AdminPostDisplay
@@ -44,11 +44,12 @@
           
           <v-sheet 
             v-if="displayPosts.length"
+            class="pa-10"
             style="width: 100%; text-align: center;"
           >
-            Average Post Likes: {{ getPostStats.likes }}
-            Average Post Dislikes: {{ getPostStats.dislikes }}
-            Average Post Comments: {{ getPostStats.comments }}
+            Average Post Likes: {{ getPostStats.likes.toFixed(2) }} |
+            Average Post Dislikes: {{ getPostStats.dislikes.toFixed(2) }} |
+            Average Post Comments: {{ getPostStats.comments.toFixed(2) }}
           </v-sheet>
           
           <div class="d-flex justify-center">

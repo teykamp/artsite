@@ -12,13 +12,13 @@
           />
           {{ post.title }}
         </v-col>
-        <v-col>
+        <v-col class="d-none d-md-flex">
           <v-chip v-for="tag in post.tagData" :key="tag">
             {{ tag }}
           </v-chip>
         </v-col>
         
-        <v-col class="mt-10 d-none d-md-flex">
+        <v-col class="mt-10 d-none d-sm-flex">
             <v-chip variant="text" prepend-icon="mdi-thumb-up-outline" class="mr-2">
               {{ post.interactions.likes }}
             </v-chip>
@@ -60,41 +60,6 @@
         </v-col>
       </v-row>
     </v-card>
-    <!-- <div :style="post.images[0] ? 'height: 175px;' : ''">
-    </div>
-    <div class="d-flex flex-row align-center">
-      <h2>
-        {{ post.title }}
-      </h2>
-      <v-spacer></v-spacer>
-      <v-icon @click="emits('delete')">
-        mdi-close
-      </v-icon>
-    </div>
-    <p>
-      {{ date }}
-    </p>
-    <div style="height: 20px;">
-      <i @click="showPostActions = !showPostActions">
-        {{ showPostActions ? 'Hide' : 'Show' }} post actions...
-      </i>
-    </div>
-    <div>
-      <v-expand-transition>
-        <v-container v-show="showPostActions">
-          <v-divider class="my-3"></v-divider>
-          <div class="d-flex justify-space-around">
-            <v-btn @click="showAreYouSureDialog = true">
-              Clear Comments
-            </v-btn>
-            <v-btn>
-              Clear Likes
-            </v-btn>
-            <p>Likes: {{ post.interactions.likes }}</p>
-            <p>Dislikes: {{ post.interactions.dislikes }}</p>
-          </div>
-        </v-container>
-      </v-expand-transition> -->
       <!-- add number of comments when that gets stored -->
 
       <Dialog v-model:showDialog="showAreYouSureDialog">

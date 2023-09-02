@@ -321,8 +321,8 @@ const getPostStats = computed(() => {
   let postComments = comments.value.length
 
   for (let i = 0; i < displayPosts.value.length; i++) {
-    postLikes += displayPosts.value[i].interactions.likes
-    postDislikes += displayPosts.value[i].interactions.dislikes
+    postLikes += displayPosts.value[i].interactions?.likes
+    postDislikes += displayPosts.value[i].interactions?.dislikes
   }
 
   return {

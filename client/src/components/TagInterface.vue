@@ -38,6 +38,7 @@
     </div>
     <v-btn
       @click="addTag"
+      :disabled="tag.name === ''"
       color="primary"
       class="my-2 ml-4"
     >add tag</v-btn>

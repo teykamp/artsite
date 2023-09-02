@@ -19,7 +19,6 @@
         </v-col>
         
         <v-col class="mt-10 d-none d-sm-flex">
-          <!-- it is not displaying likes and dislikes on page yet because it doesnt have them in the post model or something!!!!! this code breaes it -->
             <v-chip variant="text" prepend-icon="mdi-thumb-up-outline" class="mr-2">
               {{ post.interactions ? post.interactions.likes : 0 }}
             </v-chip>

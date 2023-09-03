@@ -12,10 +12,12 @@
           />
           {{ post.title }}
         </v-col>
-        <v-col class="d-none d-md-flex">
-          <v-chip v-for="tag in post.tagData" :key="tag">
-            {{ tag }}
-          </v-chip>
+        <v-col class="d-none d-md-flex align-center">
+          <v-sheet class="overflow-auto mt-8">
+            <v-chip v-for="tag in post.tagData" :key="tag">
+              {{ tag }}
+            </v-chip>
+          </v-sheet>
         </v-col>
         
         <v-col class="mt-10 d-none d-sm-flex">

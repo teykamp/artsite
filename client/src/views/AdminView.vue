@@ -28,8 +28,8 @@
             <v-col class="d-none d-sm-flex">Post Stats</v-col>
             <div style="width:110px"></div>
           </v-row>
+          <v-divider></v-divider>
           <div class="overflow-auto" style="max-height: 60vh">
-            <v-divider></v-divider>
             <div
               v-for="post in displayPosts"
               :key="post._id"

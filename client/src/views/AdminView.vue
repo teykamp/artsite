@@ -131,7 +131,7 @@
         </v-window-item>
 
         <v-window-item value="database">
-          Three
+          <v-btn @click="deleteComments()">Delete All Comments</v-btn>
         </v-window-item>
       </v-window>
     </v-sheet>
@@ -270,6 +270,10 @@ async function deletePost(id: string) {
   await axios.delete(`/api/post/${id}`)
   await axios.delete(`/api/comments/${id}`)
   displayPosts.value = displayPosts.value.filter((post) => post._id !== id)
+}
+
+async function deleteComments() {
+  await axios.delete("/api/comments")
 }
 
 async function compressBase64Image(image: string[]) {

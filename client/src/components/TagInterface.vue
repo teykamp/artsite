@@ -61,6 +61,16 @@
         </v-btn>
       </template>
     </Dialog>
+    <Snackbar
+      v-model:showSnackbar="showSnackbar"
+      :timeout="snackbarData.timeout"
+    >
+      <template #content>
+        <div class="text-center">
+          {{ snackbarData.content }}
+        </div>
+      </template>
+    </Snackbar>
   </div>
 </template>
 
@@ -68,14 +78,11 @@
 import axios from "axios"
 import { ref } from "vue"
 import Dialog from "./Dialog.vue"
+import Snackbar from "./Snackbar.vue"
 import type { Tag } from "../types"
 import { dataLostOnChangePage } from "../composables/dataLostOnChangePage"
 
 const tags = ref<Tag[]>([])
-
-const emit = defineEmits<{
-  (e: 'updateTag'): void
-}>()
 
 const colors = [
   'grey',
@@ -104,7 +111,8 @@ const addTag = async () => {
     color: '',
   }
   fetchTags()
-  emit('updateTag')
+  snackbarData.value.content = 'Tag added'
+  showSnackbar.value = true
 }
 
 const deleteTag = async (id: string) => {
@@ -119,6 +127,13 @@ const fetchTags = async () => {
 }
 
 fetchTags()
+
+const showSnackbar = ref(false)
+const snackbarData = ref({
+  content: "",
+  actions: "", 
+  timeout: 4000
+})
 
 const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return ((tag.value.color.length || tag.value.name.length)) === 0 })
 </script>

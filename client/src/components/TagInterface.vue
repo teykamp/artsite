@@ -38,7 +38,7 @@
     </div>
     <v-btn
       @click="addTag"
-      :disabled="tag.name === ''"
+      :disabled="tag.name === '' || colors.indexOf(tag.color) === -1"
       color="primary"
       class="my-2 ml-4"
     >add tag</v-btn>

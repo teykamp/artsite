@@ -64,9 +64,7 @@
 
         <v-window-item value="new">
           <div class="d-flex flex-column justify-center align-center">
-            <TagInterface 
-              @update-tag="fetchTags"
-            />
+            <TagInterface />
             <h1 class="mt-4">
               Make A Post
             </h1>
@@ -177,7 +175,17 @@
       </template>
     </Dialog>
 
+    <Snackbar
+      v-model:showSnackbar="showSnackbar"
+      :timeout="snackbarData.timeout"
+    >
+      <template #content>
+        <div class="text-center">
+          {{ snackbarData.content }}
         </div>
+      </template>
+    </Snackbar>
+
   </div>
 </template>
 
@@ -194,12 +202,18 @@ import Snackbar from "../components/Snackbar.vue";
 import type { Post } from "../types"
 import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 
-const tab = ref(null)
+const tab = ref("posts")
 
 const displayPosts = ref<Post[]>([])
 
 const showAreYouSureDialog = ref(false)
+const showSnackbar = ref(false)
+
+const snackbarData = ref({
+  content: "",
   actions: "", 
+  timeout: 4000
+})
 
 // move to functions
 function areYouSure(functionCall?: () => void | Promise<void>) {
@@ -254,7 +268,10 @@ async function uploadPost() {
   console.log(kiloBytes, "KB")
 
   await axios.post("/api/posts", newPost)
+
+  snackbarData.value.content = "Post Added"
   showSnackbar.value = true
+
   displayPosts.value.unshift(newPost)
   addPost.value = {
     title: "",
@@ -263,6 +280,9 @@ async function uploadPost() {
     imageEncodings: [],
     tagData: [],
   }
+
+  setTimeout(() => {
+    tab.value = "posts"
   }, 1000)
 }
 
@@ -297,11 +317,6 @@ async function compressBase64Image(image: string[]) {
 }
 
 const tags = ref([])
-const fetchTags = async () => {
-  const { data } = await axios.get("/api/tags")
-  tags.value = data
-}
-fetchTags()
 
 
 const drawer = ref(false)

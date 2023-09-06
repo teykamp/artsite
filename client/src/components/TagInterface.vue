@@ -118,8 +118,7 @@ const addTag = async () => {
 const deleteTag = async (id: string) => {
   await axios.delete(`/api/tag/${id}`)
   tags.value = tags.value.filter((tag) => tag._id !== id)
-  emit('updateTag')
-};
+}
 
 const fetchTags = async () => {
   const { data } = await axios.get(tagEndpoint)

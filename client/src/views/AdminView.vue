@@ -177,6 +177,7 @@
       </template>
     </Dialog>
 
+        </div>
   </div>
 </template>
 
@@ -189,6 +190,7 @@ import AdminPostDisplay from "../components/AdminPostDisplay.vue"
 import TagInterface from "../components/TagInterface.vue"
 import NavDrawer from "../components/NavDrawer.vue"
 import Dialog from "../components/Dialog.vue"
+import Snackbar from "../components/Snackbar.vue";
 import type { Post } from "../types"
 import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 
@@ -197,6 +199,7 @@ const tab = ref(null)
 const displayPosts = ref<Post[]>([])
 
 const showAreYouSureDialog = ref(false)
+  actions: "", 
 
 // move to functions
 function areYouSure(functionCall?: () => void | Promise<void>) {
@@ -251,6 +254,7 @@ async function uploadPost() {
   console.log(kiloBytes, "KB")
 
   await axios.post("/api/posts", newPost)
+  showSnackbar.value = true
   displayPosts.value.unshift(newPost)
   addPost.value = {
     title: "",
@@ -259,6 +263,7 @@ async function uploadPost() {
     imageEncodings: [],
     tagData: [],
   }
+  }, 1000)
 }
 
 async function deletePosts() {

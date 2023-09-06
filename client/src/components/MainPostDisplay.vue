@@ -232,7 +232,6 @@ const router = useRouter()
 const showCommentBox = ref(false)
 const showComments = ref(false)
 
-
 const showSnackbar = ref(false)
 const snackbarData = ref({
   content: "",

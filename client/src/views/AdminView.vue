@@ -68,63 +68,10 @@
             <h1 class="mt-4">
               Make A Post
             </h1>
-            <v-form
-              @submit.prevent="null"
-              class="mb-10"
-              style="width: 90%; max-width: 400px;"
-            >
-              <v-text-field
-                v-model="addPost.title"
-                prepend-icon="mdi-format-title"
-                label="title"
-              />
-              <v-textarea
-                v-model="addPost.body"
-                prepend-icon="mdi-text"
-                label="body"
-                rows="2"
-                auto-grow
-              />
-              <!-- tag map needs color -->
-              <v-combobox
-                v-model="addPost.tagData"
-                :items="tags.map(tag => tag.name)" 
-                prepend-icon="mdi-tag"
-                label="tags"
-                multiple
-                chips
-              >
-                <template #selection="{ tag }">
-                  <v-chip
-                    :color="tag.color"
-                    class="ma-1"
-                  >
-                    {{ tag.name }}
-                  </v-chip>
-                </template>
-              </v-combobox>
-              <v-file-input
-                v-model="addPost.images"
-                @change="encodeImage"
-                multiple
-                label="image"
-                prepend-icon="mdi-camera"
-                accept="image/*"
-              ></v-file-input>
-              <img
-                v-for="image in addPost.imageEncodings"
-                :key="image"
-                :src="image"
-                class="thumbnail"
-                alt="image"
-              />
-              <v-btn
-                @click="uploadPost"
-                :disabled="disablePostButton"
-                color="primary"
-                type="submit"
-              >add post</v-btn>
-            </v-form>
+            <CreateNewPost 
+              :tags="tags"
+              :upload-post="uploadPost"
+            />
           </div>
         </v-window-item>
 
@@ -156,25 +103,6 @@
       </template>
     </Dialog>
 
-    <Dialog v-model:show-dialog="showDialog">
-      <template #content>
-        You have unsaved changes. Do you wish to proceed?
-      </template>
-      <template #actions>
-        <v-btn
-          @click="resolveHandler"
-        >
-          Continue
-        </v-btn>
-        <v-btn
-          @click="rejectHandler"
-          color="red"
-        >
-          Cancel
-        </v-btn>
-      </template>
-    </Dialog>
-
     <Snackbar
       v-model:showSnackbar="showSnackbar"
       :timeout="snackbarData.timeout"
@@ -191,16 +119,15 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import Compress from "compress.js"
-import { ref, watch, computed } from "vue"
+import { ref, computed } from "vue"
 import NavBar from "../components/NavBar.vue"
 import AdminPostDisplay from "../components/AdminPostDisplay.vue"
 import TagInterface from "../components/TagInterface.vue"
 import NavDrawer from "../components/NavDrawer.vue"
 import Dialog from "../components/Dialog.vue"
-import Snackbar from "../components/Snackbar.vue";
+import Snackbar from "../components/Snackbar.vue"
+import CreateNewPost from "../components/createNewPost.vue";
 import type { Post } from "../types"
-import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 
 const tab = ref("posts")
 
@@ -224,41 +151,13 @@ function areYouSure(functionCall?: () => void | Promise<void>) {
   showAreYouSureDialog.value = false
 }
 
-const addPost = ref({
-  title: "",
-  body: "",
-  images: [] as Blob[],
-  imageEncodings: [] as string[] | ArrayBuffer[],
-  tagData: [],
-})
 
-const disablePostButton = computed(() => {
-  return !addPost.value.title
-})
-
-async function encodeImage() {
-  for (let i = 0; i < addPost.value.images.length; i++) {
-    const img = addPost.value.images[i]
-    if (!img) {
-      addPost.value.imageEncodings[i] = ""
-      continue
-    }
-    addPost.value.imageEncodings[i] = await compressBase64Image(img)
-  }
-}
-
-watch(() => addPost.value.images, (newVal) => {
-  if (newVal.length === 0) {
-    addPost.value.imageEncodings = []
-  }
-})
-
-async function uploadPost() {
+async function uploadPost(addPost: any) {
   const newPost = {
-    title: addPost.value.title,
-    body: addPost.value.body.trim(),
-    images: addPost.value.imageEncodings,
-    tagData: addPost.value.tagData,
+    title: addPost.title,
+    body: addPost.body.trim(),
+    images: addPost.imageEncodings,
+    tagData: addPost.tagData,
     date: new Date(),
   };
 
@@ -273,13 +172,6 @@ async function uploadPost() {
   showSnackbar.value = true
 
   displayPosts.value.unshift(newPost)
-  addPost.value = {
-    title: "",
-    body: "",
-    images: [],
-    imageEncodings: [],
-    tagData: [],
-  }
 
   setTimeout(() => {
     tab.value = "posts"
@@ -300,24 +192,12 @@ async function deletePost(id: string) {
 async function deleteComments() {
   await axios.delete("/api/comments")
 }
-
-async function compressBase64Image(image: string[]) {
-  const compress = new Compress();
-  try {
-    const compressedImage = await compress.compress([image], {
-      size: .1, // the max size in MB, defaults to 2MB
-      quality: .1, // the quality of the image, max is 1,
-    })
-    return compressedImage.map((image) => {
-      return image.prefix + image.data
-    })[0] as string
-  } catch (error) {
-    console.warn(error)
-  }
-}
-
 const tags = ref([])
-
+const fetchTags = async () => {
+  const { data } = await axios.get("/api/tags")
+  tags.value = data
+}
+fetchTags()
 
 const drawer = ref(false)
 
@@ -328,8 +208,6 @@ function handleNavDrawer() {
 async function handleLoadingPosts(posts: Post[]) {
   displayPosts.value = await posts
 }
-
-const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return (addPost.value.title.length || addPost.value.body.length || addPost.value.images.length || addPost.value.tagData.length) === 0 })
 
 const comments = ref([])
 

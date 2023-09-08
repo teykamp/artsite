@@ -82,10 +82,10 @@
 </template>
 
 <script setup lang="ts">
+import Compress from "compress.js"
 import { ref, watch, computed } from 'vue'
 import Dialog from './Dialog.vue'
 import type { Tag } from '../types'
-import Compress from "compress.js"
 import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 
 const props = defineProps<{

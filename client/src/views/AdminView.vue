@@ -175,7 +175,7 @@ async function uploadPost(addPost: any) {
 
   setTimeout(() => {
     tab.value = "posts"
-  }, 1000)
+  }, 500)
 }
 
 async function deletePosts() {

@@ -55,7 +55,12 @@
           <div class="d-flex justify-center">
               <v-btn
                 v-if="displayPosts.length"
-                @click="showAreYouSureDialog = true"
+                @click="areYouSureData = {
+                  content: 'Are you sure you want to delete ALL posts?',
+                  action: 'Delete All Posts',
+                  callbackFunction: deletePosts,
+                },
+                  showAreYouSureDialog = true"
                 class="my-10"
                 color="error"
               >delete all posts ({{ displayPosts.length }})</v-btn>
@@ -76,7 +81,13 @@
         </v-window-item>
 
         <v-window-item value="database">
-          <v-btn @click="deleteComments()">Delete All Comments</v-btn>
+          <v-btn @click="areYouSureData = {
+                  content: 'Are you sure you want to delete ALL comments?',
+                  action: 'Delete All Comments',
+                  callbackFunction: deleteComments,
+                },
+                  showAreYouSureDialog = true"
+          >Delete All Comments</v-btn>
         </v-window-item>
       </v-window>
     </v-sheet>
@@ -90,12 +101,12 @@
       :drawer="drawer"
     />
     <Dialog v-model:showDialog="showAreYouSureDialog">
-      <template #content> Are you sure you want to delete ALL posts?</template>
+      <template #content> {{ areYouSureData.content }} </template>
       <template #actions>
         <v-btn
           color="red"
-          @click="areYouSure(deletePosts)"
-        >Delete All Posts</v-btn>
+          @click="areYouSure(areYouSureData.callbackFunction)"
+        > {{ areYouSureData.action }} </v-btn>
         <v-btn
           color="primary"
           @click="areYouSure()"
@@ -126,7 +137,7 @@ import TagInterface from "../components/TagInterface.vue"
 import NavDrawer from "../components/NavDrawer.vue"
 import Dialog from "../components/Dialog.vue"
 import Snackbar from "../components/Snackbar.vue"
-import CreateNewPost from "../components/createNewPost.vue";
+import CreateNewPost from "../components/CreateNewPost.vue";
 import type { Post } from "../types"
 
 const tab = ref("posts")
@@ -134,6 +145,12 @@ const tab = ref("posts")
 const displayPosts = ref<Post[]>([])
 
 const showAreYouSureDialog = ref(false)
+const areYouSureData = ref({
+  content: "",
+  action: "",
+  callbackFunction: () => {},
+})
+
 const showSnackbar = ref(false)
 
 const snackbarData = ref({
@@ -142,7 +159,7 @@ const snackbarData = ref({
   timeout: 4000
 })
 
-// move to functions
+// move to composables
 function areYouSure(functionCall?: () => void | Promise<void>) {
   if (functionCall) {
     // figure out how to pass variables

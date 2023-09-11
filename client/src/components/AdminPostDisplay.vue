@@ -157,8 +157,11 @@ function editPost() {
 }
 
 async function updatePost(editedPost: any) {
-  editedPost.images = props.post.images
-  await axios.post(`/api/post/${props.post._id}/edit`, editedPost)
+  let post = props.post
+  post.title = editedPost.title
+  post.body = editedPost.body
+  post.tagData = editedPost.tagData
+  await axios.post(`/api/post/${props.post._id}/edit`, post)
     .then(async res => {
       const data = await res
       console.log(data)

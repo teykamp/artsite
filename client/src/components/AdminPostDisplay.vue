@@ -41,6 +41,9 @@
                 ></v-btn>
             </template>
             <v-list>
+              <v-list-item
+                @click="editPost()"
+                prepend-icon="mdi-pencil"
               <v-list-item prepend-icon="mdi-pencil">
                 Edit
               </v-list-item>
@@ -79,14 +82,12 @@
         >Cancel</v-btn>
       </template>
     </Dialog>
-    <!-- </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import axios from "axios"
 import { ref } from "vue"
-import { dateDisplay } from "../composables/dateDisplay"
 import Dialog from "./Dialog.vue"
 
 const props = defineProps<{
@@ -104,12 +105,9 @@ const props = defineProps<{
   }
 }>()
 
-const { date } = dateDisplay(props.post.date)
 const emits = defineEmits<{
   delete: () => void
 }>()
-
-const showPostActions = ref(false)
 
 const showAreYouSureDialog = ref(false)
 
@@ -123,6 +121,10 @@ function areYouSure(functionCall?: () => void | Promise<void>) {
 
 async function deletePostComments() {
   await axios.delete(`/api/comments/${props.post._id}`)
+}
+
+const showEditPost = ref(false)
+  showEditPost.value = true
 }
 </script>
 

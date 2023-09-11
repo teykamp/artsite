@@ -44,7 +44,7 @@
               <v-list-item
                 @click="editPost()"
                 prepend-icon="mdi-pencil"
-              <v-list-item prepend-icon="mdi-pencil">
+              >
                 Edit
               </v-list-item>
               <v-list-item 
@@ -82,6 +82,29 @@
         >Cancel</v-btn>
       </template>
     </Dialog>
+
+    <Dialog v-model:showDialog="showEditPost">
+      <template #content>
+        <CreateNewPost
+          :tags="[]"
+          :upload-post="updatePost"
+          :default-values="{
+            title: props.post.title,
+            body: props.post.body,
+            tagData: props.post.tagData,
+            image: props.post.images[0],
+          }"
+        />
+      </template>
+      <template #actions>
+        <v-btn
+          color="primary"
+          @click="showEditPost = false"
+        >Cancel</v-btn>
+      </template>
+    </Dialog>
+
+
   </div>
 </template>
 
@@ -89,6 +112,7 @@
 import axios from "axios"
 import { ref } from "vue"
 import Dialog from "./Dialog.vue"
+import CreateNewPost from "./CreateNewPost.vue"
 
 const props = defineProps<{
   post: {
@@ -124,7 +148,12 @@ async function deletePostComments() {
 }
 
 const showEditPost = ref(false)
+function editPost() {
   showEditPost.value = true
+}
+
+async function updatePost(addPost: any) {
+  
 }
 </script>
 

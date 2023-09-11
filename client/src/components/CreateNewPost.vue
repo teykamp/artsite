@@ -35,27 +35,36 @@
             </v-chip>
           </template>
         </v-combobox>
-        <v-file-input
-          v-model="addPost.images"
-          @change="encodeImage"
-          multiple
-          label="image"
-          prepend-icon="mdi-camera"
-          accept="image/*"
-        ></v-file-input>
-        <img
-          v-for="image in addPost.imageEncodings"
-          :key="image"
-          :src="image"
-          class="thumbnail"
-          alt="image"
-        />
+        <div v-if="!props.defaultValues">
+          <v-file-input
+            v-model="addPost.images"
+            @change="encodeImage"
+            multiple
+            label="image"
+            prepend-icon="mdi-camera"
+            accept="image/*"
+          ></v-file-input>
+          fdsghfsd
+          <img
+            v-for="image in addPost.imageEncodings"
+            :key="image"
+            :src="image"
+            class="thumbnail"
+            alt="image"
+          />
+        </div>
+        <div v-if="props.defaultValues && props.defaultValues.image">
+          <img 
+            :src="props.defaultValues.image"
+            style="max-width: 300px; max-height: 500px;"
+          />
+        </div>
         <v-btn
           @click="uploadPostHelper"
           :disabled="disablePostButton"
           color="primary"
           type="submit"
-        >add post</v-btn>
+        >{{ props.defaultValues ? 'Update Post' : 'Add Post' }}</v-btn>
       </v-form>
     </div>
     
@@ -91,14 +100,20 @@ import { dataLostOnChangePage } from '../composables/dataLostOnChangePage'
 const props = defineProps<{
   uploadPost: (newPost: any) => void,
   tags: Tag[],
+  defaultValues?: {
+    title: string,
+    body: string,
+    tagData: string,
+    image?: string,
+  }
 }>()
 
 const addPost = ref({
-  title: "",
-  body: "",
+  title: props.defaultValues ? props.defaultValues.title : "",
+  body: props.defaultValues ? props.defaultValues.body : "",
   images: [] as Blob[],
   imageEncodings: [] as string[] | ArrayBuffer[],
-  tagData: [],
+  tagData: props.defaultValues ? props.defaultValues.tagData : [],
 })
 
 const disablePostButton = computed(() => {

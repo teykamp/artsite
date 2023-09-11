@@ -28,7 +28,6 @@
               {{ post.interactions ? post.interactions.dislikes : 0 }}
             </v-chip>
             <v-chip variant="text" prepend-icon="mdi-comment-outline">
-              <!-- {{  post.interactions.dislikes }} -->
               <!-- comments in future -->
             </v-chip>
         </v-col>
@@ -45,7 +44,10 @@
               <v-list-item prepend-icon="mdi-pencil">
                 Edit
               </v-list-item>
-              <v-list-item prepend-icon="mdi-comment-remove-outline">
+              <v-list-item 
+                @click="deletePostComments()"
+                prepend-icon="mdi-comment-remove-outline"
+              >
                 Delete Comments
               </v-list-item>
               <v-list-item prepend-icon="mdi-thumbs-up-down">

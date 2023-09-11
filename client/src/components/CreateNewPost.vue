@@ -104,7 +104,7 @@ const props = defineProps<{
     title: string,
     body: string,
     tagData: string,
-    image?: string,
+    image: string,
   }
 }>()
 

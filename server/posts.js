@@ -44,6 +44,13 @@ router.delete('/posts', async (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
+// edit post
+router.post('/post/:id/edit', async (req, res) => {
+  console.log('edited post')
+  Post.findByIdAndUpdate(req.params.id, { ...req.body })
+    .then(post => res.json(post))
+    .catch(err => res.status(404).json(err));
+});
 
 // get all tags
 router.get('/tags', async (req, res) => {

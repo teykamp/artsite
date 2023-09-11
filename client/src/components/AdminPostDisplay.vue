@@ -100,6 +100,10 @@
         <v-btn
           color="primary"
           @click="showEditPost = false"
+        >Close</v-btn>
+        <v-btn
+          color="red"
+          @click="showEditPost = false"
         >Cancel</v-btn>
       </template>
     </Dialog>
@@ -152,8 +156,16 @@ function editPost() {
   showEditPost.value = true
 }
 
-async function updatePost(addPost: any) {
-  
+async function updatePost(editedPost: any) {
+  editedPost.images = props.post.images
+  await axios.post(`/api/post/${props.post._id}/edit`, editedPost)
+    .then(async res => {
+      const data = await res
+      console.log(data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 </script>
 

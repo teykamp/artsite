@@ -130,7 +130,6 @@ const disablePostButton = computed(() => {
   return currentPost === originalPost || !addPost.value.title
 })
 
-
 async function encodeImage() {
   for (let i = 0; i < addPost.value.images.length; i++) {
     const img = addPost.value.images[i]
@@ -176,6 +175,9 @@ function uploadPostHelper() {
   }
 }
 
-const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(() => { return (addPost.value.title.length || addPost.value.body.length || addPost.value.images.length || addPost.value.tagData.length) === 0 })
-
+const { rejectHandler, resolveHandler, showDialog } = dataLostOnChangePage(
+  () => { 
+  return (addPost.value.title.length || addPost.value.body.length || addPost.value.images.length || addPost.value.tagData.length) === 0 
+  }
+)
 </script>

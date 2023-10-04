@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <router-view />
+    <div style="height: 100%;"></div>
     <Footer />
   </v-app>
 </template>

@@ -64,7 +64,6 @@ const loadingReplies = ref(false)
 const showReplies = ref(false)
 const showReplyBox = ref(false)
 
-// can use function for no repeats
 async function fetchReplies() {
   if (replies.value.length === 0 && props.parentId !== undefined) {
     loadingReplies.value = true
